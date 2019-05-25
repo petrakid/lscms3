@@ -1,0 +1,15 @@
+[25-May-2019 01:21:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in /home/dinubalu/public_html/admin/includes/includes.php:90
+Stack trace:
+#0 /home/dinubalu/public_html/admin/includes/includes.php(90): PDO->exec('UPDATE tbl_cont...')
+#1 {main}
+  thrown in /home/dinubalu/public_html/admin/includes/includes.php on line 90
+[25-May-2019 01:21:42 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in /home/dinubalu/public_html/admin/includes/includes.php:90
+Stack trace:
+#0 /home/dinubalu/public_html/admin/includes/includes.php(90): PDO->exec('UPDATE tbl_cont...')
+#1 {main}
+  thrown in /home/dinubalu/public_html/admin/includes/includes.php on line 90
+[25-May-2019 01:22:15 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in /home/dinubalu/public_html/admin/includes/includes.php:90
+Stack trace:
+#0 /home/dinubalu/public_html/admin/includes/includes.php(90): PDO->exec('UPDATE tbl_cont...')
+#1 {main}
+  thrown in /home/dinubalu/public_html/admin/includes/includes.php on line 90
