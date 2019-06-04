@@ -8,4 +8,7 @@ define('DB_USER', 'dinubalu_conn1');
 define('DB_PASSWORD', '_Hu1Og,7KCxH');
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
+
+// CMS Version
+define('SITE_VERSION', 'LSCMS Version 3.0.0 Beta');
 ?>

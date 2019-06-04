@@ -9,7 +9,16 @@
   <meta name="robots" content="noindex, nofollow" />
   <title><?php if(isset($a)) { echo $a->getPageTitle($_GET['s']); } else { echo 'Log In'; } ?></title>
   
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+	<script>
+     UPLOADCARE_PUBLIC_KEY = '<?php echo $g['uploadcare_api'] ?>';
+	var uckey = '<?php echo $g['uploadcare_api'] ?>';		
+     </script>
   
   <link rel="stylesheet" href="<?php echo $g['site_url'] ?>/css/materialize.css" />
   <link rel="stylesheet" href="<?php echo $g['site_url'] ?>/css/a-style.css" media="screen,projection" />

@@ -1,5 +1,5 @@
 <?php
-class Layout
+class Blocks
 {
      private $db;
      public $a;
@@ -8,11 +8,64 @@ class Layout
           $this->db = $db;
      }
 
-     public function getLayout($a) {
-          $layout = $this->db->query("SELECT * FROM tbl_layout WHERE layout_area = $a AND layout_status = 1");
-          return $layout;
+     public function getBlockContent($a) {
+          $block = $this->db->query("SELECT * FROM tbl_blocks WHERE block_area = '$a' AND block_status = 1");
+          return $block;
+     }
+	
+	public function formatPhone($phone) {
+		if(!isset($phone{3})) { return ''; } 
+     	$phone = preg_replace("/[^0-9]/", "", $phone);
+     	$length = strlen($phone);
+     	switch($length) {
+          	case 7:
+               	return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
+               	break;
+          	case 10:
+				return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
+               	break;
+          	case 11:
+               	return preg_replace("/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{4})/", "$1($2) $3-$4", $phone);
+               	break;
+          	default:
+               	return $phone;
+               	break;
+		}	
+	}
+     
+     public function getBlockLayout() {
+          return $layout = $this->db->query("SELECT * FROM tbl_blocks WHERE block_status = 1");
+     }
+     
+     public function getBlockValue($block) {
+          $item = $this->db->query("SELECT block_content FROM tbl_blocks WHERE block_area = '$block'");
+          $it = $item->fetch(PDO::FETCH_ASSOC);
+          return $it['block_content'];
+     }
+        
+     public function getTemplateColors($current) {
+          $colors = array("red", "pink", "purple", "deep-purple", "indigo", "blue", "light-blue", "cyan", "teal", "green", "light-green", "lime", "yellow", "amber", "orange", "deep-orange", "brown", "grey");
+          foreach($colors AS $color) {
+               if($current == $color) {
+                    echo '<option value="'. $color .'" selected="selected" style="background-color: '. $color .'">'. ucfirst($color) .'</option>';
+               } else {
+                    echo '<option value="'. $color .'" style="background-color: '. $color .'">'. ucfirst($color) .'</option>';
+               }
+          }
+     }
+     
+     public function getTemplateShades($current) {
+          $shades = array("lighten-5", "lighten-4", "lighten-3", "lighten-2", "lighten-1", "default", "darken-1", "darken-2", "darken-3", "darken-4");
+          foreach($shades AS $shade) {
+               if($current == $shade) {
+                    echo '<option value="'. $shade .'" selected="selected" class="'. $this->getBlockValue('navc') .' '. $this->getBlockValue('navcc') .'">'. $shade .'</option>';
+               } else {
+                    echo '<option value="'. $shade .'" class="'. $shade .' '. $this->getBlockValue('navc') .'">'. $shade .'</option>';                    
+               }
+          }
      }
 }
+
 class Menu
 {
      private $db;
@@ -92,10 +145,10 @@ class Page
           if($menu->rowCount() > 0) {
                $m = $menu->fetch(PDO::FETCH_ASSOC);
                $content = $this->db->query("SELECT * FROM tbl_content WHERE menu_id = $m[m_id]");
+			return $content;
           } else {
-               $content = array();
+			return 0;
           }
-          return $content;
      }
      
      public function getPlugin($plid) {
@@ -128,8 +181,13 @@ class Carousel
           return $s;
      }
      
-     public function carouselSlides() {
-          $c = $this->db->query("SELECT cs_image FROM tbl_carousel_slides WHERE cs_status = 1 ORDER BY cs_order");
+     public function carouselSlides($all) {
+          if($all == 1) {
+               $s = '`cs_status` != 9';
+          } else {
+               $s = '`cs_status` = 1';
+          }
+          $c = $this->db->query("SELECT * FROM tbl_carousel_slides WHERE $s ORDER BY cs_order");
           return $c;
      }
 }

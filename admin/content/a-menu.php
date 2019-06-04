@@ -6,7 +6,7 @@
 <ul class="left">
 <li>
 <h1 class="logo-wrapper">
-<a href="<?php echo $g['site_url'] ?>/admin/dashboard/" class="brand-logo darken-1">
+<a href="https://www.luthersites.net" class="brand-logo darken-1" target="_blank">
 <img src="<?php echo $g['site_url'] ?>/content/assets/img/logo/ls-logo.png" alt="Luthersites Logo" />
 </a>
 </h1>

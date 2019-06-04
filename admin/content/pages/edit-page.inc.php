@@ -3,7 +3,6 @@
 $x = $a->editContent($_GET['d']);
 $z = $x->fetch(PDO::FETCH_ASSOC);
 ?>
-<script src="https://cdn.ckeditor.com/4.11.4/full-all/ckeditor.js"></script>
 <section class="section">
 <div class="row">
 <div class="col s12">
@@ -26,13 +25,8 @@ $z = $x->fetch(PDO::FETCH_ASSOC);
 </div>
 <div class="row">
 <div class="input-field col s12">
-<textarea id="section_content"><?php echo $z['section_content'] ?></textarea>
-<script>
-CKEDITOR.plugins.addExternal('imageuploader', '<?php echo $g['site_url'] ?>/admin/js/ckeditor/plugins/imageuploader/');
-CKEDITOR.replace('section_content', {
-     customConfig: '<?php echo $g['site_url'] ?>/admin/js/ck_config.js'
-});
-</script>
+<div id="summernotea"><?php echo $z['section_content'] ?></div>
+
 </div>
 </div>
 </div>

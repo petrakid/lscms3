@@ -125,7 +125,7 @@ class Admin
      
      public function getActionButton() {
           echo '
-               <div class="fixed-action-btn toolbar" style="top: 1px; right: 15px;">
+               <div class="fixed-action-btn toolbar" style="top: 1px; right: 15px; z-index: 9999;">
                  <a class="btn-floating btn-large red tooltipped" data-position="left" data-tooltip="Options">
                    <i class="large material-icons">settings</i>
                  </a>
@@ -174,6 +174,87 @@ class Admin
                echo '<option value="'. $m['m_id'] .'">'. stripslashes($m['menu_name']) .'</option>';
           }
      }
+	
+	public function selectHomepage($current) {
+		$home = $this->db->query("SELECT menu_link, menu_name FROM tbl_menu WHERE menu_status = 1 AND menu_link != '$current' ORDER BY menu_parent_id, menu_order");
+		while($h = $home->fetch(PDO::FETCH_ASSOC)) {
+			echo '<option value="'. $h['menu_link'] .'">'. $h['menu_name'] .'</option>';
+		}
+	}
+	
+	public function getStates($curr) {
+		$us_state_abbrevs_names = array(
+			'AL'=>'ALABAMA',
+			'AK'=>'ALASKA',
+			'AS'=>'AMERICAN SAMOA',
+			'AZ'=>'ARIZONA',
+			'AR'=>'ARKANSAS',
+			'CA'=>'CALIFORNIA',
+			'CO'=>'COLORADO',
+			'CT'=>'CONNECTICUT',
+			'DE'=>'DELAWARE',
+			'DC'=>'DISTRICT OF COLUMBIA',
+			'FM'=>'FEDERATED STATES OF MICRONESIA',
+			'FL'=>'FLORIDA',
+			'GA'=>'GEORGIA',
+			'GU'=>'GUAM GU',
+			'HI'=>'HAWAII',
+			'ID'=>'IDAHO',
+			'IL'=>'ILLINOIS',
+			'IN'=>'INDIANA',
+			'IA'=>'IOWA',
+			'KS'=>'KANSAS',
+			'KY'=>'KENTUCKY',
+			'LA'=>'LOUISIANA',
+			'ME'=>'MAINE',
+			'MH'=>'MARSHALL ISLANDS',
+			'MD'=>'MARYLAND',
+			'MA'=>'MASSACHUSETTS',
+			'MI'=>'MICHIGAN',
+			'MN'=>'MINNESOTA',
+			'MS'=>'MISSISSIPPI',
+			'MO'=>'MISSOURI',
+			'MT'=>'MONTANA',
+			'NE'=>'NEBRASKA',
+			'NV'=>'NEVADA',
+			'NH'=>'NEW HAMPSHIRE',
+			'NJ'=>'NEW JERSEY',
+			'NM'=>'NEW MEXICO',
+			'NY'=>'NEW YORK',
+			'NC'=>'NORTH CAROLINA',
+			'ND'=>'NORTH DAKOTA',
+			'MP'=>'NORTHERN MARIANA ISLANDS',
+			'OH'=>'OHIO',
+			'OK'=>'OKLAHOMA',
+			'OR'=>'OREGON',
+			'PW'=>'PALAU',
+			'PA'=>'PENNSYLVANIA',
+			'PR'=>'PUERTO RICO',
+			'RI'=>'RHODE ISLAND',
+			'SC'=>'SOUTH CAROLINA',
+			'SD'=>'SOUTH DAKOTA',
+			'TN'=>'TENNESSEE',
+			'TX'=>'TEXAS',
+			'UT'=>'UTAH',
+			'VT'=>'VERMONT',
+			'VI'=>'VIRGIN ISLANDS',
+			'VA'=>'VIRGINIA',
+			'WA'=>'WASHINGTON',
+			'WV'=>'WEST VIRGINIA',
+			'WI'=>'WISCONSIN',
+			'WY'=>'WYOMING',
+			'AE'=>'ARMED FORCES AFRICA \ CANADA \ EUROPE \ MIDDLE EAST',
+			'AA'=>'ARMED FORCES AMERICA (EXCEPT CANADA)',
+			'AP'=>'ARMED FORCES PACIFIC'
+		);
+		foreach($us_state_abbrevs_names AS $abv => $name) {
+			if($abv == $curr) {
+				echo '<option selected="selected" value="'. $abv.'">'. ucwords(strtolower($name)) .'</option>'."\n";
+			} else {
+				echo '<option value="'. $abv.'">'. ucwords(strtolower($name)) .'</option>'."\n";
+			}
+		} 		
+	}
      
      public function getMenuOptions($mid) {
           echo '<a class="waves-effect waves-light teal darken-3 btn modal-trigger" href="/admin/pages/edit-page/'. $mid .'"><i class="material-icons left">create</i> Edit</a>

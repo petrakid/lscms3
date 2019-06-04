@@ -17,7 +17,11 @@ if(isset($_SESSION['isLoggedIn'])) {
      ?>
      <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
      <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
-
+	<script>
+     UPLOADCARE_PUBLIC_KEY = '<?php echo $g['uploadcare_api'] ?>';
+	var uckey = '<?php echo $g['uploadcare_api'] ?>';		
+     </script>
+	
      <?php
 }
 if(!isset($_SESSION['isLoggedIn'])) {
@@ -25,7 +29,6 @@ if(!isset($_SESSION['isLoggedIn'])) {
 
 <script type="text/javascript">
   var _paq = window._paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {

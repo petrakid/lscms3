@@ -17,6 +17,35 @@ $(function() {
      })
 })
 
+$(function() {
+     $('#sort_area').sortable({
+          placeholder: "ui-state-highlight",
+          axis: 'y',
+          update: function(event, ui) {
+               var data = $(this).sortable('serialize');
+               $.ajax({
+                    url: href + '/admin/includes/includes.php',
+                    type: 'POST',
+                    data: data
+               })
+          }
+     });
+     $('#sort_area').disableSelection();
+})
+
+$(function() {
+	$(".phone_number").mask("(999)999-9999");
+     $(".phone_number").on("blur", function() {
+          var last = $(this).val().substr($(this).val().indexOf("-") + 1);
+          if(last.length == 3) {
+               var move = $(this).val().substr( $(this).val().indexOf("-") - 1, 1);
+               var lastfour = move + last;
+               var first = $(this).val().substr(0, 9);
+               $(this).val(first + '-' + lastfour);
+          }
+     })
+});
+
 function checkUsername()
 {
      $.ajax({
@@ -239,7 +268,7 @@ function saveChanges(mid, pid)
      fData.append('menu_id', mid);
      fData.append('page_id', pid);
      fData.append('page_title', $('#page_title').val());
-     fData.append('section_content', CKEDITOR.instances.section_content.getData());
+     fData.append('section_content', $('#summernotea').summernote('code'));
      fData.append('menu_link', $('#menu_link').val());
      fData.append('keywords', $('#keywords').val());
      fData.append('description', $('#description').val());
@@ -260,12 +289,12 @@ function saveChanges(mid, pid)
                     $('.updateres').html(data);
                     setTimeout(function() {
                         window.location.reload();
-                    }, 2500)
+                    }, 1500)
                } else {
                     $('.savebutton').html('<i class="material-icons left">check</i> Page Saved!');
                     setTimeout(function() {
                         window.location.reload();
-                    }, 2500)                    
+                    }, 1500)                    
                }               
           },
           error: function(jqXHR, exception) {
@@ -820,7 +849,71 @@ $(function() {
                buttonIcon: 'image',
                tooltipText: 'Upload files or video or something',
      
-               publicKey: '2d4d1228ab27d535e8a2',
+               publicKey: uckey,
+               crop: 'free',
+               tabs: 'all',
+               multiple: true
+          }
+     });
+});
+
+$(function() {
+     $('#summerblock').summernote({
+          minHeight: 300,
+          focus: true,
+          toolbar: [
+               ['savebutton', ['save']],
+               ['style', ['style']],
+               ['font', ['bold', 'italic', 'underline', 'clear']],
+               ['fontname', ['fontname']],
+               ['color', ['color']],
+               ['para', ['ul', 'ol', 'paragraph']],
+               ['height', ['height']],
+               ['table', ['table']],
+               ['insert', ['media', 'link', 'hr', 'video']],
+               ['uploadcare', ['uploadcare']],
+               ['view', ['codeview']],
+               ['help', ['help']]
+          ],
+          buttons: {
+               save: SaveButtonB
+          },
+          uploadcare: {
+               buttonLabel: 'Media',
+               buttonIcon: 'image',
+               tooltipText: 'Upload files or video or something',
+     
+               publicKey: uckey,
+               crop: 'free',
+               tabs: 'all',
+               multiple: true
+          }
+     });
+});
+
+$(function() {
+     $('#summernotea').summernote({
+          minHeight: 500,
+          focus: true,
+          toolbar: [
+               ['style', ['style']],
+               ['font', ['bold', 'italic', 'underline', 'clear']],
+               ['fontname', ['fontname']],
+               ['color', ['color']],
+               ['para', ['ul', 'ol', 'paragraph']],
+               ['height', ['height']],
+               ['table', ['table']],
+               ['insert', ['media', 'link', 'hr', 'video']],
+               ['uploadcare', ['uploadcare']],
+               ['view', ['codeview']],
+               ['help', ['help']]
+          ],
+          uploadcare: {
+               buttonLabel: 'Media',
+               buttonIcon: 'image',
+               tooltipText: 'Upload files or video or something',
+     
+               publicKey: uckey,
                crop: 'free',
                tabs: 'all',
                multiple: true
@@ -847,7 +940,9 @@ var SaveButton = function(context) {
                          'content': $('#summernote').summernote('code')
                     },
                     success: function(data) {
-                         alert('Content Saved Successfully');
+					$(function() {
+						Materialize.toast('Update Successful!', 2500, 'rounded');
+					});
                          setTimeout(function() {
                               window.history.back();
                          }, 1000);
@@ -859,4 +954,183 @@ var SaveButton = function(context) {
           }
      });
      return button.render();
+}
+
+var SaveButtonB = function(context) {
+     var ui = $.summernote.ui;
+     var button = ui.button({
+          contents: '<i class="fas fa-save" style="color: red" /> Save',
+          tooltip: 'Save changes',
+          click: function () {
+               $.ajax({
+                    url: href +'/admin/includes/includes.php',
+                    type: 'POST',
+                    data: {
+                         'save_block_content': 1,
+                         'block_area': $('#blockarea').val(),
+                         'block_content': $('#summerblock').summernote('code')
+                    },
+                    success: function(data) {
+					$(function() {
+						Materialize.toast('Update Successful!', 2500, 'rounded');
+					});
+                         setTimeout(function() {
+                              window.location.reload();
+                         }, 1000);
+                    },
+                    error: function(jqXHR, exception) {
+                         console.log(jqXHR.status);
+                    }                    
+               })
+          }
+     });
+     return button.render();
+}
+
+function updateValue(field, value)
+{
+	$.ajax({
+		url: href +'/admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'update_value': 1,
+			'field': field,
+			'value': value
+		},
+		success: function(data) {
+			$(function() {
+				Materialize.toast('Update Successful!', 2500, 'rounded');
+			})
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})
+}
+
+function updateBlock(area, value)
+{
+     if(area == 'nav') {
+    
+     }
+     if(area == 'navc') {
+          myClasses = $('select[name="nav_shade"] :selected').prop("class").toString().split(' ');
+          var myClass = myClasses[1];
+          $('#nav_shade > option').each(function() {
+               $(this).removeClass(myClass);
+               $(this).addClass(value);                    
+          })
+     }
+     if(area == 'navcc') {
+     }
+     if(area == 'navt') {
+          
+     }
+     
+     $.ajax({
+          url: href +'/admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_block': 1,
+               'field': area,
+               'value': value
+          }, success: function(data) {
+
+          },
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+     })
+}
+
+function editBlock(block)
+{
+	$.ajax({
+		url: href +'/admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'edit_block': 1,
+			'block': block
+		},
+		success: function(data) {
+			switch(block) {
+                    case 'fl':
+                    case 'fm':
+                    case 'fr':
+                         $('#blockres').html(data);
+                         $(function() {
+          				$('#summerblock').summernote({
+          					minHeight: 300,
+          					focus: true,
+          					toolbar: [
+          						['savebutton', ['save']],
+          						['style', ['style']],
+          						['font', ['bold', 'italic', 'underline', 'clear']],
+          						['fontname', ['fontname']],
+          						['color', ['color']],
+          						['para', ['ul', 'ol', 'paragraph']],
+          						['height', ['height']],
+          						['table', ['table']],
+          						['insert', ['media', 'link', 'hr', 'video']],
+          						['uploadcare', ['uploadcare']],
+          						['view', ['codeview']],
+          						['help', ['help']]
+          					],
+          					buttons: {
+          						save: SaveButtonB
+          					},
+          					uploadcare: {
+          						buttonLabel: 'Media',
+          						buttonIcon: 'image',
+          						tooltipText: 'Upload files or video or something',
+          
+          						publicKey: uckey,
+          						crop: 'free',
+          						tabs: 'all',
+          						multiple: true
+          					}
+          				});
+           			});
+                         break;
+                    case 'nav':
+                         $('#blockres').html(data);
+                         break;
+                    case 'cnt':
+                         $('#blockres').html(data);
+                         break;
+                    default:
+                         break;
+  			}
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}		
+	})
+}
+
+function showCompany(box)
+{
+	if($(box).is(':checked')) {
+		$.ajax({
+			url: href +'/admin/includes/includes.php',
+			type: 'POST',
+			data: {
+				'save_block_company': 1,
+				'block_area': $('#blockarea').val(),
+			},
+			success: function(data) {
+				Materialize.toast('Block Updated', 1500, 'rounded');
+				setTimeout(function() {
+					window.location.reload()
+				}, 1500);
+			},
+			error: function(jqXHR, exception) {
+				console.log(jqXHR.status);
+			}		
+		})
+	} else {
+		$(function() {
+			$('#summerblock').summernote('code', '');
+		});
+	}
 }

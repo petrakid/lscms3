@@ -5,6 +5,11 @@
  Satisfy All
 </Files>
 
+<Files ~ "\.inc.php$">
+	Order allow,deny
+	Deny from all
+</Files>
+
 RewriteEngine On
 
 RewriteRule ^sitemap\.xml$ sitemap.php [L]

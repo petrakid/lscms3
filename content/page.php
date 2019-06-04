@@ -12,7 +12,7 @@
                <?php
           }
      }
-     if($page->rowCount() > 0) {
+     if($page != '') {
           $pg = $page->fetch(PDO::FETCH_ASSOC);
           if(isset($_GET['quickedit']) && isset($_SESSION['isLoggedIn'])) {
                echo '<div class="section"><div class="row"><div class="col s12 m12 l12"><div id="summernote">'. $pg['section_content'] .'</div></div></div></div>';
@@ -29,7 +29,7 @@
                          $fullj = '';
                     }               
                     echo '<div class="carousel '. $full .'">';;
-                    $slides = $car->carouselSlides();
+                    $slides = $car->carouselSlides(0);
                     $num = 1;
                     while($sl = $slides->fetch(PDO::FETCH_ASSOC)) {
                          ?>

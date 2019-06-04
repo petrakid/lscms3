@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if(!isset($_SESSION['isLoggedIn'])) {
+	die;
+}
 include '../../includes/ls-config.php';
 
 try {
@@ -16,8 +18,10 @@ $glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
 $g = $glb->fetch(PDO::FETCH_ASSOC);
 
 include 'admin.class.php';
+include '../../includes/ls-classes.php';
 $a = new Admin($db);
 $sec = new Security($db);
+$b = new Blocks($db);
 
 // above required
 if(isset($_POST['validate_email'])) {
@@ -73,6 +77,14 @@ if(isset($_POST['user_login'])) {
      }
 }
 
+if(isset($_POST['item'])) {
+     $i = 0;
+     foreach($_POST['item'] AS $value) {
+          $db->exec("UPDATE tbl_carousel_slides SET cs_order = $i WHERE cs_id = $value");
+          $i++;
+     }
+}
+
 if(isset($_POST['edit_content'])) {
      $cont = $db->query("SELECT * FROM tbl_content WHERE menu_id = $_POST[menu_id]");
 }
@@ -83,6 +95,9 @@ if(isset($_POST['save_edit'])) {
 }
 
 if(isset($_POST['save_quick_edit'])) {
+     if($_POST['menu_link'] == '') {
+          $_POST['menu_link'] = $g['homepage'];
+     }
      $cp = $db->query("SELECT m_id FROM tbl_menu WHERE menu_link = '$_POST[menu_link]'");
      $c = $cp->fetch(PDO::FETCH_ASSOC);
      $p_id = $c['m_id'];
@@ -621,4 +636,128 @@ if(isset($_POST['update_account'])) {
 
 if(isset($_POST['change_profile_value'])) {
      $db->exec("UPDATE tbl_users SET `$_POST[field]` = '$_POST[value]' WHERE user_id = '". $_SESSION['user']['user_id'] ."'");
+}
+
+if(isset($_POST['update_value'])) {
+	if($_POST['field'] == 'phone_1' || $_POST['field'] == 'phone_2' || $_POST['field'] == 'fax_1') {
+		$_POST['value'] = preg_replace("/[^0-9]/", "", str_replace(" ","", $_POST['value']));
+	}	
+	$db->exec("UPDATE tbl_globals SET `$_POST[field]` = '$_POST[value]' WHERE g_id = 1");
+}
+
+if(isset($_POST['edit_block'])) {
+	?>
+	<h4 class="modal-title" id="block_sample">Block Editor</h4>
+     
+	<?php
+     $block = $b->getBlockContent($_POST['block']);
+     $bl = $block->fetch(PDO::FETCH_ASSOC);
+	switch($bl['block_area']) {
+		case 'fl':
+			?>
+			<h6>Left Footer Block</h6>
+			<div class="row">
+			<input type="hidden" id="blockarea" value="fl" />
+			<p>
+			<input type="checkbox" id="company_onlyl" onchange="showCompany('#company_onlyl')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
+			<label for="company_onlyl">Check to populate this block with your company information (overrides what you enter below).</label>
+			</p>
+			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
+			</div>
+			<?php
+			break;			
+		case 'fm':
+			?>
+			<h6>Center Footer Block</h6>
+			<div class="row">
+			<input type="hidden" id="blockarea" value="fm" />
+			<p>
+			<input type="checkbox" id="company_onlym" onchange="showCompany('#company_onlym')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
+			<label for="company_onlym">Check to populate this block with your company information (overrides what you enter below).</label>
+			</p>
+			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
+			</div>
+			<?php
+			break;			
+		case 'fr':
+			?>
+			<h6>Right Footer Block</h6>
+			<div class="row">
+			<input type="hidden" id="blockarea" value="fr" />
+			<p>
+			<input type="checkbox" id="company_onlyr" onchange="showCompany('#company_onlyr')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
+			<label for="company_onlyr">Check to populate this block with your company information (overrides what you enter below).</label>
+			</p>
+			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
+			</div>
+			<?php
+			break;
+		case 'nav':
+               ?>
+               <h6>Navigation Bar</h6>
+               <div class="divider"></div>
+               <div class="row">
+               <input type="hidden" id="blockarea" value="nav" />
+               <div class="input-field col s12 m4 l4">
+               <input type="number" min="35" max="175" name="navbar_height" id="nabvar_height" value="<?php echo $b->getBlockValue('nav') ?>" onchange="updateBlock('nav', this.value)" />
+               <label for="navbar_height" class="active">Navigation Bar Height (in pixels)</label>
+               </div>
+               <div class="input-field col s12 m4 l4">
+               <input type="number" min="10" max="120" name="title_font_size" id="title_font_size" value="<?php echo $b->getBlockValue('navt') ?>" onchange="updateBlock('navt', this.value)" />
+               <label for="title_font_size" class="active">Title Font Size (in pixels)</label>
+               </div>
+               <div class="col s12 m4 l4">
+               <p>
+               <input type="radio" name="navbar_type" id="type_fixed" value="f" <?php if($b->getBlockValue('navf') == 'f') { echo 'checked="checked"'; } ?> onchange="updateBlock('navf', 'f')" />
+               <label for="type_fixed">Fixed Nabvar</label><br />
+               <input type="radio" name="navbar_type" id="type_fluid" value="l" <?php if($b->getBlockValue('navf') == 'l') { echo 'checked="checked"'; } ?> onchange="updateBlock('navf', 'l')" />
+               <label for="type_fluid">Fluid Nabvar (default)</label>               
+               </p>
+               </div>
+               </div>
+               <div class="row">
+               <div class="col s12 m4 l4">
+               <p>
+               <input type="radio" name="menu_align" id="align_left" value="l" <?php if($b->getBlockValue('navm') == 'l') { echo 'checked="checked"'; } ?> onchange="updateBlock('navm', 'l')" />
+               <label for="align_left">Menu Alignment Left</label><br />
+               <input type="radio" name="menu_align" id="align_right" value="l" <?php if($b->getBlockValue('navm') == 'r') { echo 'checked="checked"'; } ?> onchange="updateBlock('navm', 'r')" />
+               <label for="align_right">Menu Alignment Right</label>               
+               </p>
+               </div>
+               <div class="col s12 m4 l4">
+               <label>Navbar Background Color</label>
+               <select name="nav_color" id="nav_color" class="browser-default" onchange="updateBlock('navc', this.value)">
+               <?php echo $b->getTemplateColors($b->getBlockValue('navc')) ?>
+               
+               </select><br />
+               <label>Shade Adjustment</label>
+               <select name="nav_shade" id="nav_shade" class="browser-default" onchange="updateBlock('navcc', this.value)">
+               <?php echo $b->getTemplateShades($b->getBlockValue('navcc')) ?>
+               
+               </select>
+               </div>
+                              
+               </div>
+               <?php
+			break;
+		case 'cnt':
+               echo 'There is currently no editable items in the Content Block';
+			break;
+		default:
+               echo 'No Block Selected';
+			break;
+	}
+}
+
+if(isset($_POST['update_block'])) {
+     $db->exec("UPDATE tbl_blocks SET `block_content` = '$_POST[value]' WHERE block_area = '$_POST[field]'");
+}
+
+if(isset($_POST['save_block_content'])) {
+	$blockcontent = $db->quote($_POST['block_content']);
+	$db->exec("UPDATE tbl_blocks SET block_content = $blockcontent WHERE block_area = '$_POST[block_area]'");
+}
+
+if(isset($_POST['save_block_company'])) {
+	$db->exec("UPDATE tbl_blocks SET block_content = 'company' WHERE block_area = '$_POST[block_area]'");
 }

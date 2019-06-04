@@ -36,7 +36,7 @@ include 'includes/ls-functions.php';
 include 'includes/ls-classes.php';
 include 'admin/includes/admin.class.php';
 
-$l = new Layout($db);
+$b = new Blocks($db);
 $m = new Menu($db);     
 $p = new Page($db); 
 

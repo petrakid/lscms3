@@ -5,7 +5,7 @@
 <footer class="page-footer gradient-45deg-light-blue-cyan">
 <div class="footer-copyright">
 <div class="container">
-<span>Copyright &copy;2019 - Luthersites Hosting</span>
+<span>Copyright &copy; 2019 - present. Luthersites Hosting</span>
 </div>
 </div>
 </footer>
