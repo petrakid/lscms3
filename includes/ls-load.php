@@ -1,7 +1,8 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(-1);
 ini_set('ignore_repeated_errors', TRUE);
 ini_set('display_errors', TRUE); // shut this off in production environment
+ini_set('html_errors', TRUE);
 ini_set("log_errors", 1);
 ini_set("error_log", "/home/dinubalu/public_html/logs/error.log");
 ini_set('log_errors_max_len', 1024);
@@ -34,7 +35,7 @@ $g = $glb->fetch(PDO::FETCH_ASSOC);
 // initiate functions
 include 'includes/ls-functions.php';
 include 'includes/ls-classes.php';
-include 'admin/includes/admin.class.php';
+include 'ls-admin/includes/admin.class.php';
 
 $b = new Blocks($db);
 $m = new Menu($db);     
@@ -50,8 +51,8 @@ if(!empty($_COOKIE['remlog'])) {
      $sec->checkCookie($_COOKIE['remlog']);
 }
 
-if(!isset($_SESSION['isLoggedIn']) && $_GET['p'] == 'admin/login/') {
-     include 'admin/index.php';
+if(!isset($_SESSION['isLoggedIn']) && ($_GET['p'] == 'admin/login/' || $_GET['p'] == 'admin')) {
+     include 'ls-admin/index.php';
      die();
 }
 
@@ -65,6 +66,8 @@ if($g['maintenance'] == 1) {
           die('Maintenance Mode Active.');
      }
 }
+
+
 // load the page
 if(isset($_SESSION['isLoggedIn'])) {
      $a = new Admin($db); 
@@ -80,11 +83,12 @@ if(strpos($_GET['p'], 'admin/') !== false) {
      if($_GET['s'] == '') {
           $_GET['s'] = 'dashboard';
      }
+
 }
 
 switch($_GET['p']) {
      case 'admin':
-          include 'admin/index.php';
+          include 'ls-admin/index.php';
           break;
      case '':
           $_GET['p'] = 'home';
@@ -100,5 +104,4 @@ switch($_GET['p']) {
           include 'content/footer.php';
           break;
 }
-
 ?>
