@@ -77,6 +77,88 @@ if(!isset($_SESSION['isLoggedIn'])) {
      }     
 }
 
+if(isset($_POST['change_my_pass'])) {
+     ?>
+     <h4 class="header">Change Password</h4>
+     <div class="row">
+     <div class="input-field col s12">
+     <input type="password" name="my_old_password" id="my_old_password" placeholder="Old Password" onkeyup="checkMyPassword(this.value)" />
+     <label for="my_old_password">Enter your Current Password</label>
+     <span class="helper-text helper-text-custom" id="cpasswordRes"></span>
+     </div>
+     </div>
+     <div class="row" id="newPassRow" style="display: none">
+     <div class="input-field col s6">
+     <input type="password" name="new_pass_1" id="new_pass_1" placeholder="Enter a New Password" onkeyup="checkStrength()" />
+     <label for="new_pass_1">Enter a New Password</label>
+     <span class="helper-text helper-text-custom" id="new_pass_1_check"></span>
+     </div>
+     <div class="input-field col s6">
+     <input type="password" name="new_pass_2" id="new_pass_2" placeholder="Enter the New Password again" onkeyup="checkPasswords()" />
+     <label for="new_pass_2">Enter the New Password again.</label>
+     <span class="helper-text helper-text-custom" id="new_pass_2_check"></span>
+     </div>
+     <div class="space"></div>
+     </div>
+     <div class="space"></div>
+     <div class="row">
+     <div class="col s12">
+     <a href="#!" onclick="updateMyPass()" id="reset_button" style="display: none;" class="btn waves-effect effect-light indigo white-text"><i class="material-icons left">security</i> Update</a>
+     </div>
+     </div>
+     <?php
+}
+
+if(isset($_POST['check_my_pass'])) {
+     $user = $db->query("SELECT password, salt FROM tbl_users WHERE user_id = '". $_SESSION['user']['user_id'] ."'");
+     $pass = $user->fetch(PDO::FETCH_ASSOC);
+     
+     $password = hash('sha256', $_POST['password'] . $pass['salt']);
+     if($password != $pass['password']) {
+          echo '0';
+     } else {
+          echo '1';
+     }
+     
+}
+
+if(isset($_POST['update_my_pass'])) {
+     $password = $_POST['password'];
+     
+     $salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
+     $newpass = hash('sha256', $password . $salt);
+     
+     $db->exec("UPDATE tbl_users SET password = '$newpass', salt = '$salt' WHERE user_id = '". $_SESSION['user']['user_id'] ."'");
+     
+     $a->sendEmail(2, $_SESSION['user']['user_id'], $password);
+     
+     echo '<h4 class="header">Password Changed Successfully!</h4><p style="margin: 10px;"><a href="#!" class="btn modal-close waves-effect waves-red">Close</a></p>';     
+}
+
+if(isset($_POST['view_my_messages'])) {
+     
+}
+
+if(isset($_POST['send_message'])) {
+     
+}
+
+if(isset($_POST['do_send_message'])) {
+     
+}
+
+if(isset($_POST['change_my_avatar'])) {
+     
+}
+
+if(isset($_POST['update_my_avatar'])) {
+     
+}
+
+if(isset($_POST['close_my_account'])) {
+     
+}
+
 if(isset($_POST['item'])) {
      $i = 0;
      foreach($_POST['item'] AS $value) {
@@ -207,8 +289,8 @@ if(isset($_POST['save_quick_edit'])) {
      $cp = $db->query("SELECT m_id FROM tbl_menu WHERE menu_link = '$_POST[menu_link]'");
      $c = $cp->fetch(PDO::FETCH_ASSOC);
      $p_id = $c['m_id'];
-     $content = $db->quote($_POST['content']);
-     $db->exec("UPDATE tbl_content SET section_content = $content WHERE menu_id = $p_id");
+     $content = addslashes($_POST['content']);
+     $db->exec("UPDATE tbl_content SET section_content = '$content' WHERE menu_id = $p_id");
      echo $content;
 }
 
@@ -427,12 +509,14 @@ if(isset($_POST['update_page'])) {
      unset($_POST['menu_link']);
      unset($_POST['menu_id']);
      unset($_POST['page_id']);
+     $_POST['section_content'] = addslashes($_POST['section_content']);
      $sql = "UPDATE tbl_content SET ";
      foreach($_POST AS $f => $v) {
           $sql .= "`$f` = '$v', ";
      }
      $sql = rtrim($sql, ", ");
      $sql .= " WHERE `p_id` = $p_id";
+     echo $sql;
      $db->exec($sql);
      $db->exec("UPDATE tbl_menu SET menu_status = $menu_status, menu_link = '$menu_link' WHERE m_id = $m_id");    
 }
@@ -749,6 +833,10 @@ if(isset($_POST['update_value'])) {
 		$_POST['value'] = preg_replace("/[^0-9]/", "", str_replace(" ","", $_POST['value']));
 	}	
 	$db->exec("UPDATE tbl_globals SET `$_POST[field]` = '$_POST[value]' WHERE g_id = 1");
+}
+
+if(isset($_POST['update_sermon_config'])) {
+     $db->exec("UPDATE tbl_sermons_settings SET `$_POST[field]` = '$_POST[value]' WHERE s_id = 1");
 }
 
 if(isset($_POST['edit_block'])) {

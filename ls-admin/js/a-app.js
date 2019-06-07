@@ -555,6 +555,178 @@ function resetPass(userid)
      }
 }
 
+function changeMyPass()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'change_my_pass': 1,
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })     
+}
+
+function updateMyPass()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_my_pass': 1,
+               'password': $('#new_pass_1').val()
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })      
+}
+
+function checkMyPassword(pass)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'check_my_pass': 1,
+               'password': pass
+          },
+          success: function(data) {
+               if(data == 1) {
+                    $('#cpasswordRes').html('So far, so good!');
+                    $('#newPassRow').show();
+               } else {
+                    $('#cpasswordRes').html('This is not your current password!');
+                    $('#newPassRow').hide();
+               }
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })       
+}
+
+function viewMyMessages()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'view_my_messages': 1,
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })     
+}
+
+function sendMessage()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'send_message': 1,
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })     
+}
+
+function doSendMessage()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'do_send_message': 1,
+               'send_to': $('#send_id'),
+               'send_content': $('#send_content')
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })      
+}
+
+function changeMyAvatar()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'change_my_avatar': 1,
+          },
+          success: function(data) {
+               $('#profileRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })     
+}
+
+function updateMyAvatar()
+{
+     fdata = new FormData();
+     fdata.append('update_my_avatar', 1);
+     fdata.append('avatar_image', $('input[name=avatar_image]')[0].files[0]);
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: fdata,
+          success: function(data) {
+               $('#profileRes').html(data);
+               setTimeout(function() {
+                    window.location.reload();
+               }, 1000)
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })      
+}
+
+function closeMyAccount()
+{
+     if(confirm('Closing your account will remove all of your access from Administration.  Are you SURE you want to do this?')) {
+          $.ajax({
+               url: href +'/ls-admin/includes/includes.php',
+               type: 'POST',
+               data: {
+                    'close_my_account': 1,
+               },
+               success: function(data) {
+                    alert(data);
+                    setTimeout(function() {
+                         window.location.href = href;
+                    }, 1000)
+               },
+               error: function(jqXHR, exception) {
+                    console.log(jqXHR.status);
+               }
+          })
+     }     
+}
+
 function checkScore(passone)
 {
      var score = 0;
@@ -1185,6 +1357,26 @@ var SaveButtonB = function(context) {
           }
      });
      return button.render();
+}
+
+function updateSermonConfig(field, value) {
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_sermon_config': 1,
+               'field': field,
+               'value': value
+          },
+          success: function(data) {
+			$(function() {
+				Materialize.toast('Update Successful!', 2500, 'rounded');
+			})
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }                    
+     })     
 }
 
 function updateValue(field, value)

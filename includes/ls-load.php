@@ -28,6 +28,8 @@ catch(PDOException $e) {
      echo "Connection to Database failed: ". $e->getMessage();
 }
 
+require_once('includes/ls-cron.php');
+
 // get global configuration
 $glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
 $g = $glb->fetch(PDO::FETCH_ASSOC);

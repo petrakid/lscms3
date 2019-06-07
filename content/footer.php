@@ -77,7 +77,7 @@
 <?php
 if(isset($_SESSION['isLoggedIn'])) {
      ?>
-     <script src="<?php echo $g['site_url'] ?>/admin/js/a-app.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/a-app.js"></script>
           
      <?php
 }

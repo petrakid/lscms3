@@ -32,11 +32,27 @@
                     $slides = $car->carouselSlides(0);
                     $num = 1;
                     while($sl = $slides->fetch(PDO::FETCH_ASSOC)) {
-                         ?>
-                         
-                         <a class="carousel-item" href="#<?php echo $num ?>!"><img src="<?php echo $g['site_url'] ?>/content/assets/carousel/<?php echo $sl['cs_image'] ?>" /></a>
+                         if($sl['cs_type'] == 2) {
+                              ?>
+                              <div class="carousel-fixed-item center">
+                              <!-- future enhancement-->
+                              </div>
+                              <?php
+                         } else {
+                              if($sl['cs_link'] > '') {
+                                   ?>
+                                   <a class="carousel-item" href="<?php echo $sl['cs_link'] ?>" target="<?php echo $sl['cs_target'] ?>">
+                                   <?php
+                              } else {
+                                   ?>
+                                   <a class="carousel-item" href="#<?php echo $num ?>!">
+                                   <?php
+                              }
+                              ?>
+                              <img src="<?php echo $g['site_url'] ?>/content/assets/carousel/<?php echo $sl['cs_image'] ?>" /></a>
                                              
-                         <?php
+                              <?php
+                         }
                          $num++;
                     }
                     echo '</div>';

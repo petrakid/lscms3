@@ -1,10 +1,18 @@
-
+<style>
+.menu_ul { list-style-type: none; margin: 0; padding: 0; }
+.menu_li { text-align: left; min-height: 70px; width: 90%; z-index: 1000; border: 1px solid black; margin-bottom: 5px; padding: 8px; border-radius: 8px; }
+.cmenu_ul { list-style-type: none; margin-bottom: 8px; padding: 0; }
+.cmenu_li { text-align: left; height: 70px; width: 80%; z-index: 1000; border: 1px solid black; margin-bottom: 5px; padding: 8px; border-radius: 8px; }
+.new_menu_li { text-align: center; height: 70px; width: 100%; z-index: 1000; }
+</style>
 <div class="row">
 <div class="col s12 m4 l4">
 <div class="card">
 <div class="card-content">
 <span class="card-title">Add Menu</span>
-<div class="new_menu_dragger z-depth-3" style="cursor: move;" draggable="true" id="new_drag"><i class="medium material-icons">add</i></div>
+<ul class="menu_ul">
+<li id="menu_drag" class="new_menu_li ui-state-highlight"><i class="material-icons" style="font-size: 50px;">add</i></li>
+</ul>
 </div>
 <div class="card-action">
 Drag the bar into the Site Menu Structure and drop it where you'd like it
@@ -14,7 +22,9 @@ Drag the bar into the Site Menu Structure and drop it where you'd like it
 <div class="card">
 <div class="card-content">
 <span class="card-title">Available Content</span>
-
+<ul class="menu_ul">
+<li id="menu_drag2" class="new_menu_li ui-state-highlight"><i class="material-icons" style="font-size: 50px;">link</i> External Link</li>
+</ul>
 </div>
 <div class="card-action">
 
@@ -25,7 +35,23 @@ Drag the bar into the Site Menu Structure and drop it where you'd like it
 <div class="card">
 <div class="card-content">
 <span class="card-title">Site Menu Structure</span>
-
+<ul class="menu_ul menu_sortable" id="pmenu_sort">
+<?php
+$parent = $a->getParentMenu();
+while($par = $parent->fetch(PDO::FETCH_ASSOC)) {
+     echo '<li class="menu_li ui-state-default" id="list-p'. $par['m_id'] .'">'. $par['menu_name'];
+     $child = $a->getChildMenu($par['m_id']);
+     if($child->rowCount() > 0) {
+          echo '<ul class="cmenu_ul menu_sortable" id="cmenu_sort">';
+          while($chi = $child->fetch(PDO::FETCH_ASSOC)) {
+               echo '<li class="cmenu_li ui-state-default" id="list-c'. $chi['m_id'] .'">'. $chi['menu_name'] .'</li>';
+          }
+          echo '</ul>';
+     }
+     echo '</li>';
+}
+?>
+</ul>
 </div>
 <div class="card-action"></div>
 </div>
@@ -33,25 +59,23 @@ Drag the bar into the Site Menu Structure and drop it where you'd like it
 </div>
 
 <script>
-function drag_start(event) {
-    var style = window.getComputedStyle(event.target, null);
-    event.dataTransfer.setData("text/plain",
-    (parseInt(style.getPropertyValue("left"),10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"),10) - event.clientY));
-} 
-function drag_over(event) { 
-    event.preventDefault(); 
-    return false; 
-} 
-function drop(event) { 
-    var offset = event.dataTransfer.getData("text/plain").split(',');
-    var dm = document.getElementById('new_drag');
-    dm.style.left = (event.clientX + parseInt(offset[0],10)) + 'px';
-    dm.style.top = (event.clientY + parseInt(offset[1],10)) + 'px';
-    event.preventDefault();
-    return false;
-} 
-var dm = document.getElementById('new_drag'); 
-dm.addEventListener('dragstart',drag_start,false); 
-document.body.addEventListener('dragover',drag_over,false); 
-document.body.addEventListener('drop',drop,false); 
+$(function() {
+     $("#pmenu_sort").sortable({
+          revert: true
+     });
+     $('#cmenu_sort').sortable({
+          revert: true
+     });
+     $("#menu_drag").draggable({
+          connectToSortable: ".menu_sortable",
+          helper: "clone",
+          revert: "invalid"
+    });
+     $("#menu_drag2").draggable({
+          connectToSortable: ".menu_sortable",
+          helper: "clone",
+          revert: "invalid"
+    });    
+    $("#menu_drag").disableSelection();
+});
 </script>

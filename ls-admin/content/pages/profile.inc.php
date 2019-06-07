@@ -60,23 +60,23 @@ $u = $a->getProfile($_SESSION['user']['user_id'])->fetch(PDO::FETCH_ASSOC) ?>
 <div class="card-content">
 <span class="card-title">Account Options</span>
 <div class="section">
-<a href="#usermodal" class="btn-large btn-large-min waves-effect waves-light yellow darken-1 modal-trigger" onclick="changemyPass()"><i class="material-icons left">vpn_key</i> Change Password</a>
+<a href="#profileModal" class="btn-large btn-large-min waves-effect waves-light yellow darken-1 modal-trigger" onclick="changeMyPass()"><i class="material-icons left">vpn_key</i> Change Password</a>
 </div>
 <div class="divider"></div>
 <div class="section">
-<a href="#usermodal" class="btn-large btn-large-min waves-effect waves-light blue darken-1 modal-trigger" onclick="viewmyMessages()"><i class="material-icons left">message</i> View Messages</a>
+<a href="#profileModal" class="btn-large btn-large-min waves-effect waves-light blue darken-1 modal-trigger" onclick="viewMyMessages()"><i class="material-icons left">message</i> View Messages</a>
 </div>
 <div class="divider"></div>
 <div class="section">
-<a href="#usermodal" class="btn-large btn-large-min waves-effect waves-light teal darken-1 modal-trigger" onclick="sendMessage()"><i class="material-icons left">email</i> Send Message</a>
+<a href="#profileModal" class="btn-large btn-large-min waves-effect waves-light teal darken-1 modal-trigger" onclick="sendMessage()"><i class="material-icons left">email</i> Send Message</a>
 </div>
 <div class="divider"></div>
 <div class="section">
-<a href="#usermodal" class="btn-large btn-large-min waves-effect waves-light cyan darken-1 modal-trigger" onclick="changemyAvatar()"><i class="material-icons left">camera</i> Change Profile Avatar</a>
+<a href="#profileModal" class="btn-large btn-large-min waves-effect waves-light cyan darken-1 modal-trigger" onclick="changeMyAvatar()"><i class="material-icons left">camera</i> Change Profile Avatar</a>
 </div>
 <div class="divider"></div>
 <div class="section">
-<a href="#usermodal" class="btn-large btn-large-min waves-effect waves-light red darken-1 modal-trigger" onclick="closemyAccount()"><i class="material-icons left">time_to_leave</i> Close Account</a>
+<a href="#!" class="btn-large btn-large-min waves-effect waves-light red darken-1" onclick="closeMyAccount()"><i class="material-icons left">time_to_leave</i> Close Account</a>
 </div>
 </div>
 </div>
@@ -84,3 +84,12 @@ $u = $a->getProfile($_SESSION['user']['user_id'])->fetch(PDO::FETCH_ASSOC) ?>
 </div>
 
 </section>
+
+<div class="modal" id="profileModal">
+<div class="modal-content" id="profileRes">
+
+</div>
+<div class="modal-footer">
+<a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+</div>
+</div>

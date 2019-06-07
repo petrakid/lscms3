@@ -86,4 +86,9 @@ footer.page-footer {
 .fixed-action-btn {
      left: 10px !important;
      bottom: 10px !important;
+}
+
+.mailing_lists {
+     list-style-type: none;
+     
 }

@@ -137,7 +137,7 @@ class Admin
                     echo '<li><a class="waves-effect waves-light tooltipped" data-position="top" data-tooltip="Exit Quick Edit" onclick="exitQuickEdit(\''. $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] .'\')"><i class="material-icons">exit_to_app</i></a></li>';
                  }
                  echo '<li><a class="waves-effect waves-light tooltipped" data-position="top" data-tooltip="Administration" href="https://'. $_SERVER["HTTP_HOST"] .'/admin/dashboard/"><i class="material-icons">settings_applications</i></a></li>
-                   <li><a class="waves-effect waves-light tooltipped" data-position="top" data-tooltip="Account Management" href="https://'. $_SERVER["HTTP_HOST"] .'/admin/accountman/"><i class="material-icons">person</i></a></li>
+                   <li><a class="waves-effect waves-light tooltipped" data-position="top" data-tooltip="Account Management" href="https://'. $_SERVER["HTTP_HOST"] .'/admin/profile/"><i class="material-icons">person</i></a></li>
                    <li><a class="waves-effect waves-light tooltipped" data-position="top" data-tooltip="Help & Support" href="https://'. $_SERVER["HTTP_HOST"] .'/admin/help/"><i class="material-icons">help</i></a></li>
                  </ul>
                </div>
@@ -156,6 +156,16 @@ class Admin
      public function getPageListC($pid) {
           $list = $this->db->query("SELECT * FROM tbl_menu WHERE menu_parent_id = $pid AND menu_status != 9 ORDER BY menu_order");
           return $list;
+     }
+     
+     public function getParentMenu() {
+          $menu = $this->db->query("SELECT m_id, menu_name FROM tbl_menu WHERE menu_status != 9 AND menu_parent_id = 0 ORDER BY menu_order");
+          return $menu;
+     }
+     
+     public function getChildMenu($c) {
+          $menu = $this->db->query("SELECT m_id, menu_name FROM tbl_menu WHERE menu_status != 9 AND menu_parent_id = $c ORDER BY menu_order");
+          return $menu;
      }
      
      public function getParent($mid) {
@@ -298,6 +308,66 @@ class Admin
           $headers .= 'To: '. $to .' '. "\r\n";
           $headers .= 'From: '. $from .' '. "\r\n";
           mail($to, $subject, $message, $headers);
+     }
+}
+
+class MailingLists
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getMailingLists() {
+          $list = $this->db->query("SELECT * FROM tbl_mailings_lists WHERE list_status != 9 ORDER BY list_order");
+          return $list;
+     }
+     
+     public function getSubscribers($list) {
+          if($list == 0) {
+               $lists = "";
+          } else {
+               $lists = "WHERE `list_id` = $list";
+          }
+          $subs = $this->db->query("SELECT * FROM tbl_mailings_subscribers $lists ORDER BY last_name");
+          return $subs;
+     }
+     
+     public function getScheduledMailings() {
+          $mailing = $this->db->query("SELECT m_id, mailing_subject, mailing_date FROM tbl_mailings WHERE mailing_status = 1 AND DATE(mailing_date) > DATE(now())");
+          return $mailing;
+     }
+     
+     public function getArchivedMailings() {
+          $mailing = $this->db->query("SELECT m_id, mailing_subject, mailing_date FROM tbl_mailings WHERE mailing_status = 1 AND DATE(mailing_date) <= DATE(now())");
+          return $mailing;          
+     }
+     
+}
+
+class SermonManager
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getSermonSettings() {
+          $settings = $this->db->query("SELECT * FROM tbl_sermons_settings WHERE s_id = 1");
+          return $settings;
+     }
+     
+     public function getScriptureVersions($version) {
+          $versions = $this->db->query("SELECT * FROM tbl_sermons_scripture_versions ORDER BY version_order");
+          while($v = $versions->fetch(PDO::FETCH_ASSOC)) {
+               echo '<option value="'. $v['version_code'] .'" ';
+               if($v['version_code'] == $version) {
+                    echo 'selected="selected"';
+               }
+               echo '>'. $v['version_name'] .'</option>'."\n";
+          }
      }
 }
 
