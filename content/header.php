@@ -17,6 +17,12 @@ if(isset($_SESSION['isLoggedIn'])) {
      ?>
      <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
      <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-ext-addclass.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-attributes.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-shapes.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-depths.js"></script>                
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-list-styles.js"></script>
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-add-text-tags.js"></script>      
 	<script>
      UPLOADCARE_PUBLIC_KEY = '<?php echo $g['uploadcare_api'] ?>';
 	var uckey = '<?php echo $g['uploadcare_api'] ?>';		

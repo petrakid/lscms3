@@ -2,6 +2,7 @@
      <main>
      
      <?php
+     $fullwidth = 0;
      $page = $p->getContent($_GET['p'], 1);
      if(isset($_GET['quickedit']) && isset($_SESSION['isLoggedIn'])) {
           if($page->rowCount() == 0) {
@@ -16,22 +17,23 @@
           $pg = $page->fetch(PDO::FETCH_ASSOC);
           if(isset($_GET['quickedit']) && isset($_SESSION['isLoggedIn'])) {
                echo '<div class="section"><div class="row"><div class="col s12 m12 l12"><div id="summernote">'. $pg['section_content'] .'</div></div></div></div>';
-          } else {
+          } else {               
                if($pg['show_carousel'] == 1) {
                     $car = new Carousel($db);
                     $car_settings = $car->carouselSettings();
                     $cs = $car_settings->fetch(PDO::FETCH_ASSOC);
+                    $fullwidth = $cs['c_fullWidth'];
                     if($cs['c_fullWidth'] == 1) {
-                         $full = 'carousel-slider';
-                         $fullj = '.carousel-slider';
+                         $full = 'fullscreen';
                     } else {
                          $full = '';
-                         $fullj = '';
-                    }               
-                    echo '<div class="carousel '. $full .'">';;
+                    }
+                    echo '<div class="section"><div class="row"><div class="col m12 l12">';
+                    echo '<div class="slider '. $full .'"><ul class="slides">';
                     $slides = $car->carouselSlides(0);
                     $num = 1;
                     while($sl = $slides->fetch(PDO::FETCH_ASSOC)) {
+                         echo '<li class="slide">';
                          if($sl['cs_type'] == 2) {
                               ?>
                               <div class="carousel-fixed-item center">
@@ -41,41 +43,42 @@
                          } else {
                               if($sl['cs_link'] > '') {
                                    ?>
-                                   <a class="carousel-item" href="<?php echo $sl['cs_link'] ?>" target="<?php echo $sl['cs_target'] ?>">
+                                   <a class="" href="<?php echo $sl['cs_link'] ?>" target="<?php echo $sl['cs_target'] ?>">
+                                   <img src="<?php echo $g['site_url'] ?>/content/assets/carousel/<?php echo $sl['cs_image'] ?>" style="width: 100%;" />
+                                   </a>
+                                   
                                    <?php
                               } else {
                                    ?>
-                                   <a class="carousel-item" href="#<?php echo $num ?>!">
+                                   <img src="<?php echo $g['site_url'] ?>/content/assets/carousel/<?php echo $sl['cs_image'] ?>" style="width: 100%;" />
+                                   
                                    <?php
                               }
-                              ?>
-                              <img src="<?php echo $g['site_url'] ?>/content/assets/carousel/<?php echo $sl['cs_image'] ?>" /></a>
-                                             
-                              <?php
                          }
+                         echo '</li>';
                          $num++;
                     }
-                    echo '</div>';
+                    echo '</ul></div></div></div></div>';
                     ?>
                     
                     <script>
                     $(function() {
-                         $('.carousel<?php echo $fullj ?>').carousel({
+                         $('.slider').slider({
                               duration: <?php echo $cs['c_duration'] ?>,
-                              dist: <?php echo $cs['c_dist'] ?>,
-                              shift: <?php echo $cs['c_shift'] ?>,
-                              padding: <?php echo $cs['c_padding'] ?>,
-                              numVisible: <?php echo $cs['c_numVisible'] ?>,
-                              fullWidth: <?php echo $cs['c_fullWidth'] ?>,
-                              indicators: <?php echo $cs['c_indicators'] ?>,
-                              noWrap: <?php echo $cs['c_noWrap'] ?>,
+                              interval: <?php echo $cs['c_interval'] ?>,
+                              height: <?php echo $cs['c_height'] ?>,
+                              indicators: <?php echo $cs['c_indicators'] ?>
                          })
                     });
                     </script>
                     
                     <?php
                }
-               echo '<div class="section"><div class="row"><div class="col s12 m12 l12">'. $pg['section_content'] .'</div></div></div>';
+               echo '<div ';
+               if($fullwidth == 1) {
+                    echo 'id="content"';
+               }
+               echo '><div class="section"><div class="row"><div class="col s12 m12 l12">'. $pg['section_content'] .'</div></div></div></div>';
           }
      }
      ?>

@@ -1,4 +1,4 @@
-  <footer class="page-footer <?php echo $b->getBlockValue('navc') ?> <?php echo $b->getBlockValue('navcc') ?>">
+  <footer class="page-footer <?php echo $b->getBlockValue('navc') ?> <?php echo $b->getBlockValue('navcc') ?>" <?php if($fullwidth == 1) { echo 'style="position: relative; top: 100vh;"';} ?>>
     <div class="container">
       <div class="row">
       <div class="col s12 m4 l4">

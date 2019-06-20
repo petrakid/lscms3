@@ -1,94 +1,146 @@
-/* Custom Stylesheet */
-/**
- * Use this file to override Materialize files so you can update
- * the core Materialize files in the future
- *
- * Made By MaterializeCSS.com
- */
-body {
-     display: flex;
-     min-height: 100vh;
-     flex-direction: column;
-}
-
-main {
-     flex: 1 0 auto;
-}
-  
-nav ul a,
-nav .brand-logo {
-  color: #444;
-}
-
-p {
-  line-height: 2rem;
-}
-
-.button-collapse {
-  color: #26a69a;
-}
-
-.parallax-container {
-  min-height: 380px;
-  line-height: 0;
-  height: auto;
-  color: rgba(255,255,255,.9);
-}
-  .parallax-container .section {
-    width: 100%;
-  }
-
-@media only screen and (max-width : 992px) {
-  .parallax-container .section {
-    position: absolute;
-    top: 40%;
-  }
-  #index-banner .section {
-    top: 10%;
-  }
-}
-
-@media only screen and (max-width : 600px) {
-  #index-banner .section {
-    top: 0;
-  }
-}
-
-.icon-block {
-  padding: 0 15px;
-}
-.icon-block .material-icons {
-  font-size: inherit;
-}
-
-footer.page-footer {
-  margin: 0;
-}
-
-.logo {
-     height: inherit !important;
-}
-
-.carousel {
-     margin: 5px auto !important;
-     max-height: 600px !important;
-     max-width: 1200px !important;
-}
-
-.pl-0 {
-     padding-left: 3px;
-}
-
-.pr-0 {
-     padding-right: 3px;
-}
-
-.fixed-action-btn {
-     left: 10px !important;
-     bottom: 10px !important;
-}
-
-.mailing_lists {
-     list-style-type: none;
-     
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+body {
+     display: flex;
+     min-height: 100vh;
+     flex-direction: column;
 }
+
+main {
+     flex: 1 0 auto;
+}
+
+#content {
+     position: relative !important;
+     top: 100vh !important;
+}
+  
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+.logo {
+     height: inherit !important;
+}
+
+.carousel {
+     margin: 5px auto !important;
+     max-height: 600px !important;
+     max-width: 1200px !important;
+}
+
+.pl-0 {
+     padding-left: 3px;
+}
+
+.pr-0 {
+     padding-right: 3px;
+}
+
+.fixed-action-btn {
+     left: 10px !important;
+     bottom: 10px !important;
+}
+
+.mailing_lists {
+     list-style-type: none;
+     
+}
+
+.rounded {
+     border-radius: 15% !important;
+}
+
+.thumbnail-img {
+     padding: 4px;
+     line-height: 1.42857143;
+     background-color: white;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     transition: all .2s ease-in-out;
+     max-width: 100%;
+}
+
+.panel-heading.note-toolbar .note-para .dropdown-toggle.list-styles {
+    width: 20px;
+    padding-left: 5px;
+}
+
+.panel-heading.note-toolbar .dropdown-list-styles {
+  padding: 5px 0 !important;
+  min-width: 120px !important;
+}
+
+.dropdown-list-styles > li > a> ol {
+  margin-bottom: 0px;
+}
+
+.panel-heading.note-toolbar .note-style .dropdown-menu,
+.panel-heading.note-toolbar .note-font .dropdown-menu {
+    min-width: 245px;
+    padding: 5px;
+}
+
+.panel-heading.note-toolbar .note-style .dropdown-menu > div:first-child,
+.panel-heading.note-toolbar .note-font .dropdown-menu > div:first-child {
+
+    margin-right: 5px;
+
+}
+
+.note-add-text-tags-btn {
+    font-family: "Times New Roman", serif;
+    min-width: 30px;
+}
+

@@ -7,10 +7,12 @@
 <file name="edit-page.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412482775818" remote="132032700000000000" Dst="2" />
 <file name="help.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412171073853" remote="132032688600000000" Dst="2" />
 <file name="logout.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412174237359" remote="132032688600000000" Dst="2" />
-<file name="menus.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412177845944" remote="132032688600000000" Dst="2" />
+<file name="menus.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042933600000000" remote="132042933600000000" Dst="2" />
 <file name="pages.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412181585977" remote="132032688600000000" Dst="2" />
-<file name="profile.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412186267936" remote="132032688600000000" Dst="2" />
+<file name="profile.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132043045800000000" remote="132043045800000000" Dst="2" />
 <file name="settings.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412189419559" remote="132032704800000000" Dst="2" />
 <file name="style.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412190003626" remote="132008740200000000" Dst="2" />
 <file name="users.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132042412195297930" remote="132032688600000000" Dst="2" />
+<file name="list-manager.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132043203000000000" remote="132043203000000000" Dst="2" />
+<file name="sermon-manager.inc.php" server="ftp.dinubalutheran.org/public_html/" local="132043360200000000" remote="132043360200000000" Dst="2" />
 </dwsync>

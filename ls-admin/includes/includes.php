@@ -349,7 +349,6 @@ if(isset($_POST['get_children'])) {
 
 if(isset($_POST['save_new_page'])) {
      $_POST['menu_order'] = $_POST['menu_order'] + 1;
-     $_POST['menu_name'] = addslashes($_POST['menu_name']);
      $last = $db->prepare("INSERT INTO tbl_menu (menu_name, menu_link, menu_status, menu_order, menu_parent_id) VALUES ('$_POST[menu_name]', '$_POST[menu_link]', $_POST[menu_status], $_POST[menu_order], $_POST[menu_parent_id])");
      $last->execute();
      $lastid = $db->lastInsertId();

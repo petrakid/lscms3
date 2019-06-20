@@ -1197,15 +1197,59 @@ $.extend($.summernote.plugins, {uploadcare: init});
 
 $(function() {
      $('#summernote').summernote({
+          addclass: {
+               debug: false,
+               classTags: [
+                    {title: "Button",          value: "waves-effect waves-light btn"},
+                    {title: "Row",             value: "row"},
+                    {title: "Width 1",         value: "col s1"},
+                    {title: "Width 2",         value: "col s2"},
+                    {title: "Width 3",         value: "col s3"},
+                    {title: "Width 4",         value: "col s4"},
+                    {title: "Width 5",         value: "col s5"},
+                    {title: "Width 6",         value: "col s6"},
+                    {title: "Width 7",         value: "col s7"},
+                    {title: "Width 8",         value: "col s8"},
+                    {title: "Width 9",         value: "col s1"},
+                    {title: "Width 10",        value: "col s10"},
+                    {title: "Width 11",        value: "col s11"},
+                    {title: "Width 12",        value: "col s12"},
+                    {title: "Flow Text",       value: "flo-text"},
+                    {title: "Collection",      value: "collection"},
+                    {title: "Collection Item", value: "collection-item"},
+                    {title: "Card",            value: "card"},
+                    {title: "Card Title",      value: "card-title"},
+                    {title: "Card Content",    value: "card-content"},
+                    {title: "Card Action",     value: "card-action"},
+                    {title: "Material Icon",   value: "material-icons"},
+                    {title: "Left",            value: "left"},
+                    {title: "Right",           value: "right"},
+                    {title: "Pagination",      value: "pagination"}             
+               ]
+          },
+          popover: {
+               image: [
+                    ['custom', ['imageAttributes', 'imageShapes', 'imageDepths']],
+                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+               ],
+          },
+          lang: 'en-US',
+          imageAttributes: {
+               icon: '<i class="note-icon-pencil"/>',
+               removeEmpty: false,
+               disableUpload: true
+          },
           minHeight: 500,
           focus: true,
           toolbar: [
                ['savebutton', ['save']],
-               ['style', ['style']],
-               ['font', ['bold', 'italic', 'underline', 'clear']],
+               ['style', ['style', 'addclass', 'clear']],
+               ['font', ['bold', 'italic', 'underline', 'add-text-tags']],
                ['fontname', ['fontname']],
                ['color', ['color']],
-               ['para', ['ul', 'ol', 'paragraph']],
+               ['para', ['ul', 'ol', 'listStyles', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
                ['insert', ['media', 'link', 'hr', 'video']],
@@ -1227,6 +1271,9 @@ $(function() {
                multiple: true
           }
      });
+     $(function() {
+          $('.tabs').tabs();
+     })
 });
 
 $(function() {
@@ -1236,7 +1283,7 @@ $(function() {
           toolbar: [
                ['savebutton', ['save']],
                ['style', ['style']],
-               ['font', ['bold', 'italic', 'underline', 'clear']],
+               ['font', ['bold', 'italic', 'underline', 'add-text-tags', 'clear']],
                ['fontname', ['fontname']],
                ['color', ['color']],
                ['para', ['ul', 'ol', 'paragraph']],
@@ -1265,14 +1312,58 @@ $(function() {
 
 $(function() {
      $('#summernotea').summernote({
+addclass: {
+               debug: false,
+               classTags: [
+                    {title: "Button",          value: "waves-effect waves-light btn"},
+                    {title: "Row",             value: "row"},
+                    {title: "Width 1",         value: "col s1"},
+                    {title: "Width 2",         value: "col s2"},
+                    {title: "Width 3",         value: "col s3"},
+                    {title: "Width 4",         value: "col s4"},
+                    {title: "Width 5",         value: "col s5"},
+                    {title: "Width 6",         value: "col s6"},
+                    {title: "Width 7",         value: "col s7"},
+                    {title: "Width 8",         value: "col s8"},
+                    {title: "Width 9",         value: "col s1"},
+                    {title: "Width 10",        value: "col s10"},
+                    {title: "Width 11",        value: "col s11"},
+                    {title: "Width 12",        value: "col s12"},
+                    {title: "Flow Text",       value: "flo-text"},
+                    {title: "Collection",      value: "collection"},
+                    {title: "Collection Item", value: "collection-item"},
+                    {title: "Card",            value: "card"},
+                    {title: "Card Title",      value: "card-title"},
+                    {title: "Card Content",    value: "card-content"},
+                    {title: "Card Action",     value: "card-action"},
+                    {title: "Material Icon",   value: "material-icons"},
+                    {title: "Left",            value: "left"},
+                    {title: "Right",           value: "right"},
+                    {title: "Pagination",      value: "pagination"} 
+               ]
+          },
+          popover: {
+               image: [
+                    ['custom', ['imageAttributes', 'imageShapes', 'imageDepths']],
+                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+               ],
+          },
+          lang: 'en-US',
+          imageAttributes: {
+               icon: '<i class="note-icon-pencil"/>',
+               removeEmpty: false,
+               disableUpload: true
+          },
           minHeight: 500,
           focus: true,
           toolbar: [
-               ['style', ['style']],
-               ['font', ['bold', 'italic', 'underline', 'clear']],
+               ['style', ['style', 'addclass', 'clear']],
+               ['font', ['bold', 'italic', 'underline', 'add-text-tags']],
                ['fontname', ['fontname']],
                ['color', ['color']],
-               ['para', ['ul', 'ol', 'paragraph']],
+               ['para', ['ul', 'ol', 'listStyles', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
                ['insert', ['media', 'link', 'hr', 'video']],
