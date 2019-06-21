@@ -144,3 +144,8 @@ footer.page-footer {
     min-width: 30px;
 }
 
+.checkbox .sn-checkbox-open-in-new-window input {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;
+}
