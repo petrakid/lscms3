@@ -516,7 +516,7 @@ if(isset($_POST['update_page'])) {
      }
      $sql = rtrim($sql, ", ");
      $sql .= " WHERE `p_id` = $p_id";
-     echo $sql;
+     //echo $sql;
      $db->exec($sql);
      $db->exec("UPDATE tbl_menu SET menu_status = $menu_status, menu_link = '$menu_link' WHERE m_id = $m_id");    
 }
