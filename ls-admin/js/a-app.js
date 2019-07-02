@@ -38,12 +38,84 @@ $(function() {
                $.ajax({
                     url: href + '/ls-admin/includes/includes.php',
                     type: 'POST',
-                    data: data
+                    data: data,
+                    success: function(data) {
+                         Materialize.toast(data, 1800, 'rounded');
+                    },
+                    error: function(jqXHR, exception) {
+                         console.log(jqXHR.status);
+                    }                     
                })
           }
-     });
-     $('#sort_area').disableSelection();
+     }).disableSelection();
 })
+
+$(function() {
+     $("#pmenu_sort").sortable({
+          update: function(event, ui) {
+               var data = $(this).sortable('serialize');
+               $.ajax({
+                    url: href + '/ls-admin/includes/includes.php',
+                    type: 'POST',
+                    data: data,
+                    success: function(data) {
+                         Materialize.toast(data, 1800, 'rounded');
+                    },
+                    error: function(jqXHR, exception) {
+                         console.log(jqXHR.status);
+                    }                     
+               })
+          }          
+     });
+     var receiveTrue = false;
+     $('.menu_sortablec').sortable({
+          connectWith: '.menu_sortablec',
+          update: function(event, ui) {
+               receiveTrue = !ui.sender;
+          },
+          stop: function(event, ui) {
+               if(receiveTrue) {
+                    var data = $(this).sortable('serialize');
+                    $.ajax({
+                         url: href + '/ls-admin/includes/includes.php',
+                         type: 'POST',
+                         data: data,
+                         success: function(data) {
+                              Materialize.toast(data, 1800, 'rounded');
+                         },
+                         error: function(jqXHR, exception) {
+                              console.log(jqXHR.status);
+                         }                     
+                    })                    
+                    receiveTrue = false;
+               }
+          },
+          receive: function(event, ui) {
+               var targetList = $(this);               
+               processSortBetween(ui.item.attr('id'), ui.item.index(), ui.sender.attr('id'), targetList.attr('id'));
+          }
+     }).disableSelection();
+})
+
+function processSortBetween(id, position, sender_id, receiver_id)
+{
+     $.ajax({
+          url: href + '/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'move_child': 1,
+               'm_id': id,
+               'position': position,
+               'receiver_id': receiver_id
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }                     
+     })       
+}
 
 $(function() {
 	$(".phone_number").mask("(999)999-9999");
@@ -312,6 +384,30 @@ function saveChanges(mid, pid)
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
           }
+     })
+}
+
+function addnMenu()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'add_new_menu': 1,
+               'menu_name': $('#n_menu_name').val(),
+               'menu_link': $('#nmenu_link').val(),
+               'menu_status': $('input[name=n_menu_status]:checked').val(),
+               'menu_parent_id': $('#n_menu_parent_id').val()
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');
+               setTimeout(function() {
+                    window.location.reload()
+               }, 2000)
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }          
      })
 }
 

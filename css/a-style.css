@@ -7567,3 +7567,19 @@ header .brand-logo img {
 .space {
      margin-bottom: 20px !important;
 }
+
+ul.sort-main li {
+     background-color: oldlace !important;
+}
+
+ul.sort-main :hover {
+     background-color: rosybrown !important;
+}
+
+ul.sort-child li {
+     background-color: blanchedalmond !important;
+}
+
+ul.sort-child :hover {
+     background-color: gainsboro !important
+}

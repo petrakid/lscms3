@@ -167,6 +167,38 @@ if(isset($_POST['item'])) {
      }
 }
 
+if(isset($_POST['mlist'])) {
+     $i = 0;
+     foreach($_POST['mlist'] AS $value) {
+          $db->exec("UPDATE tbl_menu SET menu_order = $i WHERE m_id = $value");
+          $i++;
+     }
+     echo 'Menu order updated successfully!';
+}
+
+if(isset($_POST['move_child'])) {
+     $receiver = explode("-", $_POST['receiver_id']);
+     $r = $receiver[1];
+     $mid = explode("-", $_POST['m_id']);
+     $m = $mid[1];
+     
+     $db->exec("UPDATE tbl_menu SET menu_parent_id = $r WHERE m_id = $m");
+     echo 'Child menu moved to new location successfully. Drag it to its new order to finish.';
+}
+
+if(isset($_POST['clist'])) {
+     if(!isset($_POST['move_child'])) {
+          $i = 0;
+          foreach($_POST['clist'] AS $value) {
+               $db->exec("UPDATE tbl_menu SET menu_order = $i WHERE m_id = $value");
+               $i++;
+          }
+          echo 'Child menu order updated successfully';
+     } else {
+          echo 'could work';
+     } 
+}
+
 if(isset($_POST['update_carousel'])) {
      echo $_POST['value'];
      if($_POST['field'] == 'c_fullWidth') {
@@ -407,6 +439,17 @@ if(isset($_POST['save_new_page'])) {
      <?php
 }
 
+if(isset($_POST['add_new_menu'])) {
+     $_POST['menu_name'] = addslashes($_POST['menu_name']);
+     $chk = $db->query("SELECT m_id FROM tbl_menu WHERE (menu_name = '$_POST[menu_name]' OR menu_link = '$_POST[menu_link]') AND menu_status != 9");
+     if($chk->rowCount() > 0) {
+          echo 'There is already a menu on your site with this Name or Link. Please change and try again.';
+          die;
+     }
+     $db->exec("INSERT INTO tbl_menu (menu_name, menu_link, menu_status, menu_order, menu_parent_id) VALUES ('$_POST[menu_name]', '$_POST[menu_link]', '$_POST[menu_status]', 0, '$_POST[menu_parent_id]')");
+     echo 'Menu Added Successfully.';
+}
+
 if(isset($_POST['delete_image'])) {
      if($_POST['image_type'] == 'li') {
           $type = 'landing_image';
@@ -516,7 +559,6 @@ if(isset($_POST['update_page'])) {
      }
      $sql = rtrim($sql, ", ");
      $sql .= " WHERE `p_id` = $p_id";
-     //echo $sql;
      $db->exec($sql);
      $db->exec("UPDATE tbl_menu SET menu_status = $menu_status, menu_link = '$menu_link' WHERE m_id = $m_id");    
 }

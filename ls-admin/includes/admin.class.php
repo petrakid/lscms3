@@ -158,8 +158,13 @@ class Admin
           return $list;
      }
      
-     public function getParentMenu() {
-          $menu = $this->db->query("SELECT m_id, menu_name FROM tbl_menu WHERE menu_status != 9 AND menu_parent_id = 0 ORDER BY menu_order");
+     public function getParentMenu($nothome) {
+          if($nothome == 1) {
+               $filter = " AND menu_link != 'home'";
+          } else {
+               $filter = '';
+          }
+          $menu = $this->db->query("SELECT m_id, menu_name FROM tbl_menu WHERE menu_status != 9 AND menu_parent_id = 0 $filter ORDER BY menu_order");
           return $menu;
      }
      
@@ -281,8 +286,12 @@ class Admin
           return $usr;
      }     
      
-     public function editContent($pid) {
-          $content = $this->db->query("SELECT tbl_menu.*, tbl_content.* FROM tbl_menu LEFT JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_menu.m_id = $pid");
+     public function editContent($mid) {
+          $content = $this->db->query("SELECT tbl_menu.*, tbl_content.* FROM tbl_menu LEFT JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_content.menu_id = $mid");
+          if($content->rowCount() == 0) {
+               $this->db->exec("INSERT INTO tbl_content (menu_id) VALUES ($mid)");
+               $content = $this->db->query("SELECT tbl_menu.*, tbl_content.* FROM tbl_menu LEFT JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_content.menu_id = $mid");
+          }
           return $content;
      }
      
