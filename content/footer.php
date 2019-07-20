@@ -86,12 +86,7 @@ if($_GET['p'] != 'admin') {
      if($soc->isEnabled() === true) {
           ?>
           <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=<?php echo $soc->getID() ?>"></script> 
-          <script>
-          addthis.share({
-               'container_selector': '.addthis_share',
-               'button_selector': '.addthis_share_button'
-          })
-          </script>
+
           <?php
      }
 }

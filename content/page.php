@@ -73,6 +73,15 @@
                     </script>
                     
                     <?php
+               } else {
+                    ?>
+                    <div class="row">
+                    <div class="col s12 m12 l12">
+                    <img class="responsive-img waves-effect waves-light" style="width: 100%;" src="<?php echo $g['site_url'] ?>/content/assets/landing_images/<?php echo $pg['landing_image'] ?>" />
+                    </div>
+                    </div>
+                    
+                    <?php
                }
                echo '<div ';
                if($fullwidth == 1) {
