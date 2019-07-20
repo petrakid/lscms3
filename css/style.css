@@ -6,13 +6,13 @@
  * Made By MaterializeCSS.com
  */
 body {
-     display: flex;
-     min-height: 100vh;
-     flex-direction: column;
+     display: flex !important;
+     min-height: 100vh !important;
+     flex-direction: column !important;
 }
 
 main {
-     flex: 1 0 auto;
+     flex: 1 0 auto !important;
 }
 
 #content {
