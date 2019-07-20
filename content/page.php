@@ -78,7 +78,19 @@
                if($fullwidth == 1) {
                     echo 'id="content"';
                }
-               echo '><div class="section"><div class="row"><div class="col s12 m12 l12">'. $pg['section_content'] .'</div></div></div></div>';
+               echo '><div class="section"><div class="row"><div class="col s12 m12 l12">';
+               if($pg['plugin_id'] > 0) {
+                    $plugin = $plug->getPluginFile($pg['plugin_id']);
+                    $plugin = $plugin .'_plugin.php';
+                    include 'content/plugins/'. $plugin;
+               } else {
+                    if($plug->findInlinePlugin($pg['section_content']) === true) {
+                         echo $plug->pluginAndContent($pg['section_content']);
+                    } else {
+                         echo $pg['section_content'];
+                    }
+               }
+               echo '</div></div></div></div>';
           }
      }
      ?>

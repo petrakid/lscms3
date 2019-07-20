@@ -199,7 +199,7 @@
                    '     <span class="form-text form-text-custom">Width</span>' +
                    '     </div>' +
                    '     <div class="input-field note-input-group col s6">' +
-                   '     <i class="material-icons prefix">clear</i>' +
+                   '     <i class="summer-icons prefix">clear</i>' +
                    '        <input class="note-imageAttributes-height form-control note-form-control note-input" type="text" />' +
                    '     <span class="form-text form-text-custom">Height</span>' +
                    '      </div>' +

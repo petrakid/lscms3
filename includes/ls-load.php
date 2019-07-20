@@ -33,6 +33,7 @@ require_once('includes/ls-cron.php');
 // get global configuration
 $glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
 $g = $glb->fetch(PDO::FETCH_ASSOC);
+$_SESSION['site_url'] = $g['site_url'];
 
 // initiate functions
 include 'includes/ls-functions.php';
@@ -42,6 +43,7 @@ include 'ls-admin/includes/admin.class.php';
 $b = new Blocks($db);
 $m = new Menu($db);     
 $p = new Page($db); 
+$sm = new SocialMedia($db);
 
 // initialize security
 $sec = new Security($db);
@@ -75,6 +77,8 @@ if(isset($_SESSION['isLoggedIn'])) {
      $a = new Admin($db); 
      $plg = new Plugins($db);
 }
+
+$plug = new Plugin($db);
 
 if(strpos($_GET['p'], 'admin/') !== false) {
      $exp = explode("/", $_GET['p']);

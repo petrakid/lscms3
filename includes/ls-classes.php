@@ -191,4 +191,63 @@ class Carousel
           return $c;
      }
 }
+
+class Social
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function isEnabled() {
+          $api = $this->db->query("SELECT sm_api_key FROM tbl_social_media WHERE sm_id = 1");
+          $a = $api->fetch(PDO::FETCH_ASSOC);
+          if($a['sm_api_key'] > '') {
+               return true;
+          } else {
+               return false;
+          }
+     }
+     
+     public function getID() {
+          $sid = $this->db->query("SELECT sm_profile_id FROM tbl_social_media WHERE sm_id = 1");
+          $s = $sid->fetch(PDO::FETCH_ASSOC);
+          return $s['sm_profile_id'];
+     }
+}
+
+class Plugin
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getPluginFile($p) {
+          $plg = $this->db->query("SELECT plugin_link FROM tbl_plugins WHERE pl_id = $p AND plugin_status = 1");
+          $pl = $plg->fetch(PDO::FETCH_ASSOC);
+          $exp = explode("-", $pl['plugin_link']);
+          return $exp[0];
+     }   
+     
+     public function findInlinePlugin($c) {
+          if(strpos($c, '[plugin') !== false) {
+               return true;
+          } else {
+               return false;
+          }
+     }
+     
+     public function pluginAndContent($content) {
+          echo $content;
+          $needle = '[plugin';
+          $cont = explode("[plugin", $content);
+          foreach($cont AS $c) {
+               
+          }
+     }
+     
+}
 ?>

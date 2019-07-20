@@ -22,7 +22,7 @@ if(isset($_SESSION['isLoggedIn'])) {
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-shapes.js"></script>
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-depths.js"></script>                
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-list-styles.js"></script>
-     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-add-text-tags.js"></script>      
+     <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-add-text-tags.js"></script>                 
 	<script>
      UPLOADCARE_PUBLIC_KEY = '<?php echo $g['uploadcare_api'] ?>';
 	var uckey = '<?php echo $g['uploadcare_api'] ?>';		

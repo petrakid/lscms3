@@ -17,6 +17,13 @@ $(function() {
      })
 })
 
+//$(function() {
+     //$('.card-panel').matchHeight({
+          //property: 'min-height',
+          //byRow: true,    
+	//});
+//});
+
 $(function() {
      if($('#c_fullWidth').prop('checked') == false) {
           $('.show_cascade').show();
@@ -129,6 +136,54 @@ $(function() {
           }
      })
 });
+
+function saveSmKey()
+{
+     var smkey = $('#sm_api_key').val();
+     if(smkey == '') {
+          Materialize.toast('You must enter the Addthis API Key before saving!', 1800, 'rounded');
+     }
+     else if(smkey.length < 10) {
+          Materialize.toast('This does not appear to be a correct API Key.', 1800, 'rounded');
+     } else {
+          $.ajax({
+               url: href + '/ls-admin/includes/includes.php',
+               type: 'POST',
+               data: {
+                    'save_sm_key': 1,
+                    'sm_api_key': smkey
+               },
+               success: function(data) {
+                    Materialize.toast('API Key saved successfully!', 1800, 'rounded');
+                    setTimeout(function() {
+                         window.location.reload()
+                    }, 1500)
+               },
+               error: function(jqXHR, exception) {
+                    console.log(jqXHR.status);
+               }                     
+          })           
+     }
+}
+
+function saveSmField(f, v)
+{
+     $.ajax({
+          url: href + '/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'save_sm_value': 1,
+               'f': f,
+               'v': v
+          },
+          success: function(data) {
+               Materialize.toast('Entry saved successfully.', 1800, 'rounded');
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }                     
+     })      
+}
 
 function checkUsername()
 {
@@ -361,6 +416,7 @@ function saveChanges(mid, pid)
      fData.append('show_sharing', sharing);
      fData.append('seo_image', $('input[name=seo_image]')[0].files[0]);
      fData.append('landing_image', $('input[name=landing_image')[0].files[0]);
+     fData.append('plugin_id', $('#my_plugin').val());
      $.ajax({
           url: href +'/ls-admin/includes/includes.php',
           type: 'POST',
@@ -1293,36 +1349,6 @@ $.extend($.summernote.plugins, {uploadcare: init});
 
 $(function() {
      $('#summernote').summernote({
-          addclass: {
-               debug: false,
-               classTags: [
-                    {title: "Button",          value: "waves-effect waves-light btn"},
-                    {title: "Row",             value: "row"},
-                    {title: "Width 1",         value: "col s1"},
-                    {title: "Width 2",         value: "col s2"},
-                    {title: "Width 3",         value: "col s3"},
-                    {title: "Width 4",         value: "col s4"},
-                    {title: "Width 5",         value: "col s5"},
-                    {title: "Width 6",         value: "col s6"},
-                    {title: "Width 7",         value: "col s7"},
-                    {title: "Width 8",         value: "col s8"},
-                    {title: "Width 9",         value: "col s1"},
-                    {title: "Width 10",        value: "col s10"},
-                    {title: "Width 11",        value: "col s11"},
-                    {title: "Width 12",        value: "col s12"},
-                    {title: "Flow Text",       value: "flo-text"},
-                    {title: "Collection",      value: "collection"},
-                    {title: "Collection Item", value: "collection-item"},
-                    {title: "Card",            value: "card"},
-                    {title: "Card Title",      value: "card-title"},
-                    {title: "Card Content",    value: "card-content"},
-                    {title: "Card Action",     value: "card-action"},
-                    {title: "Material Icon",   value: "material-icons"},
-                    {title: "Left",            value: "left"},
-                    {title: "Right",           value: "right"},
-                    {title: "Pagination",      value: "pagination"}             
-               ]
-          },
           popover: {
                image: [
                     ['custom', ['imageAttributes', 'imageShapes', 'imageDepths']],
@@ -1342,17 +1368,19 @@ $(function() {
           toolbar: [
                ['savebutton', ['save']],
                ['style', ['style', 'addclass', 'clear']],
-               ['font', ['bold', 'italic', 'underline', 'add-text-tags']],
+               ['font', ['bold', 'italic', 'underline']],
                ['fontname', ['fontname']],
                ['color', ['color']],
-               ['para', ['ul', 'ol', 'listStyles', 'paragraph']],
+               ['para', ['ul', 'ol', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
                ['insert', ['media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
-               ['help', ['help']]
           ],
+          addRows: {
+               debug: false,
+          },          
           buttons: {
                save: SaveButton
           },
@@ -1379,7 +1407,7 @@ $(function() {
           toolbar: [
                ['savebutton', ['save']],
                ['style', ['style']],
-               ['font', ['bold', 'italic', 'underline', 'add-text-tags', 'clear']],
+               ['font', ['bold', 'italic', 'underline', 'clear']],
                ['fontname', ['fontname']],
                ['color', ['color']],
                ['para', ['ul', 'ol', 'paragraph']],
@@ -1388,11 +1416,10 @@ $(function() {
                ['insert', ['media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
-               ['help', ['help']]
-          ],
+          ],        
           buttons: {
                save: SaveButtonB
-          },
+          },        
           uploadcare: {
                buttonLabel: 'Media',
                buttonIcon: 'image',
@@ -1407,37 +1434,7 @@ $(function() {
 });
 
 $(function() {
-     $('#summernotea').summernote({
-addclass: {
-               debug: false,
-               classTags: [
-                    {title: "Button",          value: "waves-effect waves-light btn"},
-                    {title: "Row",             value: "row"},
-                    {title: "Width 1",         value: "col s1"},
-                    {title: "Width 2",         value: "col s2"},
-                    {title: "Width 3",         value: "col s3"},
-                    {title: "Width 4",         value: "col s4"},
-                    {title: "Width 5",         value: "col s5"},
-                    {title: "Width 6",         value: "col s6"},
-                    {title: "Width 7",         value: "col s7"},
-                    {title: "Width 8",         value: "col s8"},
-                    {title: "Width 9",         value: "col s1"},
-                    {title: "Width 10",        value: "col s10"},
-                    {title: "Width 11",        value: "col s11"},
-                    {title: "Width 12",        value: "col s12"},
-                    {title: "Flow Text",       value: "flo-text"},
-                    {title: "Collection",      value: "collection"},
-                    {title: "Collection Item", value: "collection-item"},
-                    {title: "Card",            value: "card"},
-                    {title: "Card Title",      value: "card-title"},
-                    {title: "Card Content",    value: "card-content"},
-                    {title: "Card Action",     value: "card-action"},
-                    {title: "Material Icon",   value: "material-icons"},
-                    {title: "Left",            value: "left"},
-                    {title: "Right",           value: "right"},
-                    {title: "Pagination",      value: "pagination"} 
-               ]
-          },
+     $('#summernotea').summernote({        
           popover: {
                image: [
                     ['custom', ['imageAttributes', 'imageShapes', 'imageDepths']],
@@ -1456,16 +1453,15 @@ addclass: {
           focus: true,
           toolbar: [
                ['style', ['style', 'addclass', 'clear']],
-               ['font', ['bold', 'italic', 'underline', 'add-text-tags']],
+               ['font', ['bold', 'italic', 'underline']],
                ['fontname', ['fontname']],
                ['color', ['color']],
-               ['para', ['ul', 'ol', 'listStyles', 'paragraph']],
+               ['para', ['ul', 'ol', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
                ['insert', ['media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
-               ['help', ['help']]
           ],
           uploadcare: {
                buttonLabel: 'Media',
@@ -1486,10 +1482,17 @@ var SaveButton = function(context) {
           contents: '<i class="fas fa-save" style="color: red" /> Save',
           tooltip: 'Save changes',
           click: function () {
+               $('.note-editable').css('background-color', 'grey');
+               $('.note-editable').prop('disabled', true);
                var savepage = document.location.href.split("//");
                var savepage = savepage[1].split("/");
+               var savepage2 = savepage[2].split("&");
                var savepage = savepage[1].split("&");
-               var savepage = savepage[0];
+               if(savepage2[0] > '') {
+                    var savepage = savepage2[0];
+               } else {
+                    var savepage = savepage[0];
+               }
                $.ajax({
                     url: href +'/ls-admin/includes/includes.php',
                     type: 'POST',
@@ -1564,6 +1567,470 @@ function updateSermonConfig(field, value) {
                console.log(jqXHR.status);
           }                    
      })     
+}
+
+function viewPreacher(preacher)
+{
+     if(preacher == '') {
+          $.ajax({
+               url: href +'/ls-admin/includes/includes.php',
+               type: 'POST',
+               data: {
+                    'new_preacher': 1
+               },
+               success: function(data) {
+                    $('#prRes').html(data);
+                    $('#ntitle').material_select();
+               },
+               error: function(jqXHR, exception) {
+                    console.log(jqXHR.status);
+               }           
+          })
+     } else {
+          $.ajax({
+               url: href +'/ls-admin/includes/includes.php',
+               type: 'POST',
+               data: {
+                    'view_preacher': 1,
+                    'pr_id': preacher
+               },
+               success: function(data) {
+                    $('#prRes').html(data);
+                    $('#title').material_select();
+               },
+               error: function(jqXHR, exception) {
+                    console.log(jqXHR.status);
+               }           
+          })
+     }
+}
+
+function updatePreacher(p,f,v)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_preacher': 1,
+               'f': f,
+               'v': v,
+               'pr_id': p
+          },
+          success: function(data) {
+               Materialize.toast('Update Successful!', 2500, 'rounded');
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function deletePreacher(preacher)
+{
+     if(confirm("Are you Sure?")) {
+          $.ajax({
+               url: href +'/ls-admin/includes/includes.php',
+               type: 'POST',
+               data: {
+                    'delete_preacher': 1,
+                    'pr_id': preacher
+               },
+               success: function(data) {
+                    Materialize.toast('Preacher Removed', 2500, 'rounded');
+                    setTimeout(function(){
+                         window.location.reload()
+                    }, 1500)                    
+               },
+               error: function(jqXHR, exception) {
+                    console.log(jqXHR.status);
+               }           
+          })          
+     }
+}
+
+function addPreacher()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'add_preacher': 1,
+               'last_name': $('#nlast_name').val(),
+               'first_name': $('#nfirst_name').val(),
+               'title': $('#ntitle').val(),
+               'preacher_location': $('#npreacher_location').val(),
+               'preacher_position': $('#npreacher_position').val(),
+               'preacher_email': $('#npreacher_email').val(),
+               'preacher_phone': $('#npreacher_phone').val()
+          },
+          success: function(data) {
+               $('#prRes').html(data);
+               setTimeout(function(){
+                    window.location.reload()
+               }, 1500)
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })
+}
+
+$(function() {
+     $("#season-sortable").sortable({
+          placeholder: "ui-state-highlight-sermon",
+          axis: "y",
+          handle: ".handle",
+          update: function(event, ui) {
+               var data = $(this).sortable('serialize');
+               $.ajax({
+                    url: href + '/ls-admin/includes/includes.php',
+                    type: 'POST',
+                    data: data,
+                    success: function(data) {
+                         Materialize.toast(data, 1800, 'rounded');
+                    },
+                    error: function(jqXHR, exception) {
+                         console.log(jqXHR.status);
+                    }                     
+               })               
+          }
+     });
+     $("#season-sortable").disableSelection();
+});
+
+function newSeason()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'new_season': 1
+          },
+          success: function(data) {
+               $('#seaRes').html(data);
+               $('#nseason_color').material_select();               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function addSeason()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'add_season': 1,
+               'season_name': $('#nseason_name').val(),
+               'season_color': $('#nseason_color').val()
+          },
+          success: function(data) {
+                    Materialize.toast('Season Added!', 2500, 'rounded');
+                    setTimeout(function(){
+                         window.location.reload()
+                    }, 1500)               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function editSeason(season)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'edit_season': 1,
+               'se_id': season
+          },
+          success: function(data) {
+               $('#seaRes').html(data);
+               $('#season_color').material_select();               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })
+}
+
+function updateSeason(s,f,v)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_season': 1,
+               'f': f,
+               'v': v,
+               'se_id': s
+          },
+          success: function(data) {
+               Materialize.toast('Season Updated', 2500, 'rounded');               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })
+}
+
+function removeSeason(s)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'remove_season': 1,
+               'se_id': s
+          },
+          success: function(data) {
+               Materialize.toast('Season Removed', 2500, 'rounded');
+               setTimeout(function(){
+                    window.location.reload()
+               }, 1500)                              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function newSeries()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'new_series': 1
+          },
+          success: function(data) {
+               $('#ssRes').html(data);               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function addSeries()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'add_series': 1,
+               'series_name': $('#nseries_name').val(),
+          },
+          success: function(data) {
+                    Materialize.toast('Series Added!', 2500, 'rounded');
+                    setTimeout(function(){
+                         window.location.reload()
+                    }, 1500)               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function editSeries(s)
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'edit_series': 1,
+			'se_id': s,
+		},
+		success: function(data) {
+               $('#ssRes').html(data);
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})     
+}
+
+function updateSeries(p,f,v)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_series': 1,
+               'f': f,
+               'v': v,
+               'se_id': p
+          },
+          success: function(data) {
+               Materialize.toast('Series Updated', 2500, 'rounded');               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function removeSeries(s)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'remove_series': 1,
+               'se_id': s
+          },
+          success: function(data) {
+               Materialize.toast('Series Removed', 2500, 'rounded');
+               setTimeout(function(){
+                    window.location.reload()
+               }, 1500)                              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }           
+     })     
+}
+
+function newSermon()
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'new_sermon': 1,
+		},
+		success: function(data) {
+               $('#addSermonRes').html(data);
+               $(function(){
+                    $('.datepicker').pickadate({
+                         container: 'body',
+                         format: 'mmm dd, yyyy'
+                    });
+               })               
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})     
+}
+
+function addSermon()
+{
+     
+}
+
+function editSermon(s)
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'edit_sermon': 1,
+			'se_id': s,
+		},
+		success: function(data) {
+               $('#editSermonRes').html(data);
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})     
+}
+
+function updateSermon(s)
+{
+     
+}
+
+function changeFeatured(s)
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'change_featured': 1,
+			'se_id': s
+		},
+		success: function(data) {
+               if(data == 1) {
+                    $('#featuredstar').show();
+               }
+               if(data == 0) {
+                    $('#featuredstar').hide();
+               }
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})        
+}
+
+function hideSermon(s)
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'hide_sermon': 1,
+			'se_id': s,
+		},
+		success: function(data) {
+               $('#sermonstatuslink').removeAttr('onclick');
+               $('#sermonstatuslink').click(function() { showSermon(s) });		   
+               $('#sermonstatuslink').removeClass('green');
+               $('#sermonstatuslink').addClass('grey');
+               $('#showhidsermonbtn').html('visibility_off');
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})       
+}
+
+function showSermon(s)
+{
+	$.ajax({
+		url: href +'/ls-admin/includes/includes.php',
+		type: 'POST',
+		data: {
+			'show_sermon': 1,
+			'se_id': s,
+		},
+		success: function(data) {
+               $('#sermonstatuslink').removeAttr('onclick');
+               $('#sermonstatuslink').click(function() { hideSermon(s) });
+               $('#sermonstatuslink').removeClass('grey');
+               $('#sermonstatuslink').addClass('green');		   
+               $('#showhidsermonbtn').html('visibility');
+		},
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}
+	})       
+}
+
+function deleteSermon(s)
+{
+     if(confirm("Are you SURE you want to do this?")) {
+      	$.ajax({
+     		url: href +'/ls-admin/includes/includes.php',
+     		type: 'POST',
+     		data: {
+     			'delete_sermon': 1,
+     			'se_id': s,
+     		},
+     		success: function(data) {
+                    $('#slistRes').html(data);
+     		},
+     		error: function(jqXHR, exception) {
+     			console.log(jqXHR.status);
+     		}
+     	})          
+     }
 }
 
 function updateValue(field, value)

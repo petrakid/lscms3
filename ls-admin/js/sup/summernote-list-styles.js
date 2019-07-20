@@ -60,7 +60,7 @@
       var index = 0;
       for (const listStyleType of listStyleTypes) {
         list += '<li><a href="#" data-value=' + listStyleType + ">";
-        list += '<i class="material-icons left">check</i>';
+        list += '<i class="summer-icons left">check</i>';
         list += '<ol><li style="list-style-type: ' + listStyleType + ';">';
         list += listStyleLabels[index] + "</li></ol></a></li>";
         index++;

@@ -320,6 +320,31 @@ class Admin
      }
 }
 
+class SocialMedia
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function socialApiStatus() {
+          $api = $this->db->query("SELECT sm_api_key FROM tbl_social_media WHERE sm_id = 1");
+          $a = $api->fetch(PDO::FETCH_ASSOC);
+          if($a['sm_api_key'] > '') {
+               return true;
+          } else {
+               return false;
+          }
+     }
+     
+     public function getProfileId() {
+          $pro = $this->db->query("SELECT sm_profile_id FROM tbl_social_media WHERE sm_id = 1");
+          $p = $pro->fetch(PDO::FETCH_ASSOC);
+          return $p['sm_profile_id'];          
+     }
+}
+
 class MailingLists
 {
      private $db;
@@ -377,6 +402,40 @@ class SermonManager
                }
                echo '>'. $v['version_name'] .'</option>'."\n";
           }
+     }
+     
+     public function getPreachersSelect() {
+          $prh = $this->db->query("SELECT pr_id, first_name, last_name, title FROM tbl_sermons_preachers WHERE preacher_status = 1 ORDER BY last_name");
+          while($pr = $prh->fetch(PDO::FETCH_ASSOC)) {
+               echo '<option value="'. $pr['pr_id'] .'">'. $pr['title'] .' '. $pr['first_name'] .' '. $pr['last_name'] .'</option>'."\n";
+          }
+     }
+     
+     public function getSeasons() {
+          $sea = $this->db->query("SELECT * FROM tbl_sermons_seasons WHERE season_status = 1 ORDER BY season_order");
+          return $sea;
+     }
+     
+     public function getSeries() {
+          $ser = $this->db->query("SELECT * FROM tbl_sermons_series WHERE series_status = 1 ORDER BY series_name");
+          return $ser;
+     }
+     
+     public function getSermons() {
+          $sermons = $this->db->query("SELECT se_id, sermon_title, sermon_date, sermon_preacher_id, sermon_season_id, sermon_status, sermon_featured FROM tbl_sermons WHERE sermon_status != 9 ORDER BY sermon_date DESC");
+          return $sermons;
+     }
+     
+     public function getPreacher($p) {
+          $preach = $this->db->query("SELECT title, first_name, last_name FROM tbl_sermons_preachers WHERE pr_id = $p");
+          $p = $preach->fetch(PDO::FETCH_ASSOC);
+          return $p['title'] .' '. $p['first_name'] .' '. $p['last_name'];
+     }
+     
+     public function getSeason($s) {
+          $season = $this->db->query("SELECT season_color FROM tbl_sermons_seasons WHERE se_id = $s");
+          $c = $season->fetch(PDO::FETCH_ASSOC);
+          return $c['season_color'];
      }
 }
 

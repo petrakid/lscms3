@@ -159,6 +159,14 @@ if(isset($_POST['close_my_account'])) {
      
 }
 
+if(isset($_POST['save_sm_key'])) {
+     $db->exec("UPDATE tbl_social_media SET sm_api_key = '$_POST[sm_api_key]' WHERE sm_id = 1");
+}
+
+if(isset($_POST['save_sm_value'])) {
+     $db->exec("UPDATE tbl_social_media SET `$_POST[f]` = '$_POST[v]' WHERE sm_id = 1");
+}
+
 if(isset($_POST['item'])) {
      $i = 0;
      foreach($_POST['item'] AS $value) {
@@ -323,7 +331,6 @@ if(isset($_POST['save_quick_edit'])) {
      $p_id = $c['m_id'];
      $content = addslashes($_POST['content']);
      $db->exec("UPDATE tbl_content SET section_content = '$content' WHERE menu_id = $p_id");
-     echo $content;
 }
 
 if(isset($_POST['new_menu_form'])) {
@@ -372,7 +379,7 @@ if(isset($_POST['new_menu_form'])) {
 }
 
 if(isset($_POST['get_children'])) {
-     $child = $db->query("SELECT m_id, menu_name, menu_order FROM tbl_menu WHERE menu_parent_id = $_POST[parent] ORDER BY menu_order");
+     $child = $db->query("SELECT m_id, menu_name, menu_order FROM tbl_menu WHERE menu_parent_id = $_POST[parent] AND menu_status =! 9 ORDER BY menu_order");
      echo '<option value="0" selected>Place First</option>';
      while($c = $child->fetch(PDO::FETCH_ASSOC)) {
           echo '<option value="'. $c['menu_order'] .'">Place after: '. stripslashes($c['menu_name']) .'</option>';
@@ -530,7 +537,7 @@ if(isset($_POST['update_page'])) {
           unset($_POST['seo_image']);
      }
      if($_FILES['landing_image']['name'] > '') {
-          $ext = pathinfo($_FILES['seo_image']['name'], PATHINFO_EXTENSION);
+          $ext = pathinfo($_FILES['landing_image']['name'], PATHINFO_EXTENSION);
           $path = $root .'content/assets/landing_images/';          
           if(!in_array(strtolower($ext), $extarray)) {
                echo 'The Landing Image you added does not have a valid file extension.  Only jpg (jpeg) and png images allowed. Changes not saved.';
@@ -553,6 +560,7 @@ if(isset($_POST['update_page'])) {
      unset($_POST['menu_id']);
      unset($_POST['page_id']);
      $_POST['section_content'] = addslashes($_POST['section_content']);
+     $_POST['page_title'] = addslashes($_POST['page_title']);
      $sql = "UPDATE tbl_content SET ";
      foreach($_POST AS $f => $v) {
           $sql .= "`$f` = '$v', ";
@@ -879,6 +887,294 @@ if(isset($_POST['update_value'])) {
 
 if(isset($_POST['update_sermon_config'])) {
      $db->exec("UPDATE tbl_sermons_settings SET `$_POST[field]` = '$_POST[value]' WHERE s_id = 1");
+}
+
+if(isset($_POST['view_preacher'])) {
+     $prh = $db->query("SELECT * FROM tbl_sermons_preachers WHERE pr_id = $_POST[pr_id]");
+     $ph = $prh->fetch(PDO::FETCH_ASSOC);
+     ?>
+     <div class="input-field col s6">     
+     <select name="title" id="title" onchange="updatePreacher(<?php echo $ph['pr_id'] ?>, this.id, this.value)">
+     <option <?php if($ph['title'] == 'Mr.') { echo 'selected="selected"';} ?> value="Mr.">Mr.</option>
+     <option <?php if($ph['title'] == 'Rev.') { echo 'selected="selected"';} ?> value="Rev.">Rev.</option>
+     <option <?php if($ph['title'] == 'Dr.') { echo 'selected="selected"';} ?> value="Dr.">Dr.</option>
+     <option <?php if($ph['title'] == 'Rev. Dr.') { echo 'selected="selected"';} ?> value="Rev. Dr.">Rev. Dr.</option>
+     <option <?php if($ph['title'] == 'Fr.') { echo 'selected="selected"';} ?> value="Fr.">Fr.</option>
+     </select>
+     <label>Title</label>     
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="first_name" id="first_name" value="<?php echo $ph['first_name'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.id, this.value)" />
+     <label class="active" for="first_name">First Name</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="last_name" id="last_name" value="<?php echo $ph['last_name'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.id, this.value)" />
+     <label class="active" for="last_name">Last Name</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_location" id="preacher_location" value="<?php echo $ph['preacher_location'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.field, this.value)" />
+     <label class="active" for="preacher_location">Serving Location</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_postion" id="preacher_position" value="<?php echo $ph['preacher_position'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.field, this.value)" />
+     <label class="active" for="preacher_position">Current Position at Location</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="email" name="preacher_email" id="preacher_email" value="<?php echo $ph['preacher_email'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.field, this.value)" />
+     <label class="active" for="preacher_email">Email Address</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_phone" id="preacher_phone" value="<?php echo $ph['preacher_phone'] ?>" onblur="updatePreacher(<?php echo $ph['pr_id'] ?>, this.field, this.value)" />
+     <label class="active" for="preacher_phone">Phone Number (numbers only)</label>
+     </div>
+     <div class="col s12">
+     <a href="#!" class="waves-effect waves-light btn red" onclick="deletePreacher(<?php echo $ph['pr_id'] ?>)"><i class="material-icons left">delete</i>Delete</a>
+     </div>
+     <?php
+}
+
+if(isset($_POST['new_preacher'])) {
+     ?>
+     <div class="input-field col s6">     
+     <select name="title" id="ntitle">
+     <option value="" selected disabled>Select</option>
+     <option value="Mr.">Mr.</option>
+     <option value="Rev.">Rev.</option>
+     <option value="Dr.">Dr.</option>
+     <option value="Rev. Dr.">Rev. Dr.</option>
+     <option value="Fr.">Fr.</option>
+     </select>
+     <label>Title</label>     
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="first_name" id="nfirst_name" />
+     <label class="active" for="nfirst_name">First Name</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="last_name" id="nlast_name" />
+     <label class="active" for="nlast_name">Last Name</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_location" id="npreacher_location" />
+     <label class="active" for="npreacher_location">Serving Location</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_postion" id="npreacher_position" />
+     <label class="active" for="npreacher_position">Current Position at Location</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="email" name="preacher_email" id="npreacher_email" />
+     <label class="active" for="npreacher_email">Email Address</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="preacher_phone" id="npreacher_phone" />
+     <label class="active" for="npreacher_phone">Phone Number (numbers only)</label>
+     </div>
+     <div class="col s12">
+     <a href="#!" class="waves-effect waves-light btn teal" onclick="addPreacher()"><i class="material-icons left">save</i>Add</a>
+     </div>
+
+     <?php     
+}
+
+if(isset($_POST['add_preacher'])) {
+     unset($_POST['add_preacher']);
+     $sql = "INSERT INTO tbl_sermons_preachers (";
+     foreach($_POST AS $f => $v) {
+          $sql .= "`$f`, ";
+     }
+     $sql = rtrim($sql, ", ");
+     $sql .= ") VALUES (";
+     foreach($_POST AS $f => $v) {
+          if($f == 'preacher_phone') {
+               $v = preg_replace("/[^0-9]/", "", $v);
+          }
+          $sql .= "'$v', ";
+     }
+     $sql = rtrim($sql, ", ");
+     $sql .= ")";
+     $db->exec($sql);
+     echo 'Preacher Added Successfully.';
+}
+
+if(isset($_POST['update_preacher'])) {
+     $db->exec("UPDATE tbl_sermons_preachers SET `$_POST[f]` = '$_POST[v]' WHERE pr_id = $_POST[pr_id]");
+}
+
+if(isset($_POST['delete_preacher'])) {
+     $db->exec("UPDATE tbl_sermons_preachers SET preacher_status = 0 WHERE pr_id = $_POST[pr_id]");
+}
+
+if(isset($_POST['new_season'])) {
+     ?>
+     <div class="input-field col s12">
+     <input type="text" name="nseason_name" id="nseason_name" placeholder="Season Name" />
+     <label for="nseason_name" class="active">Season Name</label>
+     </div>
+     <div class="input-field col s12">
+     <select name="nseason_color" id="nseason_color">
+     <option value="" selected disabled>Select</option>
+     <option class="black" value="black">Black</option>
+     <option class="blue" value="blue">Blue</option>
+     <option class="yellow accent-4" value="yellow accent-4">Gold</option>
+     <option class="green" value="green">Green</option>
+     <option class="pink" value="pink">Pink</option>
+     <option class="purple" value="purple">Purple</option>
+     <option class="red" value="red">Red</option>
+     <option class="pink accent-1" value="pink accent-1">Rose</option>
+     <option class="grey lighten-5" value="grey lighten-5">White</option>
+     </select>
+     <label>Season Color</label>
+     </div>
+     <a href="#!" class="waves-effect waves-light btn teal" onclick="addSeason()"><i class="material-icons">save</i></a>     
+     <?php
+}
+
+if(isset($_POST['add_season'])) {
+     $db->exec("INSERT INTO tbl_sermons_seasons (season_name, season_order, season_status, season_color) VALUES ('$_POST[season_name]', 0, 1, '$_POST[season_color]')");
+}
+
+if(isset($_POST['edit_season'])) {
+     $sea = $db->query("SELECT * FROM tbl_sermons_seasons WHERE se_id = $_POST[se_id]");
+     $se = $sea->fetch(PDO::FETCH_ASSOC);
+     ?>
+     <div class="input-field col s12">
+     <input type="text" name="season_name" id="season_name" placeholder="Season Name" value="<?php echo $se['season_name'] ?>" onblur="updateSeason(<?php echo $se['se_id'] ?>, this.id, this.value)" />
+     </div>
+     <div class="input-field col s12">
+     <select name="season_color" id="season_color" onchange="updateSeason(<?php echo $se['se_id'] ?>, this.id, this.value)">
+     <option <?php if($se['season_color'] == 'black') { echo 'selected="selected"';} ?> class="black" value="black">Black</option>
+     <option <?php if($se['season_color'] == 'blue') { echo 'selected="selected"';} ?> class="blue" value="blue">Blue</option>
+     <option <?php if($se['season_color'] == 'yellow accent-4') { echo 'selected="selected"';} ?> class="yellow accent-4" value="yellow accent-4">Gold</option>
+     <option <?php if($se['season_color'] == 'green') { echo 'selected="selected"';} ?> class="green" value="green">Green</option>
+     <option <?php if($se['season_color'] == 'pink') { echo 'selected="selected"';} ?> class="pink" value="pink">Pink</option>
+     <option <?php if($se['season_color'] == 'purple') { echo 'selected="selected"';} ?> class="purple" value="purple">Purple</option>
+     <option <?php if($se['season_color'] == 'red') { echo 'selected="selected"';} ?> class="red" value="red">Red</option>
+     <option <?php if($se['season_color'] == 'pink accent-1') { echo 'selected="selected"';} ?> class="pink accent-1" value="pink accent-1">Rose</option>
+     <option <?php if($se['season_color'] == 'grey lighten-5') { echo 'selected="selected"';} ?> class="grey lighten-5">White</option>
+     </select>
+     <label>Season Color</label>
+     </div>
+     <a href="#!" class="waves-effect waves-light btn red" onclick="removeSeason(<?php echo $se['se_id'] ?>)"><i class="material-icons">delete</i></a>    
+     <a href="#!" class="waves-effect waves-light btn teal" onclick="newSeason()"><i class="material-icons">clear_all</i></a>
+     <?php
+}
+
+if(isset($_POST['update_season'])) {
+     $db->exec("UPDATE tbl_sermons_seasons SET `$_POST[f]` = '$_POST[v]' WHERE se_id = $_POST[se_id]");
+}
+
+if(isset($_POST['remove_season'])) {
+     $db->exec("UPDATE tbl_sermons_seasons SET season_status = 0 WHERE se_id = $_POST[se_id]");     
+}
+
+if(isset($_POST['season'])) {
+     $i = 0;
+     foreach($_POST['season'] AS $value) {
+          $db->exec("UPDATE tbl_sermons_seasons SET season_order = $i WHERE se_id = $value");
+          $i++;
+     }     
+}
+
+if(isset($_POST['new_series'])) {
+     ?>
+     <div class="input-field col s12">
+     <input type="text" name="nseries_name" id="nseries_name" />
+     <label for="nseries_name" class="active">New Series Name</label>
+     </div>
+     <a href="#!" class="waves-effect waves-light btn teal" onclick="addSeries()"><i class="material-icons">save</i></a>     
+     
+     <?php
+}
+
+if(isset($_POST['add_series'])) {
+     $db->exec("INSERT INTO tbl_sermons_series (series_name, series_status) VALUES ('$_POST[series_name]', 1)");
+}
+
+if(isset($_POST['edit_series'])) {
+     $ser = $db->query("SELECT * FROM tbl_sermons_series WHERE se_id = $_POST[se_id]");
+     $ss = $ser->fetch(PDO::FETCH_ASSOC);
+     ?>
+     <div class="input-field col s12">
+     <input type="text" name="series_name" id="series_name" value="<?php echo $ss['series_name'] ?>" onblur="updateSeries(<?php echo $ss['se_id'] ?>, this.id, this.value)" />
+     <label for="nseries_name" class="active">Series Name</label>
+     </div>
+     <a href="#!" class="waves-effect waves-light btn red" onclick="removeSeries(<?php echo $ss['se_id'] ?>)"><i class="material-icons">delete</i></a>    
+     <a href="#!" class="waves-effect waves-light btn teal" onclick="newSeries()"><i class="material-icons">clear_all</i></a>
+     
+     <?php
+}
+
+if(isset($_POST['update_series'])) {
+     $db->exec("UPDATE tbl_sermons_series SET `$_POST[f]` = '$_POST[v]' WHERE se_id = $_POST[se_id]");
+}
+
+if(isset($_POST['remove_series'])) {
+     $db->exec("UPDATE tbl_sermons_series SET series_status = 0 WHERE se_id = $_POST[se_id]");     
+}
+
+if(isset($_POST['new_sermon'])) {
+     ?>
+     <div class="row">
+     <form id="newsermonform">
+     <input type="hidden" name="newSermon" id="newSermon" value="1" />
+     <div class="col s12 m4">
+     <div class="input-field col s12">
+     <input type="text" name="sermon_title" id="sermon_title" />
+     <label for="nsermon_title">Sermon Title</label>
+     </div>
+     <div class="input-field col s12">
+     <input type="text" name="sermon_topic" id="sermon_topic" />
+     <label for="sermon_topic">Sermon Topic</label>
+     </div>
+     <div class="input-field col s6">
+     <input type="text" class="datepicker" name="sermon_date" id="sermon_date" />
+     <label for="sermon_date">Date Preached</label>
+     </div>
+     
+     </div>
+     <div class="col s12 m4">
+     
+     </div>
+     <div class="col s12 m4">
+     
+     </div>
+     </form>
+     </div>
+     
+     <?php
+}
+
+if(isset($_POST['edit_sermon'])) {
+     ?>
+     
+     
+     <?php
+}
+
+if(isset($_POST['change_featured'])) {
+     $feat = $db->query("SELECT sermon_featured FROM tbl_sermons WHERE se_id = $_POST[se_id]");
+     $f = $feat->fetch(PDO::FETCH_ASSOC);
+     if($f['sermon_featured'] == 0) {
+          $db->exec("UPDATE tbl_sermons SET sermon_featured = 1 WHERE se_id = $_POST[se_id]");
+          echo '1';
+     }
+     if($f['sermon_featured'] == 1){
+          $db->exec("UPDATE tbl_sermons SET sermon_featured = 0 WHERE se_id = $_POST[se_id]");
+          echo '0';
+     }
+}
+
+if(isset($_POST['hide_sermon'])) {
+     $db->exec("UPDATE tbl_sermons SET sermon_status = 0 WHERE se_id = $_POST[se_id]");
+}
+
+if(isset($_POST['show_sermon'])) {
+     $db->exec("UPDATE tbl_sermons SET sermon_status = 1 WHERE se_id = $_POST[se_id]");
+}
+
+if(isset($_POST['delete_sermon'])) {
+     $db->exec("UPDATE tbl_sermons SET sermon_status = 9 WHERE se_id = $_POST[se_id]");
 }
 
 if(isset($_POST['edit_block'])) {

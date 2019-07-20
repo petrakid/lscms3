@@ -6,7 +6,7 @@
  * license: MIT
  * 
  */
-(function (factory) {
+(function(factory) {
     /* global define */
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -18,7 +18,8 @@
         // Browser globals
         factory(window.jQuery);
     }
-}(function ($) {
+}
+(function($) {
 
     // Extends plugins for adding hello.
     //  - plugin is external module for customizing.

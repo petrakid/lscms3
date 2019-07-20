@@ -7564,9 +7564,24 @@ header .brand-logo img {
 
 .ui-state-highlight { height: 250px; line-height: 2.5em; background-color: lightyellow; border: 1px dashed black; border-radius: 8px; margin-bottom: 10px; }
 
+.options {
+     position: absolute;
+     top: 15px;
+     left: 600px;
+}
+
+.a-player {
+     width: 650px;
+}
+
 .space {
      margin-bottom: 20px !important;
 }
+
+#season-sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#season-sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+#season-sortable li span { position: absolute; margin-left: -1.3em; }
+.ui-state-highlight-sermon { height: 35px; padding: 0.4em; border-radius: 0; border: 0; }
 
 ul.sort-main li {
      background-color: oldlace !important;

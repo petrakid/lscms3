@@ -1,0 +1,6 @@
+[12-Jul-2019 12:58:53 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/dinubalu/public_html/includes/ls-classes.php on line 245
+[12-Jul-2019 13:00:13 UTC] PHP Warning:  str_replace() expects at least 3 parameters, 2 given in /home/dinubalu/public_html/includes/ls-classes.php on line 245
+[12-Jul-2019 13:00:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/dinubalu/public_html/includes/ls-classes.php on line 245
+[12-Jul-2019 13:00:41 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/dinubalu/public_html/includes/ls-classes.php on line 245
+[12-Jul-2019 13:02:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/dinubalu/public_html/includes/ls-classes.php on line 245
+[12-Jul-2019 13:04:24 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/dinubalu/public_html/includes/ls-classes.php on line 247
