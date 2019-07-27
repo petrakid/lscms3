@@ -9,7 +9,7 @@
 </div>
 </div>
 </footer>
-<script src="<?php echo $g['site_url'] ?>/ls-admin/js/materialize.js"></script>
+<script src="//cdn.lutherhost.net/js/materialize/materialize.min.js"></script>
 <script src="<?php echo $g['site_url'] ?>/ls-admin/js/perfect-scrollbar.min.js"></script>
 <script src="<?php echo $g['site_url'] ?>/ls-admin/js/a-app.js"></script>
 
