@@ -77,8 +77,20 @@
                elseif($pg['landing_image'] > '') {
                     ?>
                     <div class="row">
-                    <div class="col s12 m12 l12">
-                    <img class="responsive-img waves-effect waves-light" style="width: 100%;" src="<?php echo $g['site_url'] ?>/content/assets/landing_images/<?php echo $pg['landing_image'] ?>" />
+                    <?php
+                    if($st->getStyle('landing_width') == 'f') {
+                         ?>
+                         <div class="col s12 m12 l12">
+                         
+                         <?php
+                    } else {
+                         ?>
+                         <div class="col s12 m6 l6 offset-m3 offset-l3">
+                         
+                         <?php
+                    }
+                    ?>
+                    <img class="responsive-img waves-effect waves-light <?php if($st->getStyle('landing_width') == 'c') { echo $st->getStyle('landing_shadow_depth'); } ?>" style="width: 100%;" src="<?php echo $g['site_url'] ?>/content/assets/landing_images/<?php echo $pg['landing_image'] ?>" />
                     </div>
                     </div>
                     

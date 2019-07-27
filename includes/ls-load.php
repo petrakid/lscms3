@@ -16,7 +16,6 @@ ini_set('include_path',$path_combined);
 
 session_start();
 
-// grab the database variables and connect to it
 include 'includes/ls-config.php';
 
 try {
@@ -30,12 +29,10 @@ catch(PDOException $e) {
 
 require_once('includes/ls-cron.php');
 
-// get global configuration
 $glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
 $g = $glb->fetch(PDO::FETCH_ASSOC);
 $_SESSION['site_url'] = $g['site_url'];
 
-// initiate functions
 include 'includes/ls-functions.php';
 include 'includes/ls-classes.php';
 include 'ls-admin/includes/admin.class.php';
@@ -44,8 +41,8 @@ $b = new Blocks($db);
 $m = new Menu($db);     
 $p = new Page($db); 
 $sm = new SocialMedia($db);
+$st = new Style($db);
 
-// initialize security
 $sec = new Security($db);
 if($sec->checkLoad($_SERVER['SCRIPT_NAME']) == 1) {
      die("You cannot load this site by the method you chose.");
@@ -71,8 +68,6 @@ if($g['maintenance'] == 1) {
      }
 }
 
-
-// load the page
 if(isset($_SESSION['isLoggedIn'])) {
      $a = new Admin($db); 
      $plg = new Plugins($db);

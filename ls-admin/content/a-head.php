@@ -9,12 +9,21 @@
   <meta name="robots" content="noindex, nofollow" />
   <title><?php if(isset($a)) { echo $a->getPageTitle($_GET['s']); } else { echo 'Log In'; } ?></title>
   
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+     <script src="//cdn.lutherhost.net/js/jquery/jquery.fontselect.js"></script>
+     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+     <script>
+     WebFont.load({
+          google: {
+               families: ['<?php echo $a->getWebFonts('parent_menu_font') ?>', '<?php echo $a->getWebFonts('child_menu_font'); ?>']
+          }
+     });
+     </script>
+     
+     <link href="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet" />
+     <script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-ext-addclass.js"></script>
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-attributes.js"></script>
      <script src="<?php echo $g['site_url'] ?>/ls-admin/js/sup/summernote-image-shapes.js"></script>
@@ -27,8 +36,9 @@
      </script>
   
   <link rel="stylesheet" href="<?php echo $g['site_url'] ?>/css/materialize.css" />
+  <link rel="stylesheet" href="//cdn.lutherhost.net/css/jquery/jquery.fontselect.css" />
   <link rel="stylesheet" href="<?php echo $g['site_url'] ?>/css/a-style.css" media="screen,projection" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
 </head>
 
 <body>

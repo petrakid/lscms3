@@ -124,6 +124,173 @@ function processSortBetween(id, position, sender_id, receiver_id)
      })       
 }
 
+function updateStyle(f, v)
+{
+     $.ajax({
+          url: href + '/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': f,
+               'v': v
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }                     
+     })      
+}
+
+function displayLogo(input, logo)
+{
+     fData = new FormData();
+     fData.append('update_logo', 1);
+     fData.append('site_logo', $('input[name=site_logo]')[0].files[0]); 
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: fData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');
+               if(input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                         $('#current_logo').attr('src', e.target.result).width('100%')
+                    }
+                    reader.readAsDataURL(input.files[0]);        
+               }              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }
+     })              
+}
+
+function deleteLogo(image)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'delete_logo': 1,
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');
+               $('#'+ image).hide();               
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }             
+     })
+}
+
+function applyParentFont(font)
+{   
+     font = font.replace(/\+/g, ' ');
+     font = font.split(':'); 
+     var fontFamily = font[0];
+     var fontWeight = font[1] || 400;
+     $('#parent_sample').css({fontFamily:"'" +fontFamily+ "'", fontWeight:fontWeight});
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'parent_menu_font',
+               'v': 'font-family: '+ fontFamily +'; font-weight: '+ fontWeight +';'
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })
+}
+
+function applyChildFont(font)
+{   
+     font = font.replace(/\+/g, ' ');
+     font = font.split(':'); 
+     var fontFamily = font[0];
+     var fontWeight = font[1] || 400;
+     $('#child_sample').css({fontFamily:"'" +fontFamily+ "'", fontWeight:fontWeight});
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'child_menu_font',
+               'v': 'font-family: '+ fontFamily +'; font-weight: '+ fontWeight +';'
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })     
+}
+
+function applyParentColor(color)
+{
+     $('#parent_sample').css('color', color);
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'parent_font_color',
+               'v': color
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })        
+}
+
+function applyChildColor(color)
+{
+     $('#child_sample').css('color', color);
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'child_font_color',
+               'v': color
+          },
+          success: function(data) {
+               Materialize.toast(data, 1800, 'rounded');              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })          
+}
+
+$(function(){
+	$('#select_parent_font').fontselect().on('change', function() {
+          applyParentFont(this.value);
+	});
+	$('#select_child_font').fontselect().on('change', function() {
+          applyChildFont(this.value);
+	});
+     $('#parent_font_color').on('change', function() {
+          applyParentColor(this.value);
+     })
+     $('#child_font_color').on('change', function() {
+          applyChildColor(this.value);
+     })
+});
+
 $(function() {
 	$(".phone_number").mask("(999)999-9999");
      $(".phone_number").on("blur", function() {

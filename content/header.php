@@ -11,6 +11,14 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+WebFont.load({
+     google: {
+          families: ['<?php echo $a->getWebFonts('parent_menu_font') ?>', '<?php echo $a->getWebFonts('child_menu_font'); ?>']
+     }
+});
+</script>
 
 <?php
 if(isset($_SESSION['isLoggedIn'])) {

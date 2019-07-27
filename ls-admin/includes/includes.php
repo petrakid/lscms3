@@ -159,6 +159,37 @@ if(isset($_POST['close_my_account'])) {
      
 }
 
+if(isset($_POST['update_style'])) {
+     $db->exec("UPDATE tbl_style SET `$_POST[f]` = '$_POST[v]' WHERE st_id = 1");
+     echo 'Updated';
+}
+
+if(isset($_POST['update_logo'])) {
+     $extarray = array('jpg', 'jpeg', 'png');
+     $root = $g['doc_root'];
+     if($_FILES['site_logo']['name'] > '') {
+          $ext = pathinfo($_FILES['site_logo']['name'], PATHINFO_EXTENSION);
+          $path = $root .'content/assets/logos/';
+          if(!in_array(strtolower($ext), $extarray)) {
+               echo 'The Logo Image you added does not have a valid file extension.  Only jpg (jpeg) and png images allowed. Changes not saved.';
+               die;
+          }
+          $_POST['site_logo'] = date('Ymdhis') . rand(1, 4) .'.'. $ext;
+          if(!move_uploaded_file($_FILES['site_logo']['tmp_name'], $path . $_POST['site_logo'])) {
+               echo 'The Logo Image did not upload correctly.';
+               die;
+          } else {
+               $db->exec("UPDATE tbl_style SET site_logo = '$_POST[site_logo]' WHERE st_id = 1");
+               echo 'Site Logo Updated';
+          }
+     }
+}
+
+if(isset($_POST['delete_logo'])) {
+     $db->exec("UPDATE tbl_style SET site_logo = '' WHERE st_id = 1");
+     echo 'Logo Removed';
+}
+
 if(isset($_POST['save_sm_key'])) {
      $db->exec("UPDATE tbl_social_media SET sm_api_key = '$_POST[sm_api_key]' WHERE sm_id = 1");
 }

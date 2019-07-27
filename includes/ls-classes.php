@@ -72,11 +72,12 @@ class Menu
      public $mid;
      public $dmenu;
      public $mmenu;
+     public $sts;
      
      public function __construct(PDO $db) {
           $this->db = $db;
      }
-     
+         
      public function dropdownBuild() {
           $dmenu = '';
           $drop = $this->db->query("SELECT menu_link, m_id FROM tbl_menu WHERE menu_status = 1 AND menu_parent_id = 0 ORDER BY menu_order");
@@ -85,7 +86,7 @@ class Menu
                if($drop2->rowCount() > 0) {
                     $dmenu .= '<ul id="dropdown'. $d['m_id'] .'" class="dropdown-content">'."\n";
                     while($d2 = $drop2->fetch(PDO::FETCH_ASSOC)) {
-                         $dmenu .= '<li><a href="/'. $d['menu_link'] .'/'. $d2['menu_link'] .'">'. stripslashes($d2['menu_name']) .'</a></li>'."\n";
+                         $dmenu .= '<li><a href="/'. $d['menu_link'] .'/'. $d2['menu_link'] .'" style="'. $this->getStyles('child_menu_font') .' color: '. $this->getStyles('child_font_color') .' !important;">'. stripslashes($d2['menu_name']) .'</a></li>'."\n";
                     }
                     $dmenu .= '</ul>'."\n";
                }
@@ -121,6 +122,11 @@ class Menu
           }
           return $mmenu;
      }
+
+     public function getStyles($f) {
+          $sts = new Style($this->db);
+          return $sts->getStyle($f);
+     }     
 }
 
 class Page
@@ -249,5 +255,29 @@ class Plugin
           }
      }
      
+}
+
+class Style
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getStyle($f) {
+          $style = $this->db->query("SELECT `$f` FROM tbl_style WHERE st_id = 1");
+          $st = $style->fetch(PDO::FETCH_ASSOC);
+          return $st[$f];
+     }
+     
+     public function getWebFonts($item) {
+          $font = $this->db->query("SELECT `$item` FROM tbl_style WHERE st_id = 1");
+          $ft = $font->fetch(PDO::FETCH_ASSOC);
+          $name = explode(":", $ft[$item]);
+          $name = explode(";", $name[1]);
+          $name = ltrim($name[0], " ");
+          return $name;          
+     }     
 }
 ?>

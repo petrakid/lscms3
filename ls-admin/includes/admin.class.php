@@ -293,6 +293,21 @@ class Admin
                $content = $this->db->query("SELECT tbl_menu.*, tbl_content.* FROM tbl_menu LEFT JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_content.menu_id = $mid");
           }
           return $content;
+     } 
+     
+     public function getStyleSettings() {
+          $style = $this->db->query("SELECT * FROM tbl_style WHERE st_id = 1");
+          $s = $style->fetch(PDO::FETCH_ASSOC);
+          return $s;
+     }
+     
+     public function getWebFonts($item) {
+          $font = $this->db->query("SELECT `$item` FROM tbl_style WHERE st_id = 1");
+          $ft = $font->fetch(PDO::FETCH_ASSOC);
+          $name = explode(":", $ft[$item]);
+          $name = explode(";", $name[1]);
+          $name = ltrim($name[0], " ");
+          echo $name;
      }
      
      public function sendEmail($type, $email, $content) {
