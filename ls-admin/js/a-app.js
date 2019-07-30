@@ -9,6 +9,8 @@ $(window).on('load', function() {
 
 $(function() {
      $('.modal').modal();
+     $('select').formSelect();
+     $('.collapsible').collapsible();
 });
 
 $(function() {
@@ -17,12 +19,10 @@ $(function() {
      })
 })
 
-//$(function() {
-     //$('.card-panel').matchHeight({
-          //property: 'min-height',
-          //byRow: true,    
-	//});
-//});
+function showToast(data)
+{
+     M.toast({html: data, displayLength: 1800, classes: 'rounded'});
+}
 
 $(function() {
      if($('#c_fullWidth').prop('checked') == false) {
@@ -47,7 +47,7 @@ $(function() {
                     type: 'POST',
                     data: data,
                     success: function(data) {
-                         Materialize.toast(data, 1800, 'rounded');
+                         showToast(data);
                     },
                     error: function(jqXHR, exception) {
                          console.log(jqXHR.status);
@@ -66,7 +66,7 @@ $(function() {
                     type: 'POST',
                     data: data,
                     success: function(data) {
-                         Materialize.toast(data, 1800, 'rounded');
+                         showToast(data);
                     },
                     error: function(jqXHR, exception) {
                          console.log(jqXHR.status);
@@ -88,7 +88,7 @@ $(function() {
                          type: 'POST',
                          data: data,
                          success: function(data) {
-                              Materialize.toast(data, 1800, 'rounded');
+                              showToast(data);
                          },
                          error: function(jqXHR, exception) {
                               console.log(jqXHR.status);
@@ -116,7 +116,7 @@ function processSortBetween(id, position, sender_id, receiver_id)
                'receiver_id': receiver_id
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');
+               showToast(data);
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -135,7 +135,7 @@ function updateStyle(f, v)
                'v': v
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');
+               showToast(data);
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -155,7 +155,7 @@ function displayLogo(input, logo)
           processData: false,
           contentType: false,
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');
+               showToast(data);
                if(input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function(e) {
@@ -179,7 +179,7 @@ function deleteLogo(image)
                'delete_logo': 1,
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');
+               showToast(data);
                $('#'+ image).hide();               
           },
           error: function(jqXHR, exception) {
@@ -204,7 +204,7 @@ function applyParentFont(font)
                'v': 'font-family: '+ fontFamily +'; font-weight: '+ fontWeight +';'
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');              
+               showToast(data);              
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -228,7 +228,7 @@ function applyChildFont(font)
                'v': 'font-family: '+ fontFamily +'; font-weight: '+ fontWeight +';'
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');              
+               showToast(data);              
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -248,7 +248,7 @@ function applyParentColor(color)
                'v': color
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');              
+               showToast(data);              
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -268,7 +268,7 @@ function applyChildColor(color)
                'v': color
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');              
+               showToast(data);              
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -308,10 +308,10 @@ function saveSmKey()
 {
      var smkey = $('#sm_api_key').val();
      if(smkey == '') {
-          Materialize.toast('You must enter the Addthis API Key before saving!', 1800, 'rounded');
+          showToast('You must enter the Addthis API Key before saving!')
      }
      else if(smkey.length < 10) {
-          Materialize.toast('This does not appear to be a correct API Key.', 1800, 'rounded');
+          showToast('This does not appear to be a correct API Key.');
      } else {
           $.ajax({
                url: href + '/ls-admin/includes/includes.php',
@@ -321,7 +321,7 @@ function saveSmKey()
                     'sm_api_key': smkey
                },
                success: function(data) {
-                    Materialize.toast('API Key saved successfully!', 1800, 'rounded');
+                    showToast(data);
                     setTimeout(function() {
                          window.location.reload()
                     }, 1500)
@@ -344,7 +344,7 @@ function saveSmField(f, v)
                'v': v
           },
           success: function(data) {
-               Materialize.toast('Entry saved successfully.', 1800, 'rounded');
+               showToast(data);
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -415,8 +415,8 @@ function newMenuForm()
           },
           success: function(data) {
                $('#newmenuform').html(data);
-               $('#nmenu_parent_id').material_select();
-               $('#nmenu_order').material_select();               
+               $('#nmenu_parent_id').formSelect();
+               $('#nmenu_order').formSelect();               
           }
      })
 }
@@ -464,7 +464,7 @@ function getChildren(sel)
           },
           success: function(data) {
                $('#nmenu_order').html(data);
-               $('#nmenu_order').material_select();
+               $('#nmenu_order').formSelect();
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -623,7 +623,7 @@ function addnMenu()
                'menu_parent_id': $('#n_menu_parent_id').val()
           },
           success: function(data) {
-               Materialize.toast(data, 1800, 'rounded');
+               showToast(data);
                setTimeout(function() {
                     window.location.reload()
                }, 2000)
@@ -674,7 +674,7 @@ function addSlide()
           contentType: false,
           success: function(data) {
 			$(function() {
-				Materialize.toast(data, 1800, 'rounded');
+				showToast(data);
 			})
                setTimeout(function() {
                     window.location.reload()
@@ -698,7 +698,7 @@ function changeSlideLink(slide)
           },
           success: function(data) {
                $('#slideRes').html(data);
-               $('#ucs_target').material_select();               
+               $('#ucs_target').formSelect();               
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -718,7 +718,7 @@ function updateSlideLink()
                'cs_target': $('#ucs_target').val()
           },
           success: function(data) {
-			Materialize.toast('Updated', 1000, 'rounded');
+			showToast(data);
 			setTimeout(function() {
 				window.location.reload()
 			}, 1500);
@@ -759,7 +759,7 @@ function updateSlideType()
                'cs_content': $('#ucs_content').val()
           },
           success: function(data) {
-			Materialize.toast('Updated', 1500, 'rounded');
+			showToast(data);
 			setTimeout(function() {
 				window.location.reload()
 			}, 1500);
@@ -780,7 +780,7 @@ function showSlide(slide)
                'cs_id': slide
           },
           success: function(data) {
-			Materialize.toast('Updated', 1500, 'rounded');
+			showToast(data);
 			setTimeout(function() {
 				window.location.reload()
 			}, 1500);
@@ -801,7 +801,7 @@ function hideSlide(slide)
                'cs_id': slide
           },
           success: function(data) {
-			Materialize.toast('Updated', 1500, 'rounded');
+			showToast(data);
 			setTimeout(function() {
 				window.location.reload()
 			}, 1500);
@@ -823,7 +823,7 @@ function removeSlide(slide)
                     'cs_id': slide
                },
                success: function(data) {
-				Materialize.toast('Slide Removed', 1500, 'rounded');
+				showToast(data);
 				setTimeout(function() {
 					window.location.reload()
 				}, 1500);
@@ -846,7 +846,7 @@ function editUser(userid)
           },
           success: function(data) {
                $('#usermodalc').html(data);
-               $('#security_level').material_select(); 
+               $('#security_level').formSelect(); 
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1034,7 +1034,7 @@ function closeMyAccount()
                     'close_my_account': 1,
                },
                success: function(data) {
-                    alert(data);
+                    showToast(data);
                     setTimeout(function() {
                          window.location.href = href;
                     }, 1000)
@@ -1196,7 +1196,7 @@ function addUser()
           },
           success: function(data) {
                $('#usermodalc').html(data);
-               $('#security_level').material_select();           
+               $('#security_level').formSelect();           
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1322,8 +1322,6 @@ $(function() {
           }
      }
 
-     $('select').material_select();
-
      var indeterminateCheckbox = document.getElementById('indeterminate-checkbox');
      if (indeterminateCheckbox !== null)
      indeterminateCheckbox.indeterminate = true;
@@ -1377,7 +1375,7 @@ $(function() {
           selectYears: 15
      });
 
-     $('select').not('.disabled').material_select();
+     $('select').not('.disabled').formSelect();
      var leftnav = $(".page-topbar").height();
      var leftnavHeight = window.innerHeight - leftnav;
      if (!$('#slide-out.leftside-navigation').hasClass('native-scroll')) {
@@ -1670,7 +1668,7 @@ var SaveButton = function(context) {
                     },
                     success: function(data) {
 					$(function() {
-						Materialize.toast('Update Successful!', 2500, 'rounded');
+						showToast(data);
 					});
                          setTimeout(function() {
                               window.history.back();
@@ -1700,9 +1698,7 @@ var SaveButtonB = function(context) {
                          'block_content': $('#summerblock').summernote('code')
                     },
                     success: function(data) {
-					$(function() {
-						Materialize.toast('Update Successful!', 2500, 'rounded');
-					});
+					showToast(data);
                          setTimeout(function() {
                               window.location.reload();
                          }, 1000);
@@ -1726,9 +1722,7 @@ function updateSermonConfig(field, value) {
                'value': value
           },
           success: function(data) {
-			$(function() {
-				Materialize.toast('Update Successful!', 2500, 'rounded');
-			})
+               showToast(data);
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1747,7 +1741,7 @@ function viewPreacher(preacher)
                },
                success: function(data) {
                     $('#prRes').html(data);
-                    $('#ntitle').material_select();
+                    $('#ntitle').formSelect();
                },
                error: function(jqXHR, exception) {
                     console.log(jqXHR.status);
@@ -1763,7 +1757,7 @@ function viewPreacher(preacher)
                },
                success: function(data) {
                     $('#prRes').html(data);
-                    $('#title').material_select();
+                    $('#title').formSelect();
                },
                error: function(jqXHR, exception) {
                     console.log(jqXHR.status);
@@ -1784,7 +1778,7 @@ function updatePreacher(p,f,v)
                'pr_id': p
           },
           success: function(data) {
-               Materialize.toast('Update Successful!', 2500, 'rounded');
+               showToast(data);
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1803,7 +1797,7 @@ function deletePreacher(preacher)
                     'pr_id': preacher
                },
                success: function(data) {
-                    Materialize.toast('Preacher Removed', 2500, 'rounded');
+                    showToast(data);
                     setTimeout(function(){
                          window.location.reload()
                     }, 1500)                    
@@ -1854,7 +1848,7 @@ $(function() {
                     type: 'POST',
                     data: data,
                     success: function(data) {
-                         Materialize.toast(data, 1800, 'rounded');
+                         showToast(data);
                     },
                     error: function(jqXHR, exception) {
                          console.log(jqXHR.status);
@@ -1875,7 +1869,7 @@ function newSeason()
           },
           success: function(data) {
                $('#seaRes').html(data);
-               $('#nseason_color').material_select();               
+               $('#nseason_color').formSelect();               
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1894,7 +1888,7 @@ function addSeason()
                'season_color': $('#nseason_color').val()
           },
           success: function(data) {
-                    Materialize.toast('Season Added!', 2500, 'rounded');
+                    showToast(data);
                     setTimeout(function(){
                          window.location.reload()
                     }, 1500)               
@@ -1916,7 +1910,7 @@ function editSeason(season)
           },
           success: function(data) {
                $('#seaRes').html(data);
-               $('#season_color').material_select();               
+               $('#season_color').formSelect();               
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1936,7 +1930,7 @@ function updateSeason(s,f,v)
                'se_id': s
           },
           success: function(data) {
-               Materialize.toast('Season Updated', 2500, 'rounded');               
+               showToast(data);               
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -1954,7 +1948,7 @@ function removeSeason(s)
                'se_id': s
           },
           success: function(data) {
-               Materialize.toast('Season Removed', 2500, 'rounded');
+               showToast(data);
                setTimeout(function(){
                     window.location.reload()
                }, 1500)                              
@@ -1992,7 +1986,7 @@ function addSeries()
                'series_name': $('#nseries_name').val(),
           },
           success: function(data) {
-                    Materialize.toast('Series Added!', 2500, 'rounded');
+                    showToast(data);
                     setTimeout(function(){
                          window.location.reload()
                     }, 1500)               
@@ -2033,7 +2027,7 @@ function updateSeries(p,f,v)
                'se_id': p
           },
           success: function(data) {
-               Materialize.toast('Series Updated', 2500, 'rounded');               
+               showToast(data);               
           },
           error: function(jqXHR, exception) {
                console.log(jqXHR.status);
@@ -2051,7 +2045,7 @@ function removeSeries(s)
                'se_id': s
           },
           success: function(data) {
-               Materialize.toast('Series Removed', 2500, 'rounded');
+               showToast(data);
                setTimeout(function(){
                     window.location.reload()
                }, 1500)                              
@@ -2211,9 +2205,7 @@ function updateValue(field, value)
 			'value': value
 		},
 		success: function(data) {
-			$(function() {
-				Materialize.toast('Update Successful!', 2500, 'rounded');
-			})
+               showToast(data);
 		},
 		error: function(jqXHR, exception) {
 			console.log(jqXHR.status);
@@ -2232,7 +2224,7 @@ function changeCSValue(field, value)
                'value': value
           },
           success: function(data) {
-               Materialize.toast('Update Successful!', 2500, 'rounded');
+               showToast(data);
           },
 		error: function(jqXHR, exception) {
 			console.log(jqXHR.status);
@@ -2266,7 +2258,8 @@ function updateBlock(area, value)
                'update_block': 1,
                'field': area,
                'value': value
-          }, success: function(data) {
+          },
+          success: function(data) {
 
           },
 		error: function(jqXHR, exception) {
@@ -2351,7 +2344,7 @@ function showCompany(box)
 				'block_area': $('#blockarea').val(),
 			},
 			success: function(data) {
-				Materialize.toast('Block Updated', 1500, 'rounded');
+				showToast(data);
 				setTimeout(function() {
 					window.location.reload()
 				}, 1500);

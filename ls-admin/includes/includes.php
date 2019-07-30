@@ -192,10 +192,12 @@ if(isset($_POST['delete_logo'])) {
 
 if(isset($_POST['save_sm_key'])) {
      $db->exec("UPDATE tbl_social_media SET sm_api_key = '$_POST[sm_api_key]' WHERE sm_id = 1");
+     echo 'Key Saved';
 }
 
 if(isset($_POST['save_sm_value'])) {
      $db->exec("UPDATE tbl_social_media SET `$_POST[f]` = '$_POST[v]' WHERE sm_id = 1");
+     echo 'Updated';
 }
 
 if(isset($_POST['item'])) {
@@ -204,6 +206,7 @@ if(isset($_POST['item'])) {
           $db->exec("UPDATE tbl_carousel_slides SET cs_order = $i WHERE cs_id = $value");
           $i++;
      }
+     echo 'Order Updated';
 }
 
 if(isset($_POST['mlist'])) {
@@ -248,6 +251,7 @@ if(isset($_POST['update_carousel'])) {
           }
      }
      $db->exec("UPDATE tbl_carousel_settings SET `$_POST[field]` = '$_POST[value]' WHERE c_id = 1");
+     echo 'Carousel Updated';
 }
 
 if(isset($_POST['add_slide'])) {
@@ -319,6 +323,7 @@ if(isset($_POST['change_slide_link'])) {
 
 if(isset($_POST['update_slide_link'])) {
      $db->exec("UPDATE tbl_carousel_slides SET cs_link = '$_POST[cs_link]', cs_target = '$_POST[cs_target]' WHERE cs_id = $_POST[cs_id]");
+     echo 'Updated';
 }
 
 if(isset($_POST['change_slide_type'])) {
@@ -326,6 +331,7 @@ if(isset($_POST['change_slide_type'])) {
      <h4 class="title">Change Slide Type</h4>
      <p>This option is currently unavailable but will be added in a later update.</p>
      <?php
+     echo 'Updated';     
 }
 
 if(isset($_POST['update_slide_type'])) {
@@ -334,14 +340,17 @@ if(isset($_POST['update_slide_type'])) {
 
 if(isset($_POST['show_slide'])) {
      $db->exec("UPDATE tbl_carousel_slides SET cs_status = 1 WHERE cs_id = $_POST[cs_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['hide_slide'])) {
-     $db->exec("UPDATE tbl_carousel_slides SET cs_status = 0 WHERE cs_id = $_POST[cs_id]");     
+     $db->exec("UPDATE tbl_carousel_slides SET cs_status = 0 WHERE cs_id = $_POST[cs_id]");
+     echo 'Updated';          
 }
 
 if(isset($_POST['remove_slide'])) {
      $db->exec("UPDATE tbl_carousel_slides SET cs_status = 9 WHERE cs_id = $_POST[cs_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['edit_content'])) {
@@ -351,6 +360,7 @@ if(isset($_POST['edit_content'])) {
 if(isset($_POST['save_edit'])) {
      $content = $db->quote($_POST['save_content']);
      $db->exec("UPDATE tbl_content SET section_content = $content WHERE p_id = $_POST[save_page] AND section_order = $_POST[save_section]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['save_quick_edit'])) {
@@ -362,6 +372,7 @@ if(isset($_POST['save_quick_edit'])) {
      $p_id = $c['m_id'];
      $content = addslashes($_POST['content']);
      $db->exec("UPDATE tbl_content SET section_content = '$content' WHERE menu_id = $p_id");
+     echo 'Updated';     
 }
 
 if(isset($_POST['new_menu_form'])) {
@@ -400,9 +411,24 @@ if(isset($_POST['new_menu_form'])) {
      <div class="input-field col s6"></div>
      <div class="col s6">
      <span class="helper-text">Select the Status of this new page.  Draft is selected by default.</span>
-     <p><input name="nmenu_status" id="mstatus1" value="1" type="radio" class="with-gap" /><label for="mstatus1"><span>Published</span></label></p>
-     <p><input name="nmenu_status" id="mstatus2" value="2" type="radio" class="with-gap" /><label for="mstatus2"><span>Hidden</span></label></p>
-     <p><input name="nmenu_status" id="mstatus0" value="0" type="radio" class="with-gap" checked="checked" /><label for="mstatus0"><span>Draft</span></label></p>
+     <p>
+     <label>
+     <input name="nmenu_status" id="mstatus1" value="1" type="radio" class="with-gap" />
+     <span>Published</span>
+     </label>
+     </p>
+     <p>
+     <label>
+     <input name="nmenu_status" id="mstatus2" value="2" type="radio" class="with-gap" />
+     <span>Hidden</span>
+     </label>
+     </p>
+     <p>
+     <label>
+     <input name="nmenu_status" id="mstatus0" value="0" type="radio" class="with-gap" checked="checked" />
+     <span>Draft</span>
+     </label>
+     </p>          
      </div>
      </div>
      </div>     
@@ -474,7 +500,7 @@ if(isset($_POST['save_new_page'])) {
      <th>Options</th>
      </tfoot>
      </table>   
-     <?php
+     <?php     
 }
 
 if(isset($_POST['add_new_menu'])) {
@@ -496,6 +522,7 @@ if(isset($_POST['delete_image'])) {
           $type = 'seo_image';
      }
      $db->exec("UPDATE tbl_content SET `$type` = '' WHERE p_id = $_POST[p_id]");
+     echo 'Deleted';     
 }
 
 if(isset($_POST['delete_page'])) {
@@ -599,7 +626,8 @@ if(isset($_POST['update_page'])) {
      $sql = rtrim($sql, ", ");
      $sql .= " WHERE `p_id` = $p_id";
      $db->exec($sql);
-     $db->exec("UPDATE tbl_menu SET menu_status = $menu_status, menu_link = '$menu_link' WHERE m_id = $m_id");    
+     $db->exec("UPDATE tbl_menu SET menu_status = $menu_status, menu_link = '$menu_link' WHERE m_id = $m_id");
+     echo 'Updated';         
 }
 
 if(isset($_POST['edit_user'])) {
@@ -907,6 +935,7 @@ if(isset($_POST['update_account'])) {
 
 if(isset($_POST['change_profile_value'])) {
      $db->exec("UPDATE tbl_users SET `$_POST[field]` = '$_POST[value]' WHERE user_id = '". $_SESSION['user']['user_id'] ."'");
+     echo 'Updated';     
 }
 
 if(isset($_POST['update_value'])) {
@@ -914,10 +943,12 @@ if(isset($_POST['update_value'])) {
 		$_POST['value'] = preg_replace("/[^0-9]/", "", str_replace(" ","", $_POST['value']));
 	}	
 	$db->exec("UPDATE tbl_globals SET `$_POST[field]` = '$_POST[value]' WHERE g_id = 1");
+     echo 'Updated';     
 }
 
 if(isset($_POST['update_sermon_config'])) {
      $db->exec("UPDATE tbl_sermons_settings SET `$_POST[field]` = '$_POST[value]' WHERE s_id = 1");
+     echo 'Updated';     
 }
 
 if(isset($_POST['view_preacher'])) {
@@ -1030,10 +1061,12 @@ if(isset($_POST['add_preacher'])) {
 
 if(isset($_POST['update_preacher'])) {
      $db->exec("UPDATE tbl_sermons_preachers SET `$_POST[f]` = '$_POST[v]' WHERE pr_id = $_POST[pr_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['delete_preacher'])) {
      $db->exec("UPDATE tbl_sermons_preachers SET preacher_status = 0 WHERE pr_id = $_POST[pr_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['new_season'])) {
@@ -1063,6 +1096,7 @@ if(isset($_POST['new_season'])) {
 
 if(isset($_POST['add_season'])) {
      $db->exec("INSERT INTO tbl_sermons_seasons (season_name, season_order, season_status, season_color) VALUES ('$_POST[season_name]', 0, 1, '$_POST[season_color]')");
+     echo 'Season Added';     
 }
 
 if(isset($_POST['edit_season'])) {
@@ -1093,10 +1127,12 @@ if(isset($_POST['edit_season'])) {
 
 if(isset($_POST['update_season'])) {
      $db->exec("UPDATE tbl_sermons_seasons SET `$_POST[f]` = '$_POST[v]' WHERE se_id = $_POST[se_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['remove_season'])) {
-     $db->exec("UPDATE tbl_sermons_seasons SET season_status = 0 WHERE se_id = $_POST[se_id]");     
+     $db->exec("UPDATE tbl_sermons_seasons SET season_status = 0 WHERE se_id = $_POST[se_id]");
+     echo 'Removed';          
 }
 
 if(isset($_POST['season'])) {
@@ -1104,7 +1140,8 @@ if(isset($_POST['season'])) {
      foreach($_POST['season'] AS $value) {
           $db->exec("UPDATE tbl_sermons_seasons SET season_order = $i WHERE se_id = $value");
           $i++;
-     }     
+     }
+     echo 'Updated';          
 }
 
 if(isset($_POST['new_series'])) {
@@ -1120,6 +1157,7 @@ if(isset($_POST['new_series'])) {
 
 if(isset($_POST['add_series'])) {
      $db->exec("INSERT INTO tbl_sermons_series (series_name, series_status) VALUES ('$_POST[series_name]', 1)");
+     echo 'Added';     
 }
 
 if(isset($_POST['edit_series'])) {
@@ -1138,10 +1176,12 @@ if(isset($_POST['edit_series'])) {
 
 if(isset($_POST['update_series'])) {
      $db->exec("UPDATE tbl_sermons_series SET `$_POST[f]` = '$_POST[v]' WHERE se_id = $_POST[se_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['remove_series'])) {
-     $db->exec("UPDATE tbl_sermons_series SET series_status = 0 WHERE se_id = $_POST[se_id]");     
+     $db->exec("UPDATE tbl_sermons_series SET series_status = 0 WHERE se_id = $_POST[se_id]");
+     echo 'Removed';          
 }
 
 if(isset($_POST['new_sermon'])) {
@@ -1194,18 +1234,22 @@ if(isset($_POST['change_featured'])) {
           $db->exec("UPDATE tbl_sermons SET sermon_featured = 0 WHERE se_id = $_POST[se_id]");
           echo '0';
      }
+     echo 'Updated';     
 }
 
 if(isset($_POST['hide_sermon'])) {
      $db->exec("UPDATE tbl_sermons SET sermon_status = 0 WHERE se_id = $_POST[se_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['show_sermon'])) {
      $db->exec("UPDATE tbl_sermons SET sermon_status = 1 WHERE se_id = $_POST[se_id]");
+     echo 'Updated';     
 }
 
 if(isset($_POST['delete_sermon'])) {
      $db->exec("UPDATE tbl_sermons SET sermon_status = 9 WHERE se_id = $_POST[se_id]");
+     echo 'Deleted';     
 }
 
 if(isset($_POST['edit_block'])) {
@@ -1222,8 +1266,10 @@ if(isset($_POST['edit_block'])) {
 			<div class="row">
 			<input type="hidden" id="blockarea" value="fl" />
 			<p>
+               <label>
 			<input type="checkbox" id="company_onlyl" onchange="showCompany('#company_onlyl')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
-			<label for="company_onlyl">Check to populate this block with your company information (overrides what you enter below).</label>
+			<span>Check to populate this block with your company information (overrides what you enter below).</span>
+               </label>
 			</p>
 			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
 			</div>
@@ -1235,8 +1281,10 @@ if(isset($_POST['edit_block'])) {
 			<div class="row">
 			<input type="hidden" id="blockarea" value="fm" />
 			<p>
+               <label>
 			<input type="checkbox" id="company_onlym" onchange="showCompany('#company_onlym')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
-			<label for="company_onlym">Check to populate this block with your company information (overrides what you enter below).</label>
+			<span>Check to populate this block with your company information (overrides what you enter below).</span>
+               </label>
 			</p>
 			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
 			</div>
@@ -1248,8 +1296,10 @@ if(isset($_POST['edit_block'])) {
 			<div class="row">
 			<input type="hidden" id="blockarea" value="fr" />
 			<p>
+               <label>
 			<input type="checkbox" id="company_onlyr" onchange="showCompany('#company_onlyr')" <?php if($bl['block_content'] == 'company') { echo 'checked="checked"';} ?> />
-			<label for="company_onlyr">Check to populate this block with your company information (overrides what you enter below).</label>
+			<span>Check to populate this block with your company information (overrides what you enter below).</span>
+               </label>
 			</p>
 			<div id="summerblock"><?php echo $bl['block_content'] ?></div>
 			</div>
@@ -1271,20 +1321,32 @@ if(isset($_POST['edit_block'])) {
                </div>
                <div class="col s12 m4 l4">
                <p>
+               <label>
                <input type="radio" name="navbar_type" id="type_fixed" value="f" <?php if($b->getBlockValue('navf') == 'f') { echo 'checked="checked"'; } ?> onchange="updateBlock('navf', 'f')" />
-               <label for="type_fixed">Fixed Nabvar</label><br />
+               <span>Fixed Nabvar</span>
+               </label>
+               </p>
+               <p>
+               <label>
                <input type="radio" name="navbar_type" id="type_fluid" value="l" <?php if($b->getBlockValue('navf') == 'l') { echo 'checked="checked"'; } ?> onchange="updateBlock('navf', 'l')" />
-               <label for="type_fluid">Fluid Nabvar (default)</label>               
+               <span>Fluid Nabvar (default)</span>
+               </label>               
                </p>
                </div>
                </div>
                <div class="row">
                <div class="col s12 m4 l4">
                <p>
+               <label>
                <input type="radio" name="menu_align" id="align_left" value="l" <?php if($b->getBlockValue('navm') == 'l') { echo 'checked="checked"'; } ?> onchange="updateBlock('navm', 'l')" />
-               <label for="align_left">Menu Alignment Left</label><br />
+               <span>Menu Alignment Left</span>
+               </label>
+               </p>
+               <p>
+               <label>
                <input type="radio" name="menu_align" id="align_right" value="l" <?php if($b->getBlockValue('navm') == 'r') { echo 'checked="checked"'; } ?> onchange="updateBlock('navm', 'r')" />
-               <label for="align_right">Menu Alignment Right</label>               
+               <span>Menu Alignment Right</span>
+               </label>               
                </p>
                </div>
                <div class="col s12 m4 l4">
@@ -1314,13 +1376,16 @@ if(isset($_POST['edit_block'])) {
 
 if(isset($_POST['update_block'])) {
      $db->exec("UPDATE tbl_blocks SET `block_content` = '$_POST[value]' WHERE block_area = '$_POST[field]'");
+     echo 'Updated';     
 }
 
 if(isset($_POST['save_block_content'])) {
 	$blockcontent = $db->quote($_POST['block_content']);
 	$db->exec("UPDATE tbl_blocks SET block_content = $blockcontent WHERE block_area = '$_POST[block_area]'");
+     echo 'Updated';     
 }
 
 if(isset($_POST['save_block_company'])) {
 	$db->exec("UPDATE tbl_blocks SET block_content = 'company' WHERE block_area = '$_POST[block_area]'");
+     echo 'Updated';     
 }

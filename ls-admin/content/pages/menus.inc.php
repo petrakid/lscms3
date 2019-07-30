@@ -23,7 +23,7 @@
 </div>
 </div>
 <div class="row">
-<div class="input-field">
+<div class="input-field col s12">
 <select id="n_menu_parent_id" name="n_menu_parent_id">
 <option value="0" disabled selected>None</option>
 <?php echo $a->getMenuForAdd() ?>
@@ -35,13 +35,25 @@
 
 <div class="row">
 <div class="col s3">
-<span class="helper-text">Menu Status</span><br />
+<span class="helper-text">Menu Status</span>
+<p>
+<label>
 <input type="radio" id="n_menu_status1" name="n_menu_status" value="1" class="with-gap" />
-<label for="n_menu_status1">Published</label><br />
+<span>Published</span>
+</label>
+</p>
+<p>
+<label>
 <input type="radio" id="n_menu_status2" name="n_menu_status" value="2" class="with-gap" />
-<label for="n_menu_status2">Hidden</label><br />
+<span>Hidden</span>
+</label>
+</p>
+<p>
+<label>
 <input type="radio" id="n_menu_status0" name="n_menu_status" checked="checked" value="0" class="with-gap" />
-<label for="n_menu_status0">Draft</label>
+<span>Draft</span>
+</label>
+</p>
 </div>
 </div>
 <div class="row">

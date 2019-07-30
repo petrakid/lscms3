@@ -8,10 +8,16 @@
 <h5 class="card-title">Logo Options</h5>
 <span class="helper-text">Page Title or Logo</span>
 <p>
+<label>
 <input class="with-gap" name="page_title" id="page_titlet" type="radio" value="t" onclick="updateStyle('page_title', this.value)" <?php if($st['page_title'] == 't') { echo 'checked="checked"';} ?> />
-<label for="page_titlet">Text</label><br />
+<span>Text</span>
+</label>
+</p>
+<p>
+<label>
 <input class="with-gap" name="page_title" id="page_titlel" type="radio" value="l" onclick="updateStyle('page_title', this.value)" <?php if($st['page_title'] == 'l') { echo 'checked="checked"';} ?> />
-<label for="page_titlel">Logo</label>
+<span>Logo</span>
+</label>
 </p>
 <span class="helper-text">Site Logo (shows if you select "Logo")</span>
 <div class="file-field input-field">
@@ -54,7 +60,7 @@
 <div class="input-field">
 <input id="select_child_font" type="text" value="<?php echo $a->getWebFonts('child_menu_font') ?>" />
 </div>
-<span class="helper-text">Parent Font Color</span>
+<span class="helper-text">Child Font Color</span>
 <div class="input-field">
 <input id="child_font_color" type="color" value="<?php echo $st['child_font_color'] ?>" />
 </div>
@@ -67,10 +73,16 @@
 <h5 class="card-title">Landing Images</h5>
 <span class="helper-text">Image Width</span>
 <p>
+<label>
 <input class="with-gap" name="landing-width" id="landing-widthf" type="radio" value="f" onclick="updateStyle('landing_width', this.value)" <?php if($st['landing_width'] == 'f') { echo 'checked="checked"';} ?> />
-<label for="landing-widthf">Full Width</label><br />
+<span>Full Width</span>
+</label>
+</p>
+<p>
+<label>
 <input class="with-gap" name="landing-width" id="landing-widthc" type="radio" value="c" onclick="updateStyle('landing_width', this.value)" <?php if($st['landing_width'] == 'c') { echo 'checked="checked"';} ?> />
-<label for="landing-widthc">Centered</label>
+<span>Centered</span>
+</label>
 </p>
 <span class="helper-text">Landing Image Shadow Depth (Centered only)</span>
 <div class="row">

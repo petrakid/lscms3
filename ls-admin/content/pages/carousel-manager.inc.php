@@ -15,12 +15,12 @@ $st = $cars->fetch(PDO::FETCH_ASSOC);
 <div class="input-field col s6">
 <input id="c_duration" name="c_duration" type="number" value="<?php echo $st['c_duration'] ?>" onblur="changeCSValue(this.id, this.value)" />
 <label for="c_duration" class="active">Slide View Duration (in milliseconds)</label>
-<span class="helper-text helper-text-custom">(1000 milliseconds = 1 second)</span>
+<span class="helper-text">(1000 milliseconds = 1 second)</span>
 </div>
 <div class="input-field col s6">
 <input id="c_interval" name="c_interval" type="number" value="<?php echo $st['c_interval'] ?>" onblur="changeCSValue(this.id, this.value)" />
 <label for="c_interval" class="active">Transition Duration (in milliseconds)</label>
-<span class="helper-text helper-text-custom">(1000 milliseconds = 1 second)</span>
+<span class="helper-text">(1000 milliseconds = 1 second)</span>
 </div>
 </div>
 <div class="space"></div>
@@ -47,12 +47,16 @@ Full Width
 <div class="col s12">
 <span class="helper-text">Slide Indicators</span>
 <p>
+<label>
 <input type="radio" name="c_indicators" id="c_indicators1" value="1" <?php if($st['c_indicators'] == 1) { echo 'checked="checked"'; } ?> onchange="changeCSValue('c_indicators', this.value)" />
-<label for="c_indicators1">Show</label>
+<span>Show</span>
+</label>
 </p>
 <p>
+<label>
 <input type="radio" name="c_indicators" id="c_indicators0" value="0" <?php if($st['c_indicators'] == 0) { echo 'checked="checked"'; } ?> onchange="changeCSValue('c_indicators', this.value)" />
-<label for="c_indicators0">Hide</label>
+<span>Hide</span>
+</label>
 </p>
 </div>
 </div>

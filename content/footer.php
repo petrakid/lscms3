@@ -71,7 +71,7 @@
     </div>
   </footer>
   
-<script src="//cdn.lutherhost.net/js/materialize/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="<?php echo $g['site_url'] ?>/js/app.js"></script>
 
 <?php

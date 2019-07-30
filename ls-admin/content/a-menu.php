@@ -107,7 +107,7 @@ if(isset($_GET['f']) && $_GET['f'] == '') {
      </li>
      </ul>
      
-     <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown-nav"><?php echo $_SESSION['user']['first_name'] .' '. $_SESSION['user']['last_name'] ?><i class="mdi-navigation-arrow-drop-down right"></i></a>
+     <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn dropdown-trigger" href="#" data-target="profile-dropdown-nav"><?php echo $_SESSION['user']['first_name'] .' '. $_SESSION['user']['last_name'] ?><i class="mdi-navigation-arrow-drop-down right"></i></a>
      <p class="user-roal">
      <?php
      switch($_SESSION['user']['security_level']) {

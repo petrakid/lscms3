@@ -83,6 +83,7 @@ $z = $x->fetch(PDO::FETCH_ASSOC);
 <label for="description">Page Description</label>
 <span class="helper-text">As with Search Keywords, helps search engines find this page.</span>
 </div>
+</div>
 <div class="row">
 <div class="col s3">
 <div class="image-container">
@@ -97,7 +98,6 @@ $z = $x->fetch(PDO::FETCH_ASSOC);
 <img class="image responsive-img z-depth-3" id="li" src="<?php echo $g['site_url'] ?>/content/assets/landing_images/<?php echo $z['landing_image'] ?>" style="width: 100%;" alt="No Image Added" />
 <div class="overlay">
 <a href="#!" class="icon" title="Delete Image" onclick="deleteImage('li', <?php echo $z['p_id'] ?>)"><i class="fas fa-trash"></i></a>
-</div>
 </div>
 </div>
 </div>

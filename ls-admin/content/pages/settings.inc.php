@@ -69,42 +69,58 @@
 	<h4 class="card-title">Security & Data Settings</h4>
 	<span class="helper-text white-text">Site Maintenance Mode</span>
 	<p>
+     <label>
 	<input class="with-gap green-text" name="maintenance" id="m_0" type="radio" onClick="updateValue('maintenance', 0)" <?php if($g['maintenance'] == 0) { echo 'checked="checked"';} ?> />
-	<label for="m_0"><span class="green-text">Site is ON <i class="far fa-smile green-text"></i></span></label>
+	<span class="green-text">Site is ON <i class="far fa-smile green-text"></i></span>
+     </label>
 	</p>
 	<p>
+     <label>
 	<input class="with-gap" name="maintenance" id="m_1" type="radio" onClick="updateValue('maintenance', 1)" <?php if($g['maintenance'] == 1) { echo 'checked="checked"';} ?> />
-	<label for="m_1"><span class="red-text">Site is OFF <i class="far fa-frown red-text"></i></span></label>	
+	<span><span class="red-text">Site is OFF <i class="far fa-frown red-text"></i></span>
+     </label>	
 	</p>
 	<div class="divider"></div>
 	<span class="helper-text white-text">User Registrations</span>
 	<p>
+     <label>
 	<input class="with-gap green" name="allow_reg" id="r_0" type="radio" onClick="updateValue('allow_reg', 1)" <?php if($g['allow_reg'] == 1) { echo 'checked="checked"';} ?> />
-	<label for="r_0"><span class="green-text">Registrations Allowed</span></label>
+	<span class="green-text">Registrations Allowed</span>
+     </label>
 	</p>
 	<p>
+     <label>
 	<input class="with-gap red" name="allow_reg" id="r_1" type="radio" onClick="updateValue('allow_reg', 0)" <?php if($g['allow_reg'] == 0) { echo 'checked="checked"';} ?> />
-	<label for="r_1"><span class="red-text">Registrations Restricted</span></label>	
+	<span class="red-text">Registrations Restricted</span>
+     </label>	
 	</p>
 	<div class="divider"></div>
 	<span class="helper-text white-text">Password Reset</span>
 	<p>
+     <label>
 	<input class="with-gap green" name="allow_reset_pass" id="p_0" type="radio" onClick="updateValue('allow_reset_pass', 1)" <?php if($g['allow_reset_pass'] == 1) { echo 'checked="checked"';} ?> />
-	<label for="p_0"><span class="green-text">Reset Password Allowed</span></label>
+	<span class="green-text">Reset Password Allowed</span>
+     </label>
 	</p>
 	<p>
+     <label>
 	<input class="with-gap red" name="allow_reset_pass" id="r_1" type="radio" onClick="updateValue('allow_reset_pass', 0)" <?php if($g['allow_reset_pass'] == 0) { echo 'checked="checked"';} ?> />
-	<label for="p_1"><span class="red-text">Reset Password Restricted</span></label>	
+	<span class="red-text">Reset Password Restricted</span>
+     </label>	
 	</p>
 	<div class="divider"></div>
 	<span class="helper-text white-text">Remember Login Cookie</span>
 	<p>
+     <label>
 	<input class="with-gap green" name="allow_remember_me" id="c_0" type="radio" onClick="updateValue('allow_remember_me', 1)" <?php if($g['allow_remember_me'] == 1) { echo 'checked="checked"';} ?> />
-	<label for="c_0"><span class="green-text">Remember Login Allowed</span></label>
+	<span class="green-text">Remember Login Allowed</span>
+     </label>
 	</p>
 	<p>
+     <label>
 	<input class="with-gap red" name="allow_remember_me" id="c_1" type="radio" onClick="updateValue('allow_remember_me', 0)" <?php if($g['allow_remember_me'] == 0) { echo 'checked="checked"';} ?> />
-	<label for="c_1"><span class="red-text">Remember Login Restricted</span></label>	
+	<span class="red-text">Remember Login Restricted</span>
+     </label>	
 	</p>
 	<div class="row">
 	<div class="input-field col s12">

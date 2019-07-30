@@ -35,7 +35,7 @@
 	var uckey = '<?php echo $g['uploadcare_api'] ?>';		
      </script>
   
-  <link rel="stylesheet" href="//cdn.lutherhost.net/css/materialize/materialize.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
   <link rel="stylesheet" href="//cdn.lutherhost.net/css/jquery/jquery.fontselect.css" />
   <link rel="stylesheet" href="<?php echo $g['site_url'] ?>/css/a-style.css" media="screen,projection" />
   <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />

@@ -7604,3 +7604,30 @@ ul.sort-child :hover {
      margin: 0 !important;
      box-sizing: inherit !important;
 }
+
+/*input[type="radio"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}
+
+input[type="checkbox"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}
+
+select {
+     display: inherit !important;
+}
+
+.select-label {
+     position: inherit !important;
+     padding-left: 7px !important;
+}*/
+
+.dropdown-content {
+     min-width: 150px !important;
+     padding: 8px !important;
+     
+}

@@ -153,3 +153,15 @@ footer.page-footer {
 .site-logo {
      height: 90%;
 }
+
+/*input[type="radio"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}
+
+input[type="checkbox"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}*/
