@@ -32,7 +32,7 @@
                <?php
           } else {
                ?>
-               <a id="logo-container" href="<?php echo $g['site_url'] .'/'. $g['homepage'] ?>" class="brand-logo white-text <?php if($b->getBlockValue('navm') == 'l') { echo 'right'; } ?>"><?php echo $g['site_name'] ?></a>                
+               <a id="logo-container" href="<?php echo $g['site_url'] .'/'. $g['homepage'] ?>" class="brand-logo <?php if($b->getBlockValue('navm') == 'l') { echo 'right'; } ?>" style="<?php echo $st->getStyle('title_font') ?> color: <?php echo $st->getStyle('title_font_color') ?>"><?php echo $g['site_name'] ?></a>                
                
                <?php
           }

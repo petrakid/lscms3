@@ -51,7 +51,7 @@ body {
 
 <?php
 if($sec->allowRememberme() !== false) {
-     echo '<div class="row"><input type="checkbox" id="remember_me" name="remember_me" /><label for="remember_me">Remember Me for 30 days?</label></div>'."\n";
+     echo '<div class="row"><div class=col s12><p><label><input type="checkbox" id="remember_me" name="remember_me" /><span>Remember Me for 30 days?</span></label></div></div>'."\n";
 }
 ?>
 

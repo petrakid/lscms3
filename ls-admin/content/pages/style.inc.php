@@ -40,6 +40,21 @@
 </div>
 </div>
 </div>
+<div class="row">
+<div class="col s12">
+<span class="helper-text">Title Font</span>
+<div class="input-field">
+<input id="select_title_font" type="text" value="<?php echo $a->getWebFonts('title_font') ?>" />
+</div>
+<span class="helper-text">Title Font Color</span>
+<div class="input-field">
+<input id="title_font_color" type="color" value="<?php echo $st['title_font_color'] ?>" />
+</div>
+<nav class="<?php echo $b->getBlockValue('navc') ?> <?php echo $b->getBlockValue('navcc') ?>">
+<a class="brand-logo" href="#!" id="title_sample" style="<?php echo $st['title_font'] ?> color: <?php echo $st['title_font_color'] ?>"><?php echo $g['site_name'] ?></a>
+</nav>
+</div>
+</div>
 </div>
 </div>
 
@@ -54,7 +69,7 @@
 <div class="input-field">
 <input id="parent_font_color" type="color" value="<?php echo $st['parent_font_color'] ?>" />
 </div>
-<p id="parent_sample" style="<?php echo $st['parent_menu_font'] ?>">Lorem ipsum dolor sit amet consectetur adipiscing elit, hac accumsan imperdiet varius ultricies ligula leo integer, porta torquent netus eleifend hendrerit ex. Conubia eu ligula nullam lobortis diam tincidunt sagittis massa potenti euismod curabitur convallis dis, magna cubilia lorem ac penatibus pulvinar varius nibh gravida nisi litora.</p>
+<p id="parent_sample" style="<?php echo $st['parent_menu_font'] ?>  color: <?php echo $st['parent_font_color'] ?>">Lorem ipsum dolor sit amet consectetur adipiscing elit, hac accumsan imperdiet varius ultricies ligula leo integer, porta torquent netus eleifend hendrerit ex. Conubia eu ligula nullam lobortis diam tincidunt sagittis massa potenti euismod curabitur convallis dis, magna cubilia lorem ac penatibus pulvinar varius nibh gravida nisi litora.</p>
 
 <span class="helper-text">Child Menu Font</span>
 <div class="input-field">
@@ -64,7 +79,7 @@
 <div class="input-field">
 <input id="child_font_color" type="color" value="<?php echo $st['child_font_color'] ?>" />
 </div>
-<p id="child_sample" style="<?php echo $st['child_menu_font'] ?>">Lorem ipsum dolor sit amet consectetur adipiscing elit, hac accumsan imperdiet varius ultricies ligula leo integer, porta torquent netus eleifend hendrerit ex. Conubia eu ligula nullam lobortis diam tincidunt sagittis massa potenti euismod curabitur convallis dis, magna cubilia lorem ac penatibus pulvinar varius nibh gravida nisi litora.</p>
+<p id="child_sample" style="<?php echo $st['child_menu_font'] ?> color: <?php echo $st['child_font_color'] ?>">Lorem ipsum dolor sit amet consectetur adipiscing elit, hac accumsan imperdiet varius ultricies ligula leo integer, porta torquent netus eleifend hendrerit ex. Conubia eu ligula nullam lobortis diam tincidunt sagittis massa potenti euismod curabitur convallis dis, magna cubilia lorem ac penatibus pulvinar varius nibh gravida nisi litora.</p>
 </div>
 </div>
 

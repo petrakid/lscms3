@@ -17,7 +17,7 @@
      <script>
      WebFont.load({
           google: {
-               families: ['<?php echo $a->getWebFonts('parent_menu_font') ?>', '<?php echo $a->getWebFonts('child_menu_font'); ?>']
+               families: ['<?php echo $st->getWebFonts('parent_menu_font') ?>', '<?php echo $st->getWebFonts('child_menu_font'); ?>', '<?php echo $st->getWebFonts('title_font') ?>' ]
           }
      });
      </script>

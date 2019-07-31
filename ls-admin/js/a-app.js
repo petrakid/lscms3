@@ -188,6 +188,52 @@ function deleteLogo(image)
      })
 }
 
+
+function applyTitleFont(font)
+{   
+     font = font.replace(/\+/g, ' ');
+     font = font.split(':'); 
+     var fontFamily = font[0];
+     var fontWeight = font[1] || 400;
+     $('#title_sample').css({fontFamily:"'" +fontFamily+ "'", fontWeight:fontWeight});
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'title_font',
+               'v': 'font-family: '+ fontFamily +'; font-weight: '+ fontWeight +';'
+          },
+          success: function(data) {
+               showToast(data);              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })     
+}
+
+function applyTitleColor(color)
+{
+     $('#title_sample').css('color', color);
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_style': 1,
+               'f': 'title_font_color',
+               'v': color
+          },
+          success: function(data) {
+               showToast(data);              
+          },
+          error: function(jqXHR, exception) {
+               console.log(jqXHR.status);
+          }            
+     })        
+}
+
+
 function applyParentFont(font)
 {   
      font = font.replace(/\+/g, ' ');
@@ -277,12 +323,18 @@ function applyChildColor(color)
 }
 
 $(function(){
+     $('#select_title_font').fontselect().on('change', function() {
+          applyTitleFont(this.value);
+	})
+     $('#title_font_color').on('change', function() {
+          applyTitleColor(this.value);
+     })     
 	$('#select_parent_font').fontselect().on('change', function() {
           applyParentFont(this.value);
-	});
+	})
 	$('#select_child_font').fontselect().on('change', function() {
           applyChildFont(this.value);
-	});
+	})
      $('#parent_font_color').on('change', function() {
           applyParentColor(this.value);
      })
