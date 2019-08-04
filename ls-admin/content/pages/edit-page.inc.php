@@ -41,21 +41,37 @@ $z = $x->fetch(PDO::FETCH_ASSOC);
 <span id="full_link" class="helper-text">Full Link: <a href="<?php echo $g['site_url'] ?>/<?php echo $m->getParent($z['menu_parent_id']) ?><?php echo $z['menu_link'] ?>"><?php echo $g['site_url'] ?>/<?php echo $m->getParent($z['menu_parent_id']) ?><?php echo $z['menu_link'] ?></a></span>
 </div>
 <div class="col s3">
-<span class="helper-text">Page/Menu Status</span><br />
-<input type="radio" id="menu_status1" name="menu_status" value="1" <?php if($z['menu_status'] == 1) { echo 'checked="checked"'; } ?> class="with-gap" />
-<label for="menu_status1">Published</label>&nbsp;&nbsp;
-<input type="radio" id="menu_status2" name="menu_status" value="2" <?php if($z['menu_status'] == 2) { echo 'checked="checked"'; } ?> class="with-gap" />
-<label for="menu_status2">Hidden</label>&nbsp;&nbsp;
-<input type="radio" id="menu_status0" name="menu_status" value="0" <?php if($z['menu_status'] == 0) { echo 'checked="checked"'; } ?> class="with-gap" />
-<label for="menu_status0">Draft</label>
+<span class="helper-text">Page/Menu Status</span>
 <p>
-<input type="checkbox" id="show_carousel" name="show_carousel" value="1" <?php if($z['show_carousel'] == 1) { echo 'checked="checked"';} ?> />
-<label for="show_carousel">Show Carousel?</label>
-<span class="helper-text"> *Will override the Landing Image if enabled</span>
+<label>
+<input type="radio" id="menu_status1" name="menu_status" value="1" <?php if($z['menu_status'] == 1) { echo 'checked="checked"'; } ?> class="with-gap" />
+<span>Published</span>
+</label>
 </p>
 <p>
+<label>
+<input type="radio" id="menu_status2" name="menu_status" value="2" <?php if($z['menu_status'] == 2) { echo 'checked="checked"'; } ?> class="with-gap" />
+<span>Hidden</span>
+</label>
+</p>
+<p>
+<label>
+<input type="radio" id="menu_status0" name="menu_status" value="0" <?php if($z['menu_status'] == 0) { echo 'checked="checked"'; } ?> class="with-gap" />
+<span>Draft</span>
+</label>
+</p>
+<p> 
+<label>
+<input type="checkbox" id="show_carousel" name="show_carousel" value="1" <?php if($z['show_carousel'] == 1) { echo 'checked="checked"';} ?> />
+<span>Show Carousel?</span>
+</label>
+<span class="helper-text">*Will override the Landing Image if enabled</span>
+</p>
+<p>
+<label>
 <input type="checkbox" id="show_sharing" name="show_sharing" value="1" <?php if($z['show_sharing'] == 1) { echo 'checked="checked"';} ?> />
-<label for="show_sharing">Show Sharing Features?</label>
+<span>Show Sharing Features?</span>
+</label>
 </p>
 </div>
 <div class="input-field col s6">
@@ -100,6 +116,25 @@ $z = $x->fetch(PDO::FETCH_ASSOC);
 <a href="#!" class="icon" title="Delete Image" onclick="deleteImage('li', <?php echo $z['p_id'] ?>)"><i class="fas fa-trash"></i></a>
 </div>
 </div>
+</div>
+<div class="input-field col s6">
+<select name="my_plugin" id="my_plugin">
+<option value="0" selected disabled>Choose</option>
+<?php
+$plug = $plg->getPlugins();
+while($pl = $plug->fetch(PDO::FETCH_ASSOC)) {
+     if($pl['pl_id'] == $z['plugin_id']) {
+          echo '<option value="'. $pl['pl_id'] .'" selected="selected">'. $pl['plugin_name'] .'</option>';
+     } else {
+          echo '<option value="'. $pl['pl_id'] .'">'. $pl['plugin_name'] .'</option>';          
+     }
+     ?>
+     <?php
+}
+?>
+
+</select>
+<label>Page Plugin</label>
 </div>
 </div>
 </section>

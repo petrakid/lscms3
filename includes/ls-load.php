@@ -42,6 +42,7 @@ $m = new Menu($db);
 $p = new Page($db); 
 $sm = new SocialMedia($db);
 $st = new Style($db);
+$rs = new Resources($db);
 
 $sec = new Security($db);
 if($sec->checkLoad($_SERVER['SCRIPT_NAME']) == 1) {

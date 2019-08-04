@@ -20,6 +20,7 @@ include '../../includes/ls-classes.php';
 $a = new Admin($db);
 $sec = new Security($db);
 $b = new Blocks($db);
+$d = new Downloads($db);
 
 if(!isset($_SESSION['isLoggedIn'])) {
      if(isset($_POST['validate_email'])) {
@@ -1388,4 +1389,131 @@ if(isset($_POST['save_block_content'])) {
 if(isset($_POST['save_block_company'])) {
 	$db->exec("UPDATE tbl_blocks SET block_content = 'company' WHERE block_area = '$_POST[block_area]'");
      echo 'Updated';     
+}
+
+if(isset($_POST['add_download'])) {
+     ?>
+     <div class="row">
+     <div class="col s12">
+     <div class="row">
+     <div class="input-field col s4">
+     <input type="text" name="download_name" id="download_name" required="" />
+     <label for="download_name">Resourse Title</label>
+     <span class="helper-text">Required: What is this download resource called?</span>
+     </div>
+     <div class="input-field col s4">
+     <input type="text" name="download_date_added" class="datepicker" id="download_date_added" required="" />
+     <label for="download_date_added">Date of Resource</label>
+     <span class="helper-text">Enter a date.  If left blank, today's date will be used.</span>     
+     </div>
+     <div class="file-field input-field col s4">
+     <div class="btn">
+     <span>Resource</span>
+     <input type="file" name="download_filename" id="download_filename" />
+     </div>
+     <div class="file-path-wrapper">
+     <input class="file-path validate" type="text" placeholder="Click to browse" />
+     <span class="helper-text">Many file types may be used.  One file per resource.</span>
+     </div>
+     </div>
+     </div>
+     <div class="row">
+     <div class="col s6">
+     <span class="helper-text">Download Type</span>
+     <p>
+     <label>
+     <input type="radio" name="download_action" id="action1" value="1" checked="checked" />
+     <span>Force Download (recommended)</span>
+     </label>
+     </p>
+     <p>
+     <label>
+     <input type="radio" name="download_action" id="action2" value="2" />
+     <span>Allow Browser Viewing (if available)</span>
+     </label>
+     </p>
+     </div>
+     <div class="input-field col s6">
+     <input type="text" name="download_password" id="download_password" />
+     <label for="download_password">Optional Password</label>
+     <span class="helper-text">If you want to limit this resource to only authenticated users, enter a password here.</span>
+     </div>
+     </div>
+     <div class="row">
+     <div class="input-field col s6">
+     <select name="download_page_id" id="download_page_id">
+     <option value="0" selected disabled>Choose</option>
+     <?php echo $d->getPages() ?>
+     
+     </select>
+     <label>Page to add Resource</label>
+     <span class="helper-text">For this resource to be accessible, you must select which page to display it on.  Only pages with the Downloads Plugin enabled show in this list.</span>
+     </div>
+     <div class="input-field col s6">
+     <select name="download_security_level" id="download_security_level">
+     <option value="0" disabled selected>Choose</option>
+     <?php echo $d->getSecurity() ?>
+     
+     </select>
+     <label>Optional Security Level Limit</label>
+     <span class="helper-text">You can limit the viewing of this download by security level.  Do not select if you want it viewable by all users.</span>
+     </div>
+     </div>
+     </div>
+     </div>
+     
+     <?php
+}
+
+if(isset($_POST['save_resource'])) {
+     unset($_POST['save_resource']);
+     $root = $g['doc_root'] .'content/assets/uploads/';
+     $allowed = array('docx', 'doc', 'ppt', 'pptx', 'xls', 'xlsx', 'pdf', 'txt', 'rtf', 'zip', 'rar', 'tar', 'gz', 'mp3', 'ogg', 'wav', 'wma', 'aiff', 'aac', 'm4a', 'avi', 'flv', 'wmv', 'mov', 'mp4', 'mpg', 'jpg', 'jpeg', 'png', 'gif', 'tiff', 'tif');
+     if($_FILES['download_filename']['name'] == '') {
+          echo '<div class="red white-text" style="padding: 10px; border-radius: 10px;">You did not include a file!  You cannot create a downloadable resource without a file, silly.  Please include a Resource.</div>';
+          die;
+     }
+     $ext = strtolower(pathinfo($_FILES['download_filename']['name'], PATHINFO_EXTENSION));
+     if(!in_array($ext, $allowed)) {
+          echo '<div class="red white-text" style="padding: 10px; border-radius: 10px;">Sorry, but the file you tried to upload is not accepted as a safe or widely used file.  Generally, no executable files, system files, web files (html, php, asp, etc.) or oddly-named
+           files are allowed.  Most document files, image files, audio files and video files are accepted.  If you think the file you are trying to upload should be allowed, 
+           submit a support request or contact the Administrator.</div>';
+          die;
+     }
+     $filename = date('Ymdhis') . rand(0, 4) .'.'. $ext;
+     $_POST['download_type'] = strtoupper($ext);
+     $_POST['download_filename'] = $filename;
+     if(move_uploaded_file($_FILES['download_filename']['tmp_name'], $root . $filename)) {
+          if($_POST['download_date_added'] == '') {
+               $_POST['download_date_added'] = date('Y-m-d h:i:s');
+          }
+          if($_POST['download_name'] == '') {
+               echo '<div class="red white-text" style="padding: 10px; border-radius: 10px;">Nope, you need to include the Resource Name!  Now you gotta start all over again :-(.</div>';
+               die;
+          }
+          if($_POST['download_page_id'] == 0) {
+               echo '<div class="red white-text" style="padding: 10px; border-radius: 10px;">Eh, you failed to select a Page to which you would like this Resource shown.  Try again, and be SURE to select a page under the Page to Add Resource option.</div>';
+               die;
+          }
+          $_POST['download_added_by'] = $_SESSION['user']['user_id'];
+          $_POST['download_count'] = 0;
+          $_POST['download_status'] = 1;
+          $_POST['download_date_last'] = date('Y-m-d h:i:s');
+          $sql = "INSERT INTO tbl_downloads (";
+          foreach($_POST AS $k => $v) {
+               $sql .= "`$k`, ";
+          }
+          $sql = rtrim($sql, ", ");
+          $sql .= ") VALUES (";
+          foreach($_POST AS $k => $v) {
+               if($k == 'download_name') {
+                    $v = addslashes($v);
+               }
+               $sql .= "'$v', ";
+          }
+          $sql = rtrim($sql, ", ");
+          $sql .= ")";
+          $db->exec($sql);
+          echo '<div class="green white-text" style="padding: 10px; border-radius: 10px;">Great news!  Your downloadable resource has been added and is available for use!</div>';
+     }
 }

@@ -7631,3 +7631,9 @@ select {
      padding: 8px !important;
      
 }
+
+.checkbox>label>input[type="checkbox"] {
+     position: inherit !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;
+}

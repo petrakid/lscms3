@@ -150,7 +150,7 @@ class Page
           $menu = $this->db->query("SELECT m_id FROM tbl_menu WHERE menu_link = '$mid' AND menu_status = 1");
           if($menu->rowCount() > 0) {
                $m = $menu->fetch(PDO::FETCH_ASSOC);
-               $content = $this->db->query("SELECT * FROM tbl_content WHERE menu_id = $m[m_id]");
+               $content = $this->db->query("SELECT tbl_menu.menu_link, tbl_content.* FROM tbl_menu LEFT OUTER JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_content.menu_id = $m[m_id]");
 			return $content;
           } else {
 			return 0;
@@ -278,6 +278,104 @@ class Style
           $name = explode(";", $name[1]);
           $name = ltrim($name[0], " ");
           return $name;          
+     }     
+}
+
+class Resources
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getResources($page) {
+          $f = 1;
+          $res = $this->db->query("SELECT * FROM tbl_downloads WHERE download_page_id = $page AND download_status = 1 ORDER BY download_date_added DESC");
+          while($r = $res->fetch(PDO::FETCH_ASSOC)) {
+               if($r['download_security_level'] != 0) {
+                    if(isset($_SESSION['isLoggedIn']) && ($_SESSION['user']['security_level'] >= $r['download_security_level'])) {
+                         ?>
+                         <tr>
+                         <td><?php echo $this->getFileIcon($r['download_type']) ?></td>
+                         <td><a href="<?php echo $_SESSION['site_url'] ?>/content/assets/uploads/<?php echo $r['download_filename'] ?>" download="myFile_<?php echo $f ?>.<?php echo strtolower($r['download_type']) ?>"><?php echo stripslashes($r['download_name']) ?></a></td>
+                         <td><?php echo strtoupper($r['download_type']) ?></td>
+                         <td><?php echo strtoupper($r['download_count']) ?></td>
+                         </tr>                         
+                         
+                         <?php
+                    }
+               } else {
+                    ?>
+                    <tr>
+                    <td><?php echo $this->getFileIcon($r['download_type']) ?></td>
+                    <td><a href="<?php echo $_SESSION['site_url'] ?>/content/assets/uploads/<?php echo $r['download_filename'] ?>" download="myFile_<?php echo $f ?>.<?php echo strtolower($r['download_type']) ?>"><?php echo stripslashes($r['download_name']) ?></a></td>
+                    <td><?php echo strtoupper($r['download_type']) ?></td>
+                    <td><?php echo strtoupper($r['download_count']) ?></td>
+                    </tr>                       
+                    
+                    <?php
+               }
+               $f++;
+          }
+     }
+
+     public function getFileIcon($type) {
+          switch(strtolower($type)) {
+               case 'docx':
+               case 'doc':
+                    return '<i class="medium far fa-file-word blue-text lighten-1"></i>';
+                    break;
+               case 'ppt':
+               case 'pptx':
+                    return '<i class="medium far fa-file-powerpoint orange-text"></i>';
+                    break;
+               case 'xls':
+               case 'xlsx':
+                    return '<i class="medium far fa-file-excel green-text lighten-1"></i>';
+                    break;
+               case 'pdf':
+                    return '<i class="medium far fa-file-pdf pink-text"></i>';
+                    break;
+               case 'txt':
+               case 'rtf':
+                    return '<i class="medium far fa-file-alt grey-text lighten-1"></i>';
+                    break;
+               case 'zip':
+               case 'rar':
+               case 'tar':
+               case 'gz':
+                    return '<i class="medium far fa-file-archive yellow-text"></i>';
+                    break;
+               case 'mp3':
+               case 'ogg':
+               case 'wav':
+               case 'wma':
+               case 'aiff':
+               case 'aac':
+               case 'm4a':
+                    return '<i class="medium far fa-file-audio blue-text lighten-1"></i>';
+                    break;
+               case 'avi':
+               case 'flv':
+               case 'wmv':
+               case 'mov':
+               case 'mp4':
+               case 'mpg':
+                    return '<i class="medium far fa-file-video blue-text"></i>';
+                    break;
+               case 'jpg':
+               case 'jpeg':
+               case 'png':
+               case 'gif':
+               case 'tiff':
+               case 'tif':
+                    return '<i class="medium far fa-file-image orange-text lighten-1"></i>';
+                    break;               
+               default:
+                    return '<i class="medium far fa-file grey-text"></i>';
+                    break;
+          }
      }     
 }
 ?>

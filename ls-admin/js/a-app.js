@@ -1,3 +1,4 @@
+/* General Scripts for the whole site */
 var url = new URL(window.location.href);
 var href = url.protocol +'//'+ url.hostname;
 
@@ -11,31 +12,28 @@ $(function() {
      $('.modal').modal();
      $('select').formSelect();
      $('.collapsible').collapsible();
-});
-
-$(function() {
      $('.modal-static').modal({
           dismissible: true,
      })
-})
+	$(".phone_number").mask("(999)999-9999");
+     $(".phone_number").on("blur", function() {
+          var last = $(this).val().substr($(this).val().indexOf("-") + 1);
+          if(last.length == 3) {
+               var move = $(this).val().substr( $(this).val().indexOf("-") - 1, 1);
+               var lastfour = move + last;
+               var first = $(this).val().substr(0, 9);
+               $(this).val(first + '-' + lastfour);
+          }
+     })     
+});
 
 function showToast(data)
 {
      M.toast({html: data, displayLength: 1800, classes: 'rounded'});
 }
+//*
 
-$(function() {
-     if($('#c_fullWidth').prop('checked') == false) {
-          $('.show_cascade').show();
-          $('.show_fullWidth').hide();          
-     }
-     if($('#c_fullWidth').prop('checked') == true) {
-          $('.show_cascade').hide();          
-          $('.show_fullWidth').show();
-     }     
-
-})
-
+/* Menu Editor Functions */
 $(function() {
      $('#sort_area').sortable({
           placeholder: "ui-state-highlight",
@@ -123,7 +121,9 @@ function processSortBetween(id, position, sender_id, receiver_id)
           }                     
      })       
 }
+//*
 
+/* Style Editor Functions */
 function updateStyle(f, v)
 {
      $.ajax({
@@ -233,7 +233,6 @@ function applyTitleColor(color)
      })        
 }
 
-
 function applyParentFont(font)
 {   
      font = font.replace(/\+/g, ' ');
@@ -340,19 +339,6 @@ $(function(){
      })
      $('#child_font_color').on('change', function() {
           applyChildColor(this.value);
-     })
-});
-
-$(function() {
-	$(".phone_number").mask("(999)999-9999");
-     $(".phone_number").on("blur", function() {
-          var last = $(this).val().substr($(this).val().indexOf("-") + 1);
-          if(last.length == 3) {
-               var move = $(this).val().substr( $(this).val().indexOf("-") - 1, 1);
-               var lastfour = move + last;
-               var first = $(this).val().substr(0, 9);
-               $(this).val(first + '-' + lastfour);
-          }
      })
 });
 
@@ -685,6 +671,38 @@ function addnMenu()
           }          
      })
 }
+//*
+
+/* Carousel Editing Functions */
+$(function() {
+     if($('#c_fullWidth').prop('checked') == false) {
+          $('.show_cascade').show();
+          $('.show_fullWidth').hide();          
+     }
+     if($('#c_fullWidth').prop('checked') == true) {
+          $('.show_cascade').hide();          
+          $('.show_fullWidth').show();
+     }
+});
+
+function changeCSValue(field, value)
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'update_carousel': 1,
+               'field': field,
+               'value': value
+          },
+          success: function(data) {
+               showToast(data);
+          },
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}          
+     })
+}
 
 function displayImage(input, location)
 {
@@ -886,7 +904,9 @@ function removeSlide(slide)
           })           
      }
 }
+//*
 
+/* User Admin Functions */
 function editUser(userid)
 {
      $.ajax({
@@ -1266,7 +1286,7 @@ function saveAccount()
      fdata.append('first_name', $('#first_name').val());
      fdata.append('last_name', $('#last_name').val());
      fdata.append('security_level', $('#security_level').val());
-     fdata.append('user_avatar', $('input[name=user_avatar')[0].files[0]);
+     fdata.append('user_avatar', $('input[name=user_avatar]')[0].files[0]);
      $.ajax({
           url: href +'/ls-admin/includes/includes.php',
           type: 'POST',
@@ -1296,7 +1316,7 @@ function updateAccount()
      fdata.append('first_name', $('#first_name').val());
      fdata.append('last_name', $('#last_name').val());
      fdata.append('security_level', $('#security_level').val());
-     fdata.append('user_avatar', $('input[name=user_avatar')[0].files[0]);
+     fdata.append('user_avatar', $('input[name=user_avatar]')[0].files[0]);
      $.ajax({
           url: href +'/ls-admin/includes/includes.php',
           type: 'POST',
@@ -1344,7 +1364,9 @@ function changeprofileValue(field, value)
           }
      })      
 }
+//*
 
+/* MaterializeCss Functions*/
 $(function() {
      "use strict";
 
@@ -1486,7 +1508,9 @@ $(function() {
           })
      }
 });
+//*
 
+/* Essential Summernote Functions */
 (function (factory) {
      if (typeof define === 'function' && define.amd) {
           define(['jquery'], factory);
@@ -1496,74 +1520,76 @@ $(function() {
           factory(window.jQuery);
      }
 }
-(function($) {
-     function ensureWidget(version) {
-          if (typeof uploadcare == 'undefined') $.getScript([
-               'https://ucarecdn.com/widget/', version, '/uploadcare/uploadcare.min.js'
-          ].join(''))
-     }
+     (function($) {
+          function ensureWidget(version) {
+               if (typeof uploadcare == 'undefined') $.getScript([
+                    'https://ucarecdn.com/widget/', version, '/uploadcare/uploadcare.min.js'
+               ].join(''))
+          }
 
-function createButton(context, opts) {
-     return function() {
-          var icon = opts.buttonIcon ? '<i class="fa fa-' + opts.buttonIcon + '" /> ' : '';
-
-          return $.summernote.ui.button({
-               contents: icon + opts.buttonLabel,
-               tooltip: opts.tooltipText,
-               click: function() {
-                    var dialog = uploadcare.openDialog({}, opts);
-
-                    context.invoke('editor.saveRange');
-                    dialog.done(done(context, opts));
-               }
-          }).render();
-     };
-}
-
-function init(context) {
-     var opts = $.extend({
-          crop: '',
-          version: '2.9.0',
-          buttonLabel: 'Uploadcare',
-          tooltipText: 'Upload files via Uploadcare'
-     }, context.options.uploadcare);
-
-     ensureWidget(opts.version);
-
-     context.memo('button.uploadcare', createButton(context, opts));
-}
-
-function standardCallback(context, blob) {
-     context.invoke('editor.insertNode', $(
-     (blob.isImage ? ['<img src="', blob.cdnUrl + (blob.cdnUrlModifiers ? '' : '-/preview/'), '" alt="', blob.name, '" />' ] : ['<a href="', blob.cdnUrl, '">', blob.name, '</a>']
-     ).join('')).get(0));
-}
-
-function done(context, opts) {
-     return function(data) {
-          var isMultiple = opts.multiple;
-          var uploads = isMultiple ? data.files() : [data];
-
-          $.when.apply(null, uploads).done(function() {
-               var blobs = [].slice.apply(arguments);
-               var cb = opts.uploadCompleteCallback;
-
-               context.invoke('editor.restoreRange');
-
-               $.each(blobs, function(i, blob) {
-                    if ($.isFunction(cb)) {
-                         cb.call(context, blob);
-                    } else {
-                         standardCallback(context, blob);
+     function createButton(context, opts) {
+          return function() {
+               var icon = opts.buttonIcon ? '<i class="fa fa-' + opts.buttonIcon + '" /> ' : '';
+     
+               return $.summernote.ui.button({
+                    contents: icon + opts.buttonLabel,
+                    tooltip: opts.tooltipText,
+                    click: function() {
+                         var dialog = uploadcare.openDialog({}, opts);
+     
+                         context.invoke('editor.saveRange');
+                         dialog.done(done(context, opts));
                     }
-               });
-          });
+               }).render();
+          };
      }
-}
-
-$.extend($.summernote.plugins, {uploadcare: init});
+     
+     function init(context) {
+          var opts = $.extend({
+               crop: '',
+               version: '2.9.0',
+               buttonLabel: 'Uploadcare',
+               tooltipText: 'Upload files via Uploadcare'
+          }, context.options.uploadcare);
+     
+          ensureWidget(opts.version);
+     
+          context.memo('button.uploadcare', createButton(context, opts));
+     }
+     
+     function standardCallback(context, blob) {
+          context.invoke('editor.insertNode', $(
+          (blob.isImage ? ['<img src="', blob.cdnUrl + (blob.cdnUrlModifiers ? '' : '-/preview/'), '" alt="', blob.name, '" />' ] : ['<a href="', blob.cdnUrl, '">', blob.name, '</a>']
+          ).join('')).get(0));
+     }
+     
+     function done(context, opts) {
+          return function(data) {
+               var isMultiple = opts.multiple;
+               var uploads = isMultiple ? data.files() : [data];
+     
+               $.when.apply(null, uploads).done(function() {
+                    var blobs = [].slice.apply(arguments);
+                    var cb = opts.uploadCompleteCallback;
+     
+                    context.invoke('editor.restoreRange');
+     
+                    $.each(blobs, function(i, blob) {
+                         if ($.isFunction(cb)) {
+                              cb.call(context, blob);
+                         } else {
+                              standardCallback(context, blob);
+                         }
+                    });
+               });
+          }
+     }
+     
+     $.extend($.summernote.plugins, {uploadcare: init});
 }));
+//*
 
+/* Summernote Editing Functions*/
 $(function() {
      $('#summernote').summernote({
           popover: {
@@ -1591,7 +1617,7 @@ $(function() {
                ['para', ['ul', 'ol', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
-               ['insert', ['media', 'link', 'hr', 'video']],
+               ['insert', ['elfinder', 'media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
           ],
@@ -1630,7 +1656,7 @@ $(function() {
                ['para', ['ul', 'ol', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
-               ['insert', ['media', 'link', 'hr', 'video']],
+               ['insert', ['elfinder', 'media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
           ],        
@@ -1676,7 +1702,7 @@ $(function() {
                ['para', ['ul', 'ol', 'paragraph']],
                ['height', ['height']],
                ['table', ['table']],
-               ['insert', ['media', 'link', 'hr', 'video']],
+               ['insert', ['elfinder', 'media', 'link', 'hr', 'video']],
                ['uploadcare', ['uploadcare']],
                ['view', ['codeview']],
           ],
@@ -1693,6 +1719,25 @@ $(function() {
      });
 });
 
+function elfinderDialog(context) {
+  	var fm = $('<div/>').dialogelfinder({
+  		url : href + '/ls-admin/js/elfinder/php/connector.php',
+  		lang : 'en',
+  		width : 840,
+  		height: 450,
+  		destroyOnClose : true,
+  		getFileCallback : function(file, fm) {
+               context.invoke('editor.insertImage', fm.convAbsUrl(file.url));
+  		},
+  		commandsOptions : {
+  			getfile : {
+  			oncomplete : 'close',
+  			folders : false
+  			}
+  		}
+  	}).dialogelfinder('instance');
+  }
+
 var SaveButton = function(context) {
      var ui = $.summernote.ui;
      var button = ui.button({
@@ -1701,21 +1746,12 @@ var SaveButton = function(context) {
           click: function () {
                $('.note-editable').css('background-color', 'grey');
                $('.note-editable').prop('disabled', true);
-               var savepage = document.location.href.split("//");
-               var savepage = savepage[1].split("/");
-               var savepage2 = savepage[2].split("&");
-               var savepage = savepage[1].split("&");
-               if(savepage2[0] > '') {
-                    var savepage = savepage2[0];
-               } else {
-                    var savepage = savepage[0];
-               }
                $.ajax({
                     url: href +'/ls-admin/includes/includes.php',
                     type: 'POST',
                     data: {
                          'save_quick_edit': 1,
-                         'menu_link': savepage,
+                         'menu_link': $('.thispage').attr('id'),
                          'content': $('#summernote').summernote('code')
                     },
                     success: function(data) {
@@ -1763,7 +1799,9 @@ var SaveButtonB = function(context) {
      });
      return button.render();
 }
+//*
 
+/* Sermon Editing Functions*/
 function updateSermonConfig(field, value) {
      $.ajax({
           url: href +'/ls-admin/includes/includes.php',
@@ -2245,7 +2283,9 @@ function deleteSermon(s)
      	})          
      }
 }
+//*
 
+/* Block Editing Functions */
 function updateValue(field, value)
 {
 	$.ajax({
@@ -2263,25 +2303,6 @@ function updateValue(field, value)
 			console.log(jqXHR.status);
 		}
 	})
-}
-
-function changeCSValue(field, value)
-{
-     $.ajax({
-          url: href +'/ls-admin/includes/includes.php',
-          type: 'POST',
-          data: {
-               'update_carousel': 1,
-               'field': field,
-               'value': value
-          },
-          success: function(data) {
-               showToast(data);
-          },
-		error: function(jqXHR, exception) {
-			console.log(jqXHR.status);
-		}          
-     })
 }
 
 function updateBlock(area, value)
@@ -2411,3 +2432,55 @@ function showCompany(box)
 		});
 	}
 }
+//*
+
+/* Download Plugin Functions */
+function addResource()
+{
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          data: {
+               'add_download': 1
+          },
+          success: function(data) {
+               $('#addRes').html(data);
+               $('.datepicker').datepicker();               
+               $('#download_page_id').formSelect();
+               $('#download_security_level').formSelect();
+          },
+		error: function(jqXHR, exception) {
+			console.log(jqXHR.status);
+		}          
+     })
+}
+
+function saveResource()
+{
+     $('#saveResBtn').removeAttr("onclick");
+     $('#saveResBtn').html('Please wait...<i class="fas fa-spinner fa-pulse"></i>');
+     var fdata = new FormData();
+     fdata.append('save_resource', '1');
+     fdata.append('download_name', $('#download_name').val());
+     fdata.append('download_password', $('#download_password').val());
+     fdata.append('download_security_level', $('#download_security_level').val());
+     fdata.append('download_action', $('input[name=download_action]:checked').val());
+     fdata.append('download_page_id', $('#download_page_id').val());
+     fdata.append('download_filename', $('input[name=download_filename]')[0].files[0]);
+     $.ajax({
+          url: href +'/ls-admin/includes/includes.php',
+          type: 'POST',
+          processData: false,
+          contentType: false,
+          data: fdata,
+          success: function(data) {
+               $('#saveResBtn').hide();               
+               $('#addRes').html(data);
+          },
+          error: function(jqXHR, exception) {
+               $('#addRes').html(jqXHR.status);
+          }
+     })      
+}
+
+//*

@@ -25,6 +25,14 @@ nav .brand-logo {
   color: #444;
 }
 
+nav .container {
+     max-width: 95% !important;
+}
+
+.container {
+     width: 95% !important;
+}
+
 p {
   line-height: 2rem;
 }

@@ -454,6 +454,125 @@ class SermonManager
      }
 }
 
+class Downloads
+{
+     private $db;
+     
+     public function __construct(PDO $db) {
+          $this->db = $db;
+     }
+     
+     public function getDownloads() {
+          $down = $this->db->query("SELECT * FROM tbl_downloads WHERE download_status != 9 ORDER BY download_date_added DESC");
+          $f = 1;
+          while($d = $down->fetch(PDO::FETCH_ASSOC)) {
+               ?>
+               <tr>
+               <td style="width: 10%;"><?php echo $this->getFileIcon($d['download_type']) ?></td>
+               <td style="width: 30%;"><a download="myFile_<?php echo $f ?>.<?php echo $d['download_type'] ?>" href="https://<?php echo $_SERVER["HTTP_HOST"] ?>/content/assets/uploads/<?php echo $d['download_filename'] ?>"><strong><?php echo stripslashes($d['download_name']) ?></strong></a><br />
+                   Access: <?php echo $this->getAccess($d['download_security_level']); if($d['download_password'] > '') { echo ' / Password Protected'; } ?></td>
+               <td style="width: 15%;"><?php echo strtoupper($d['download_type']) ?></td>
+               <td style="width: 25%;" data-sort="<?php echo strtotime($d['download_date_added']) ?>">Added: <?php echo date('m/j/y h:i a', strtotime($d['download_date_added'])) ?><br />
+                   Last: <?php echo date('m/j/y h:i a', strtotime($d['download_date_last'])) ?></td>
+               <td style="text-align: left; width: 5%"><?php echo $d['download_count'] ?></td>
+               <td style="width: 15%;"><?php echo $this->getPage($d['download_page_id']) ?></td>
+               </tr>
+               
+               <?php
+               $f++;
+          }
+     }
+     
+     public function getFileIcon($type) {
+          switch(strtolower($type)) {
+               case 'docx':
+               case 'doc':
+                    return '<i class="medium far fa-file-word blue-text lighten-1"></i>';
+                    break;
+               case 'ppt':
+               case 'pptx':
+                    return '<i class="medium far fa-file-powerpoint orange-text"></i>';
+                    break;
+               case 'xls':
+               case 'xlsx':
+                    return '<i class="medium far fa-file-excel green-text lighten-1"></i>';
+                    break;
+               case 'pdf':
+                    return '<i class="medium far fa-file-pdf pink-text"></i>';
+                    break;
+               case 'txt':
+               case 'rtf':
+                    return '<i class="medium far fa-file-alt grey-text lighten-1"></i>';
+                    break;
+               case 'zip':
+               case 'rar':
+               case 'tar':
+               case 'gz':
+                    return '<i class="medium far fa-file-archive yellow-text"></i>';
+                    break;
+               case 'mp3':
+               case 'ogg':
+               case 'wav':
+               case 'wma':
+               case 'aiff':
+               case 'aac':
+               case 'm4a':
+                    return '<i class="medium far fa-file-audio blue-text lighten-1"></i>';
+                    break;
+               case 'avi':
+               case 'flv':
+               case 'wmv':
+               case 'mov':
+               case 'mp4':
+               case 'mpg':
+                    return '<i class="medium far fa-file-video blue-text"></i>';
+                    break;
+               case 'jpg':
+               case 'jpeg':
+               case 'png':
+               case 'gif':
+               case 'tiff':
+               case 'tif':
+                    return '<i class="medium far fa-file-image orange-text lighten-1"></i>';
+                    break;               
+               default:
+                    return '<i class="medium far fa-file grey-text"></i>';
+                    break;
+          }
+     }
+     
+     public function getAccess($sec) {
+          $secs = $this->db->query("SELECT * FROM tbl_user_security WHERE s_id = $sec");
+          $s = $secs->fetch(PDO::FETCH_ASSOC);
+          return $s['security_level'];
+     }
+     
+     public function getPage($page) {
+          $pge = $this->db->query("SELECT menu_name, menu_link FROM tbl_menu WHERE m_id = $page AND menu_status != 9");
+          if($pge->rowCount() == 0) {
+               return 'None';
+          }
+          $pg = $pge->fetch(PDO::FETCH_ASSOC);
+          return '<a href="https://'. $_SERVER["HTTP_HOST"] .'/'. $pg['menu_link'] .'">'. stripslashes($pg['menu_name']) .'</a>';
+     }
+     
+     public function getPages() {
+          $pl = $this->db->query("SELECT pl_id FROM tbl_plugins WHERE plugin_link = 'download-manager' AND plugin_status = 1");
+          $pg = $pl->fetch(PDO::FETCH_ASSOC);
+          $pge = $this->db->query("SELECT tbl_menu.menu_name, tbl_content.p_id FROM tbl_menu LEFT OUTER JOIN tbl_content ON tbl_menu.m_id = tbl_content.menu_id WHERE tbl_menu.menu_status != 9 AND tbl_content.plugin_id = $pg[pl_id] ORDER BY tbl_menu.menu_name");
+          while($pa = $pge->fetch(PDO::FETCH_ASSOC)) {
+               echo '<option value="'. $pa['p_id'] .'">'. $pa['menu_name'] .'</option>';
+          }
+     }
+     
+     public function getSecurity() {
+          $sc = $this->db->query("SELECT * FROM tbl_user_security ORDER BY s_id");
+          while($s = $sc->fetch(PDO::FETCH_ASSOC)) {
+               echo '<option value="'. $s['s_id'] .'">'. $s['security_level'] .'</option>';
+          }
+     }
+}
+
 class Plugins
 {
      private $db;
