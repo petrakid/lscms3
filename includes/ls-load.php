@@ -1,7 +1,8 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(-1);
 ini_set('ignore_repeated_errors', TRUE);
 ini_set('display_errors', TRUE); // shut this off in production environment
+ini_set('html_errors', TRUE);
 ini_set("log_errors", 1);
 ini_set("error_log", "/home/dinubalu/public_html/logs/error.log");
 ini_set('log_errors_max_len', 1024);
@@ -15,7 +16,6 @@ ini_set('include_path',$path_combined);
 
 session_start();
 
-// grab the database variables and connect to it
 include 'includes/ls-config.php';
 
 try {
@@ -27,20 +27,24 @@ catch(PDOException $e) {
      echo "Connection to Database failed: ". $e->getMessage();
 }
 
-// get global configuration
+require_once('includes/ls-cron.php');
+
 $glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
 $g = $glb->fetch(PDO::FETCH_ASSOC);
+date_default_timezone_set($g['time_zone']);
+$_SESSION['site_url'] = $g['site_url'];
 
-// initiate functions
 include 'includes/ls-functions.php';
 include 'includes/ls-classes.php';
-include 'admin/includes/admin.class.php';
+include 'ls-admin/includes/admin.class.php';
 
-$l = new Layout($db);
+$b = new Blocks($db);
 $m = new Menu($db);     
 $p = new Page($db); 
+$sm = new SocialMedia($db);
+$st = new Style($db);
+$rs = new Resources($db);
 
-// initialize security
 $sec = new Security($db);
 if($sec->checkLoad($_SERVER['SCRIPT_NAME']) == 1) {
      die("You cannot load this site by the method you chose.");
@@ -50,8 +54,8 @@ if(!empty($_COOKIE['remlog'])) {
      $sec->checkCookie($_COOKIE['remlog']);
 }
 
-if(!isset($_SESSION['isLoggedIn']) && $_GET['p'] == 'admin/login/') {
-     include 'admin/index.php';
+if(!isset($_SESSION['isLoggedIn']) && ($_GET['p'] == 'admin/login/' || $_GET['p'] == 'admin')) {
+     include 'ls-admin/index.php';
      die();
 }
 
@@ -65,11 +69,13 @@ if($g['maintenance'] == 1) {
           die('Maintenance Mode Active.');
      }
 }
-// load the page
+
 if(isset($_SESSION['isLoggedIn'])) {
      $a = new Admin($db); 
      $plg = new Plugins($db);
 }
+
+$plug = new Plugin($db);
 
 if(strpos($_GET['p'], 'admin/') !== false) {
      $exp = explode("/", $_GET['p']);
@@ -80,11 +86,12 @@ if(strpos($_GET['p'], 'admin/') !== false) {
      if($_GET['s'] == '') {
           $_GET['s'] = 'dashboard';
      }
+
 }
 
 switch($_GET['p']) {
      case 'admin':
-          include 'admin/index.php';
+          include 'ls-admin/index.php';
           break;
      case '':
           $_GET['p'] = 'home';
@@ -100,5 +107,4 @@ switch($_GET['p']) {
           include 'content/footer.php';
           break;
 }
-
 ?>

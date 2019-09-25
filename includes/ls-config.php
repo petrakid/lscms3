@@ -5,7 +5,10 @@ define('DB_NAME', 'dinubalu_db1');
 /** MySQL database username */
 define('DB_USER', 'dinubalu_conn1');
 /** MySQL database password */
-define('DB_PASSWORD', '_Hu1Og,7KCxH');
+define('DB_PASSWORD', ']e,g$n89ya&K');
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
+
+// CMS Version
+define('SITE_VERSION', 'LSCMS Version 3.0.0 Beta');
 ?>

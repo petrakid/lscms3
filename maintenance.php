@@ -1,3 +1,17 @@
+<?php
+include 'includes/ls-config.php';
+try {
+     $dsn = "mysql:host=". DB_HOST .";dbname=". DB_NAME;
+     $db = new PDO($dsn, DB_USER, DB_PASSWORD);
+     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {
+     echo "Connection to Database failed: ". $e->getMessage();
+}
+$glb = $db->query("SELECT * FROM tbl_globals WHERE g_id = 1");
+$g = $glb->fetch(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -215,23 +229,23 @@ margin-right: 5px;
 <body>
 <div id="shim"></div>
 <div id="content">
-	<div class="logo_box"><h1>First<br/>Lutheran<br/>Church</h1></div>          
+	<div class="logo_box"><h1><?php echo $g['site_name'] ?></div>          
 	<div class="main_box">
 		<h2>Our website is coming soon.<br/><span>In the mean time connect with us with the information below</span></h2>
 		
 		<ul class="info">
 			<li>
 				<h3>P</h3>
-				<p>559-591-0375</p>
+				<p><?php echo $g['phone_1'] ?></p>
 			</li>
 			<li>
 				<h3>A</h3>
-				<p>961 E Elizabeth Way<br/>Dinuba, CA 93618</p>
+				<p><?php echo $g['address_1'] ?><br/><?php echo $g['city'] ?>, <?php echo $g['state'] ?> <?php echo $g['zip_code'] ?></p>
 			</li>
 			<li>
 				<h3>S</h3>
 				<p class="social">
-					<a href="https://www.facebook.com/First-Lutheran-Church-126936457352684/" class="fb">Facebook</a>				
+					<a href="https://www.facebook.com/" class="fb">Facebook</a>				
 				</p>
 			</li>
                <li>

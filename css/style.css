@@ -6,13 +6,18 @@
  * Made By MaterializeCSS.com
  */
 body {
-     display: flex;
-     min-height: 100vh;
-     flex-direction: column;
+     display: flex !important;
+     min-height: 100vh !important;
+     flex-direction: column !important;
 }
 
 main {
-     flex: 1 0 auto;
+     flex: 1 0 auto !important;
+}
+
+#content {
+     position: relative !important;
+     top: 100vh !important;
 }
   
 nav ul a,
@@ -20,12 +25,20 @@ nav .brand-logo {
   color: #444;
 }
 
+nav .container {
+     max-width: 95% !important;
+}
+
+.container {
+     width: 95% !important;
+}
+
 p {
   line-height: 2rem;
 }
 
 .button-collapse {
-  color: #26a69a;
+  color: white;
 }
 
 .parallax-container {
@@ -51,6 +64,9 @@ p {
 @media only screen and (max-width : 600px) {
   #index-banner .section {
     top: 0;
+  }
+  nav .brand-logo {
+     font-size: 25% !important;
   }
 }
 
@@ -82,3 +98,81 @@ footer.page-footer {
 .pr-0 {
      padding-right: 3px;
 }
+
+.fixed-action-btn {
+     left: 10px !important;
+     bottom: 10px !important;
+}
+
+.mailing_lists {
+     list-style-type: none;
+     
+}
+
+.rounded {
+     border-radius: 15% !important;
+}
+
+.thumbnail-img {
+     padding: 4px;
+     line-height: 1.42857143;
+     background-color: white;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     transition: all .2s ease-in-out;
+     max-width: 100%;
+}
+
+.panel-heading.note-toolbar .note-para .dropdown-toggle.list-styles {
+    width: 20px;
+    padding-left: 5px;
+}
+
+.panel-heading.note-toolbar .dropdown-list-styles {
+  padding: 5px 0 !important;
+  min-width: 120px !important;
+}
+
+.dropdown-list-styles > li > a> ol {
+  margin-bottom: 0px;
+}
+
+.panel-heading.note-toolbar .note-style .dropdown-menu,
+.panel-heading.note-toolbar .note-font .dropdown-menu {
+    min-width: 245px;
+    padding: 5px;
+}
+
+.panel-heading.note-toolbar .note-style .dropdown-menu > div:first-child,
+.panel-heading.note-toolbar .note-font .dropdown-menu > div:first-child {
+
+    margin-right: 5px;
+
+}
+
+.note-add-text-tags-btn {
+    font-family: "Times New Roman", serif;
+    min-width: 30px;
+}
+
+.checkbox .sn-checkbox-open-in-new-window input {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;
+}
+
+.site-logo {
+     height: 90%;
+}
+
+/*input[type="radio"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}
+
+input[type="checkbox"] {
+     position: relative !important;
+     opacity: 1 !important;
+     pointer-events: auto !important;     
+}*/
